@@ -1,0 +1,199 @@
+package com.demo1;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.DisplayName;
+
+class NumberTest {
+
+    @ParameterizedTest
+    @DisplayName("test valueSource")
+    @ValueSource(ints = {2, 4, 6, 8})
+    void testEvenNumbers(int num) {
+        assertTrue(num % 2 == 0);
+    }
+}
+
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+class CalculatorTest {
+Calculator calc = new Calculator();
+
+	    @ParameterizedTest
+	    @CsvSource({
+	        "2,3,5",
+	        "10,20,30",
+	        "5,5,10"
+	    })
+	    void testAdd(int a, int b, int expected) {
+	        assertEquals(expected, calc.add(a, b));
+	    }
+
+	}
+
+
+
+
+
+
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.SelectPackages;
+import org.junit.platform.suite.api.Suite;
+
+@Suite
+@SelectPackages("com.demo1")
+public class TestSuite {
+
+}
+
+or 
+
+
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
+
+@Suite
+@SelectClasses({
+        CalculatorTest.class,
+        LoginServiceTest.class,
+        BankAccountTest.class
+})
+public class TestSuite {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+class LoginServiceTest {
+
+		
+		LoginService service = new LoginService();
+
+	    @ParameterizedTest
+	    @CsvSource({
+	        "admin,1234,true",
+	        "admin,wrong,false",
+	        "user,1234,false"
+	    })
+	    void testLogin(String user, String pass, boolean expected) {
+	        assertEquals(expected, service.login(user, pass));
+	    }
+
+	}
+
+==================================================Nested========================
+
+package com.demo1;
+
+import org.junit.jupiter.api.*;
+
+class UserServiceTest {
+
+    @Nested
+    class LoginTests {
+
+        @Test
+        void validLogin() {
+            System.out.println("Valid Login Test");
+        }
+
+        @Test
+        void invalidLogin() {
+            System.out.println("Invalid Login Test");
+        }
+    }
+
+    @Nested
+    class RegistrationTests {
+
+        @Test
+        void validRegistration() {
+            System.out.println("Valid Registration Test");
+        }
+    }
+}
+
+
+
+pom.xml:
+===============
+<dependencies>
+ <dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter</artifactId>
+    <version>5.10.2</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.junit.platform</groupId>
+    <artifactId>junit-platform-suite</artifactId>
+    <version>1.10.0</version>
+    <scope>test</scope>
+</dependency>
+
+</dependencies>
+
+
+
+
+
+3. Very Simple Example (Without DB)
+
+👉 Just testing multiple classes together
+
+public class PaymentService {
+    public boolean pay(double amount) {
+        return amount > 0;
+    }
+}
+public class OrderService {
+
+    private PaymentService paymentService = new PaymentService();
+
+    public String placeOrder(double amount) {
+        return paymentService.pay(amount) ? "SUCCESS" : "FAIL";
+    }
+}
+📌 Integration Test
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class OrderServiceTest {
+
+    @Test
+    void testOrderSuccess() {
+        OrderService service = new OrderService();
+        assertEquals("SUCCESS", service.placeOrder(100));
+    }
+
+    @Test
+    void testOrderFail() {
+        OrderService service = new OrderService();
+        assertEquals("FAIL", service.placeOrder(0));
+    }
+}
+🔹 4. Key Idea (Remember This for Interviews)
+
