@@ -1,0 +1,26 @@
+1)Order Processing System (List + Map + Business Logic + JUnit)
+ 
+Scenario:
+E-commerce system:
+
+a)Orders contain multiple items
+b)Need to calculate total bill
+c)Apply discount rules
+
+
+2)Employee Management (Map + Filtering + JUnit)
+
+Scenario:
+HR system:
+a)Store employees
+b)Filter by department
+c)Get high salary employees
+
+
+
+3)Shopping Cart (Map + Aggregation + JUnit)
+Scenario:
+Cart system:
+a)Add/remove items
+b)Update quantity
+c)Calculate total
