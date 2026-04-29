@@ -1,0 +1,1300 @@
+public class Alien
+{
+private int aid;
+private String aname;
+private String tech;
+// setters
+//getters
+public void show()
+{
+s.o.p("in Show");
+}
+}
+@SpringBootApplication
+public class DemoApplication
+{
+p s v m(String[]  args)
+{
+ConfigurableApplicationContext  context=
+SpringApplication.run(DemoApplication.class,args)
+Alien a=context.getBean(Alien.class);
+a.show();
+}
+}
+// here we are  going to get  NullPointerException
+=========if  we take @Component we can  avoid nullPointer=================
+@Component
+public class Alien
+{
+private int aid;
+private String aname;
+private String tech;
+// setters
+//getters
+public void show()
+{
+s.o.p("in Show");
+}
+}
+@SpringBootApplication
+public class DemoApplication
+{
+p s v m(String[]  args)
+{
+ConfigurableApplicationContext  context=
+SpringApplication.run(DemoApplication.class,args)
+Alien a=context.getBean(Alien.class);
+a.show();
+}
+}
+=========================
+@Component
+@Scope(value="prototype"")
+public class Alien
+{
+private int aid;
+private String aname;
+private String tech;
+// default con
+// setters
+//getters
+
+public void show()
+{
+s.o.p("in Show");
+}
+}
+@SpringBootApplication
+public class DemoApplication
+{
+p s v m(String[]  args)
+{
+ConfigurableApplicationContext  context=
+SpringApplication.run(DemoApplication.class,args)
+Alien a=context.getBean(Alien.class);
+a.show();
+Alien a2=context.getBean(Alien.class);
+a2.show();
+}
+}
+===============================================
+@Component
+public class Alien
+{
+private int aid;
+private String aname;
+private String tech;
+@Autowired
+private Laptop laptop;
+'// default con
+// setters
+//getters
+
+public void show()
+{
+s.o.p("in Show");
+laptop.compile();
+}
+}
+@Component
+class Laptop
+{
+private int lid;
+private String brand;
+// setters
+//getters
+//  toString()
+public void  compile()
+{
+System.out.println("Compile");
+}
+}
+
+
+
+@SpringBootApplication
+public class DemoApplication
+{
+p s v m(String[]  args)
+{
+ConfigurableApplicationContext  context=
+SpringApplication.run(DemoApplication.class,args)
+Alien a=context.getBean(Alien.class);
+a.show();
+}
+}
+
+==========================@Qualifier===============
+@Component
+public class Alien
+{
+private int aid;
+private String aname;
+private String tech;
+@Autowired
+@Qualifier("lap1");
+private Laptop laptop;
+'// default con
+// setters
+//getters
+
+public void show()
+{
+s.o.p("in Show");
+laptop.compile();
+}
+}
+@Component("lap1");
+class Laptop
+{
+private int lid;
+private String brand;
+// setters
+//getters
+//  toString()
+public void  compile()
+{
+System.out.println("Compile");
+}
+}
+
+
+
+@SpringBootApplication
+public class DemoApplication
+{
+p s v m(String[]  args)
+{
+ConfigurableApplicationContext  context=
+SpringApplication.run(DemoApplication.class,args)
+Alien a=context.getBean(Alien.class);
+a.show();
+}
+}
+=======Webapp using SpringBoot===============
+go to SpringStarterProject
+
+src-->main-->  to create floder(webapp)
+package com.telusko.demo;
+@Controller
+public class HomeController
+{
+@RequestMapping("home")
+public String home()
+{
+S.o.p("hi");
+return  "home.jsp";
+}
+}
+
+goto  webapp-->  to create home.jsp
+
+
+
+goto  pom.xml to add below  dependency 
+<dependency>
+<groupid>org.apache.tomcate</groupid>
+<artifactid>tomcat-jasper</artifactid>
+<version>8.5.31</version>
+</dependency>
+
+
+http://localhost:8080/home 
+=============================
+if i  move  jsp's  to(pages)  floder
+
+
+src/main/resources 
+application.properties
+spring.mvc.view.prefix=/pages/
+spirng.mvc.view.suffix=.jsp
+=========================================================
+webApp using  SpringBoot Accepting  Client Data
+
+package com.telusko.demo;
+public class HomeController
+{
+@RequestMapping("home")
+public String home(HttpServletRequest req)
+{
+HttpSession hession=req.getSession(); // here  i  want create  session  
+S.o.p("hi");
+String name=req.getParameter("name");
+S.o.p("hi:::"+name);
+hession.setAttribute("name",name);
+return  "home.jsp";
+}
+}
+home.jsp
+welcome  ${name};
+
+http://localhost:8080/home?name=navin
+
+=========================
+webApp  using SpringBoot  ModelAndView 
+
+package com.telusko.demo;
+public class HomeController
+{
+@RequestMapping("home")
+public String home(String name,HttpSession hession)
+{
+S.o.p("hi:::"+name);
+hession.setAttribute("name",name);
+return  "home.jsp";
+}
+}
+home.jsp
+welcome  ${name};
+
+http://8080/home?name=navin
+
+
+package com.telusko.demo;
+public class HomeController
+{
+@RequestMapping("home")
+public ModelAndView home(@RequestParam("name") String myName)
+{
+ModelAndView mv=new ModelAndView(); 
+mv.addObject("name",myName);
+mv.setViewName("/home.jsp");
+return  mv;
+}
+}
+home.jsp
+welcome  ${name};
+
+http://8080/home?name=navin
+
+
+========WebAppusing SpringBoot Model Object ==================
+
+public class Alien 
+{
+private int aid;
+private String  aname;
+private String lang;
+// setters
+// getters
+}
+
+
+package com.telusko.demo;
+@Controller
+public class HomeController
+{
+@RequestMapping("home")
+public ModelAndView home(Alien alien)
+{
+ModelAndView mv=new ModelAndView(); 
+mv.addObject("obj",alien);
+mv.setViewName("home");
+return  mv;
+}
+}
+home.jsp
+welcome  ${obj.aid},${obj.aname},${obj.lang}
+
+
+http://localhost:8080/home?aid=1&aname=navin&lang=java
+
+==============SpringBoot JPA MVC H2 Example==========
+package  com.telusko.demo.model;
+@Entity
+public class Alien
+{
+@Id
+private int aid;
+private String aname;
+// setters
+// getters
+}
+}
+
+goto home.jsp
+
+<form  action="addAlien">
+<input type="text" name="aid"><br>
+<input type="text" name="aid"><br>
+<input type="Submit"><br>
+</form>
+
+
+src/main/resources
+application.properties
+
+spring.h2.console.enabled=true
+spring.datasource.platform=h2
+spring.datasource.url=jdbc:h2:mem:babu
+
+http://localhost:8080/h2-console
+
+
+src/main/resources
+
+data.sql
+insert  into  aliven values(101,'pvrao,'java');
+insert  into  aliven values(102,'kiran','andriod');
+insert  into  aliven values(103,'pravin','python');
+insert  into  aliven values(104,'komal','java);
+insert  into  aliven values(105,'pvrao','andriod');
+
+package com.telusko.demo.controller;
+@Controller
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@RequestMapping("/addAlien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return "home.jsp";
+}
+
+}
+}
+
+
+package com.telusko.demo.dao;
+public interface  AlienRepo  extends CurdRepository<Alien,Integer>
+{
+}
+
+
+==============SpringBoot JPA MVC H2 Example2==========
+
+
+package com.telusko.demo.controller;
+@Controller
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@RequestMapping("/addAlien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return "home.jsp";
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+Alien  alien=repo.findById(aid).orElse(new Alien());
+mv.addObject(alien);
+return  mv;
+}
+}
+
+showAlien.jsp
+==========
+${alien}
+
+goto home.jsp
+
+<form  action="addAlien">
+<input type="text" name="aid"><br>
+<input type="text" name="aid"><br>
+<input type="Submit"><br>
+</form>
+
+<form  action="getAlien">
+<input type="text" name="aid"><br>
+<input type="Submit"><br>
+</form>
+
+
+
+remaning files are  same
+=========================
+
+
+
+package com.telusko.demo.controller;
+@Controller
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@RequestMapping("/addAlien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return "home.jsp";
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+Alien  alien=repo.findById(aid).orElse(new Alien());
+System.out.println(repo.findByTech("java"));
+System.out.println(repo.findByAidGreaterThan(102));
+System.out.println(repo.findByTechSorted("java"));
+
+
+mv.addObject(alien);
+return  mv;
+}
+}
+
+package com.telusko.demo.dao;
+public interface  AlienRepo  extends CurdRepository<Alien,Integer>
+{
+List<Alien> findByTech(String  tech);
+List <Alien> findByAidGreaterThan(int aid);
+@Query("from  Alien where tech=?1  order by  aname")	
+List <Alien> findByTechSorted(String  tech);
+}
+
+=====Spring Boot  Data  JPA  MVC  H2  REST Example  Part4=======
+
+package com.telusko.demo.controller;
+@Controller
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@RequestMapping("/addAlien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return "home.jsp";
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+Alien  alien=repo.findById(aid).orElse(new Alien());
+System.out.println(repo.findByTech("java"));
+System.out.println(repo.findByAidGreaterThan(102));
+System.out.println(repo.findByTechSorted("java"));
+mv.addObject(alien);
+return  mv;
+}
+
+@RequestMapping("/aliens")
+@ResponseBody
+public String getAliens()
+{
+return repo.findAll().toString();
+}
+@RequestMapping("/alien/{aid}")
+@ResponseBody
+public String <Alien> getAlien(@PathVarible("aid") int aid)
+{
+return repo.findById(aid).toString();
+}
+}
+
+http://localhost:8080/alien/104
+http://localhost:8080/alien/103
+ex...........
+
+============JPA Repository=================
+
+public interface  AlienRepo  extends JpaRepository<Alien,Integer>
+{
+}
+
+
+package com.telusko.demo.controller;
+@Controller
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@RequestMapping("/addAlien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return "home.jsp";
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+0Alien  alien=repo.findById(aid).orElse(new Alien());
+System.out.println(repo.findByTech("java"));
+System.out.println(repo.findByAidGreaterThan(102));
+System.out.println(repo.findByTechSorted("java"));
+mv.addObject(alien);
+return  mv;
+}
+
+@RequestMapping("/aliens")
+@ResponseBody
+public List<Alien> getAliens()
+{
+return repo.findAll();
+}
+@RequestMapping("/alien/{aid}")
+@ResponseBody
+public Optional<Alien> getAlien(@PathVarible("aid") int aid)
+{
+return repo.findById(aid);
+}
+}
+http://localhost:8080/101
+
+
+=========Postman SpringBoot  DataJPA MVC H2 Rest Example Part6===============
+here    we will  learn   how  to  download postman & install
+
+=====Content Negotiation SpringBoot DataJPA MVC H2 REST  Example Part7=============
+
+http://localhost:8080/101
+
+if want xml  format
+
+<dependency>
+<groupId>com.fasterxml.jackson.dataformat</groupid>
+<artifactId>jackson-dataformat-xml</artifactId>
+<version>2.9.6</version>
+</dependency>
+
+goto postman to choose ->Accept-->application/xml
+ 
+package com.telusko.demo.controller;
+@Controller
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@RequestMapping("/addAlien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return "home.jsp";
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+Alien  alien=repo.findById(aid).orElse(new Alien());
+System.out.println(repo.findByTech("java"));
+System.out.println(repo.findByAidGreaterThan(102));
+System.out.println(repo.findByTechSorted("java"));
+mv.addObject(alien);
+return  mv;
+}
+//  it  will dipisplay  xml  formate
+@RequestMapping(path="/aliens",produces={"application/xml"})
+@ResponseBody
+public List<Alien> getAliens()
+{
+return repo.findAll();
+}
+@RequestMapping("/alien/{aid}")
+@ResponseBody
+public Optional<Alien> getAlien(@PathVarible("aid") int aid)
+{
+return repo.findById(aid);
+}
+}
+http://localhost:8080/101
+
+==SpringBoot MVC REST POST Example Part8======
+
+package com.telusko.demo.controller;
+@RestController
+public class AlienController
+{
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@PostMapping("/alien")     // it's  going to  store  from  data
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return alien;
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+Alien  alien=repo.findById(aid).orElse(new Alien());
+System.out.println(repo.findByTech("java"));
+System.out.println(repo.findByAidGreaterThan(102));
+System.out.println(repo.findByTechSorted("java"));
+mv.addObject(alien);
+return  mv;
+}
+
+@GetMapping("/aliens")
+public List<Alien> getAliens()
+{
+return repo.findAll();
+}
+@RequestMapping("/alien/{aid}")
+public Optional<Alien> getAlien(@PathVarible("aid") int aid)
+{
+return repo.findById(aid);
+}
+}
+http://localhost:8080/101
+
+note : raw data  how  to store h2 database 
+
+@PostMapping ("/alien")
+public Alien addAlien(@RequestBody Alien alien)
+{
+repo.save(alien);
+return alien;
+}
+
+===SpringBoot MVC REST PUT DELETE  Example Part9=====
+
+@DeleteMapping("/alien/{aid}")
+public String deleteAlien(@PathVariable int aid)
+{
+Alien a=repo.getOne(aid);
+repo.delete(a);
+return "deleted";
+}
+@PostMapping(path="/alien",consumes={"application/json"})
+public Alien addAlien(@RequestBody alien)
+{
+repo.save(alien);
+return alien;
+}
+
+@PutMapping(path="/alien",consumes={"application/json})
+public Alien saveOrUpdateAlien(@RequestBody Alien alien)
+{
+repo.save(alien);
+return alien;
+}
+==SpringBoot  Data REST Example ===================
+please select
+H2
+JPA 
+Rest Repositories
+to click finish 
+
+class Alien
+{
+int aid;
+String aname;
+String tech;
+//setters
+// getters
+}
+
+@RepositoryRestResource(CollectionResourceRel="aliens",path="aliens")
+public interafce AlienRepo extends JpaRespository<Alien,Integer>
+{
+}
+
+@Autowired
+AlienRepo  repo;
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+@PostMapping("/alien")
+public String addAlien(Alien alien)
+{
+repo.save(alien);
+return alien;
+}
+@RequestMapping("/getAlien")
+public ModelAndView getAlien(@RequestParam int aid)
+{
+ModelAndView mv=new ModelAndView("showAlien.jsp");
+Alien  alien=repo.findById(aid).orElse(new Alien());
+System.out.println(repo.findByTech("java"));
+System.out.println(repo.findByAidGreaterThan(102));
+System.out.println(repo.findByTechSorted("java"));
+mv.addObject(alien);
+return  mv;
+}
+
+@GetMapping("/aliens")
+public List<Alien> getAliens()
+{
+return repo.findAll();
+}
+@RequestMapping("/alien/{aid}")
+public Optional<Alien> getAlien(@PathVarible("aid") int aid)
+{
+return repo.findById(aid);
+}
+}
+java/src/resources
+data.sql
+insert into  alien values(101,'babu',1900);
+insert into  alien values(102,'kavitha',1900);
+insert into  alien values(103'ravi',1900);
+
+
+
+
+
+SpringMVC
+index.jsp
+<html>
+<body>
+<form action="add">
+<input type="text" name="t1"><br>
+<input type="text" name="t2"><br>
+<input type="submit"><br>
+
+
+</form>
+</body>
+</html>
+
+@Controller
+public class AddController
+{
+public ModelAndView add(HttpServletRequest req,HttpServletResponse resp)
+{
+int i=Integer.parseInt(req.getParameter("t1"));
+int j=Integer.parseInt(req.getParameter("t2"));
+
+int k=i+j;
+ModelAndView mv=new ModelAndView();
+mv.setViewName("display.jsp");
+mv.addObject("result",k);
+return  mv;
+}
+}
+
+display.jsp
+Result is:<%=request.getAttribute("result")%>
+
+another approach:
+==================
+display.jsp
+<%page  language="java" contentType="text/html"
+isELIgnored="false"%>
+
+Result is:${result}
+
+
+https://www.youtube.com/watch?v=g2b-NbR48Jo
+
+
+
+
+
+
+
+
+
+
+Spring Security  Part2:
+=================
+public class HomeController
+{
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+}
+home.jsp
+welcome Aliens.....
+pom.xml:
+=========
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.tomcat.embed</groupId>
+    <artifactId>tomcat-embed-jasper</artifactId>
+    <scope>provided</scope>
+</dependency>
+
+
+  to run SpringBoot Application  
+
+@SpringBootApplication
+public class Demo2Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Demo2Application.class, args);
+	}
+
+}
+
+
+Note :we are going to get LoginForm
+
+userName user
+password  :
+                    Login 
+goto  Console  to  copy  the password  because 
+the Console  generated  password   
+  
+
+
+SpringSecurity part3:
+===================
+package com.telusko.secureapp;
+Configuration
+@EnableWebSecurity
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter
+{
+@Bean
+@Override 
+protected UserDetailsService userDetailsService(){
+	List<UserDetails>user=new ArrayList<>();
+	user.add(User.withDefaultPasswordEncoder().
+	username("navin").password("1234").
+	roles("USER").build());
+	return new InMemoryUserDetailsManager(user);
+	}
+}
+
+http://localhost:8080/
+
+we are  going to  get LoginForm
+
+username :navin
+password:1234
+
+another example:(userName,password comes under from Database)
+================
+pom.xml
+==========
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.46</version>
+</dependency>
+
+
+application.properties
+==================
+spring.datasource.url=jdbc:mysql://localhost:3306/m930
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name= com.mysql.jdbc.Driver
+spring.datasource.platform=mysql
+#spring.jpa.hibernate.ddl-auto=create-drop
+
+spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto= update
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+           <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.37</version>
+            </dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+
+
+
+@Entity
+public class User
+{
+@Id
+private long id;
+private String username;
+private String password;
+// setters
+// getters
+}
+
+
+
+package com.telusko.secureapp;
+Configuration
+@EnableWebSecurity
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter
+{
+@Autowired
+private UserDetailsService userDetailsService;
+@Bean
+public AuthenticationProvider authProvider()
+{
+DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+provider.setUserDetailsService(userDetailsService);
+provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+return provider;
+}
+}
+
+
+
+@Service
+public class MyUserDetailsService implements 
+          UserDetailsService{
+
+@Autowired
+private UserRepository repo;
+
+public  UserDetails loadUserByUsername(String username)
+throw UseranmeNotFoundException
+{
+User user=repo.findByUsername(username);
+if(user==null)
+throw  new UsernameNotFoundException("user 404");
+
+return new UserPrincipal(user);
+}
+}
+
+
+public UserPrincipal  implements UserDetails{
+private User user;
+public UserPrincipal(User user)
+{
+this.user=user;
+}
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities()
+{
+return Collections.singleton(new SimpleGrantedAuthority("USER"));
+}
+public String getPassword()
+{
+return user.getPassword();
+}
+public String getUsername()
+{
+return user.getUsername();
+}
+remaining method  we have to return  true
+
+
+}
+
+
+
+public  interface  UserRepository extends 
+JpaRepository<User,Long>{
+User findByUsername(String username);
+} 
+
+====Spring Security  BCryptPasswordEncoder======
+            
+package com.telusko.secureapp;
+Configuration
+@EnableWebSecurity
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter
+{
+@Autowired
+private UserDetailsService userDetailsService;
+@Bean
+public AuthenticationProvider authProvider()
+{
+DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+provider.setUserDetailsService(userDetailsService);
+provider.setPasswordEncoder
+(new BCryptPasswordEncoder());
+return provider;
+}
+}
+
+
+==SpringSecurity Form Login===========
+
+webapp
+login.jsp
+<body>
+<h1>Login</h1>
+${SPRING_SECURITY_LAST_EXCEPTION.message}
+<form  action="login" method="POST">
+<table>
+<tr><td>User:</td>
+<td><input type="text" name="username" value=""></td>
+</tr>
+ 
+|<tr><td>Password:</td>
+<td><input type="password" name="username" value=""></td>
+</tr>
+<table>
+<tr><td>&nbsp;</td>
+<td><input name="submit" type="submit"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+
+logout.jsp:
+==========
+<body>
+Logout home <br>
+<a href="/">home</a>
+</body>
+</html>
+
+package com.telusko.secureapp;
+Configuration
+@EnableWebSecurity
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter
+{
+@Autowired
+private UserDetailsService userDetailsService;
+@Bean
+public AuthenticationProvider authProvider()
+{
+DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+provider.setUserDetailsService(userDetailsService);
+provider.setPasswordEncoder
+(new BCryptPasswordEncoder());
+return provider;
+}
+protected void  configure(HttpSecurity http)throws Exception
+{
+http
+.csrf().disable()
+.authorizeRequests().antMatchers("/login").permitAll()
+.anyRequest().authenticated()
+.and()
+.formLogin()
+.loginPage("/login").permitAll()
+.logout().invalidateHttpSession(true)
+.clearAuthentication(true);
+.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+.logoutSucessUrl("/logout-sucess").permitAll();
+}
+
+}
+@Controller
+public class HomeController
+{
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+
+@RequestMapping("/login")
+public String loginPage()
+{
+return  "login.jsp";
+}
+
+@RequestMapping("/logout-success")
+public String logoutPage()
+{
+return  "logout.jsp";
+}
+
+
+}
+home..jsp
+<body>
+welome aliens
+<a href="/logout">logout</a>
+</body>
+</html>
+http://localhost:8085/
+
+====Spring Security Boot OAUTH 2====
+
+
+pom.xml
+
+<dependency>
+    <groupId>org.springframework.security.oauth.boot</groupId>
+    <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+<version>2.1.2.RELEASE</version>    
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+application.properties
+to add oauth2   code 
+
+
+
+@Controller
+public class HomeController
+{
+@RequestMapping("/")
+public String home()
+{
+return  "home.jsp";
+}
+
+@RequestMapping("/login")
+public String loginPage()
+{
+return  "login.jsp";
+}
+
+@RequestMapping("/logout-success")
+public String logoutPage()
+{
+return  "logout.jsp";
+}
+@RequestMapping
+@RequestBody
+public Principal user(Principal principal)
+{
+return principal;
+}
+}
+
+
+package com.telusko.secureapp;
+Configuration
+@EnableWebSecurity
+@EnableOAuth2Sso
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter
+{
+
+protected void  configure(HttpSecurity http)throws Exception
+{
+http
+.csrf().disable()
+.authorizeRequests().antMatchers("/login").permitAll()
+.anyRequest().authenticated();
+}
+}
+
+
+goto google  cloud you  have  to create  your  owen  account 
+then you will get ClientID   and Client Secrect 
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+

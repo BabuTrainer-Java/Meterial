@@ -1,0 +1,240 @@
+package com.example.demo;
+@jakarta.xml.bind.annotation.XmlRootElement
+public class Employee {
+	private int id;
+	private String name;
+	private double salary;
+	public Employee() {}
+	public Employee(int id, String name, double salary) {
+	this.id = id;
+	this.name = name;
+	this.salary = salary;
+	}
+	public int getId() {
+	return id;
+	}
+	public void setId(int id) {
+	this.id = id;
+	}
+	public String getName() {
+	return name;
+	}
+	public void setName(String name) {
+	this.name = name;
+	}
+	public double getSalary() {
+	return salary;
+	}
+	public void setSalary(double salary) {
+	this.salary = salary;
+	}
+}
+
+
+
+
+package com.example.demo;
+
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebService;
+@WebService
+public interface EmployeeService {
+@WebMethod
+String addEmployee(Employee employee);
+@WebMethod
+Employee getEmployee(int id);
+}
+
+
+package com.example.demo;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import jakarta.jws.WebService;
+@WebService(endpointInterface = "com.example.demo.EmployeeService")
+public class EmployeeServiceImpl implements EmployeeService {
+	private static Map<Integer, Employee> empDB = new HashMap<>();
+	@Override
+	public String addEmployee(Employee employee) {
+		empDB.put(employee.getId(), employee);
+		return "Employee added successfully";
+	}
+
+	@Override
+	public Employee getEmployee(int id) {
+		// TODO Auto-generated method stub
+		return empDB.get(id);
+	}
+
+}
+
+
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import jakarta.xml.ws.Endpoint;
+
+
+
+@SpringBootApplication
+public class SoapServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SoapServerApplication.class, args);
+		Endpoint.publish("http://localhost:8081/employeeService",
+				new EmployeeServiceImpl());
+	}
+
+}
+
+pom.xml
+==============
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+		
+		<!-- JAX-WS -->
+<dependency>
+<groupId>com.sun.xml.ws</groupId>
+<artifactId>jaxws-rt</artifactId>
+<version>2.3.7</version>
+</dependency>
+
+  <!-- Jakarta SOAP API -->
+    <dependency>
+        <groupId>jakarta.xml.ws</groupId>
+        <artifactId>jakarta.xml.ws-api</artifactId>
+        <version>4.0.3</version>
+    </dependency>
+
+    <!-- JAX-WS Runtime (VERY IMPORTANT) -->
+    <dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-rt</artifactId>
+        <version>4.0.2</version>
+    </dependency>
+
+    <!-- Fix for ServiceLoader issue -->
+    <dependency>
+        <groupId>org.glassfish.hk2</groupId>
+        <artifactId>osgi-resource-locator</artifactId>
+        <version>1.0.3</version>
+    </dependency>
+    
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+
+
+
+
+
+
+
+=================================================================
+package com.example.demo;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.xml.namespace.QName;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import jakarta.xml.ws.Service;
+
+
+
+
+@SpringBootApplication
+public class SoapClientApplication {
+
+	public static void main(String[] args) throws MalformedURLException {
+		SpringApplication.run(SoapClientApplication.class, args);
+
+		URL url = new URL("http://localhost:8081/employeeService?wsdl");
+		QName qname = new QName(
+			    "http://demo.example.com/",
+			    "EmployeeServiceImplService"   // MUST match WSDL
+			);
+
+	
+		Service service = Service.create(url, qname);
+		EmployeeService employeeService =
+		service.getPort(EmployeeService.class);
+		Employee emp = new Employee(1, "Babu", 75000);
+		System.out.println(employeeService.addEmployee(emp));
+		Employee response = employeeService.getEmployee(1);
+		System.out.println(response.getName());
+		System.out.println(response.getSalary());
+	
+	}
+
+}
+
+application.properties
+=====================
+spring.application.name=soap_Client
+server.port=8082
+
+
+pom.xml
+=============
+
+<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+		
+		<!-- JAX-WS -->
+<dependency>
+<groupId>com.sun.xml.ws</groupId>
+<artifactId>jaxws-rt</artifactId>
+<version>2.3.7</version>
+</dependency>
+
+  <!-- Jakarta SOAP API -->
+    <dependency>
+        <groupId>jakarta.xml.ws</groupId>
+        <artifactId>jakarta.xml.ws-api</artifactId>
+        <version>4.0.3</version>
+    </dependency>
+
+    <!-- JAX-WS Runtime (VERY IMPORTANT) -->
+    <dependency>
+        <groupId>com.sun.xml.ws</groupId>
+        <artifactId>jaxws-rt</artifactId>
+        <version>4.0.2</version>
+    </dependency>
+
+    <!-- Fix for ServiceLoader issue -->
+    <dependency>
+        <groupId>org.glassfish.hk2</groupId>
+        <artifactId>osgi-resource-locator</artifactId>
+        <version>1.0.3</version>
+    </dependency>
+     
+  		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>soap_Server</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
