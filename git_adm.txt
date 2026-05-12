@@ -1,0 +1,104 @@
+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
+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
+https://github.com/BabuTrainer-Java/adm_repo554.git
+
+
+
+
+echo "# adm_repo554" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/BabuTrainer-Java/adm_repo554.git
+git push -u origin main
+
+
+
+C:\git_examples>git  add  komal.txt
+
+C:\git_examples>git commit -m   "first"
+
+
+C:\git_examples>git  branch ecom
+
+C:\git_examples>git push -u origin ecom
+
+git push origin --delete feature/login
+
+git branch -r  remote branch
+
+git branch -m new-branch-name  -->Rename Remote   branch 
+
+git branch -a    all branchs
+
+how  to  create   subbranch from  local to Remote  Repo
+C:\git_examples>git checkout -b develop
+Switched to a new branch 'develop'
+
+C:\git_examples>git push -u origin develop
+
+
+Command	Purpose
+git branch	View branches
+git branch name	Create branch
+git checkout name	Switch branch
+git checkout -b name	Create + switch
+git switch -c name	Modern create + switch
+git branch -d name	Delete branch
+git push origin branch	Push branch
+
+
+
+
+
+
+
+Important Merge Commands
+Command	Purpose
+git merge branch	Merge branch
+git merge --no-ff	Create merge commit
+git merge --abort	Cancel merge
+git log --graph	Visualize merge history
+
+
+
+
+17. Important Pull Commands
+Command	Purpose
+git pull origin main	Pull latest main branch
+git pull --rebase	Pull with rebase
+git pull --all	Pull all remotes
+git pull --tags	Pull tags
+git pull --autostash	Auto stash local changes
+
+
+
+
+What is git pull?
+
+git pull is used to:
+
+Download latest code from remote repository
+Merge it into your local branch
+
+It combines:
+
+git fetch + git merge
+
+git pull origin main
+
+
+Pull All Remote Branch Updates
+
+git pull --all
+
+Pull Using Rebase
+
+Instead of merge:
+
+git pull --rebase origin main
+
+
+
+https://github.com/BabuTrainer-Java/adm_repo_5.git
