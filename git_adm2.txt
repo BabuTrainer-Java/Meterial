@@ -1,0 +1,40 @@
+git rm --cached application.properties
+
+git push origin --delete feature/login
+
+
+Command	Purpose
+git branch	View branches
+git branch name	Create branch
+git checkout name	Switch branch
+git checkout -b name	Create + switch
+git switch -c name	Modern create + switch
+git branch -d name	Delete branch
+git push origin branch	Push branch
+
+
+16. Merge Branch Locally
+git checkout main
+git merge feature/jwt-authentication
+17. Delete Feature Branch
+git branch -d feature/jwt-authentication
+
+
+
+22. Git Reset Example
+Remove Last Commit
+git reset --soft HEAD~1
+Completely Delete Commit
+git reset --hard HEAD~1
+23. Git Cherry Pick Example
+Copy Bug Fix
+
+Feature branch:
+
+feature/payment
+
+Production needs same fix.
+
+Cherry Pick Commit
+git checkout production
+git cherry-pick commitId
