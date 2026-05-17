@@ -1,0 +1,533 @@
+DOM Concepts Covered
+
+getElementById
+querySelector
+createElement
+appendChild
+remove
+addEventListener
+style manipulation
+fetch API
+
+
+Real-Time Example: Dynamic TODO App
+
+👉 Features:
+
+Add task
+Delete task
+DOM manipulation
+
+
+
+Real-Time Example: Dynamic Table (CRUD)
+
+👉 Used in:
+
+Employee management systems
+Admin dashboards
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Employee Table</h2>
+
+<input id="name" placeholder="Enter Name">
+<button onclick="addRow()">Add</button>
+
+<table border="1" id="empTable">
+<tr>
+  <th>Name</th>
+  <th>Action</th>
+</tr>
+</table>
+
+<script>
+function addRow() {
+    let name = document.getElementById("name").value;
+
+    let table = document.getElementById("empTable");
+    let row = table.insertRow();
+
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+
+    cell1.innerHTML = name;
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Delete";
+
+    btn.onclick = function() {
+        table.deleteRow(row.rowIndex);
+    };
+
+    cell2.appendChild(btn);
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+Real-Time Example: Live Search Filter
+
+👉 Used in:
+
+E-commerce search
+Tables filtering
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<input type="text" id="search" onkeyup="filter()" placeholder="Search">
+
+<ul id="list">
+  <li>Apple</li>
+  <li>Banana</li>
+  <li>Orange</li>
+</ul>
+
+<script>
+function filter() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let items = document.querySelectorAll("#list li");
+
+    items.forEach(function(item) {
+        if(item.innerHTML.toLowerCase().includes(input)) {
+            item.style.display = "";
+        } else {
+            item.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+Real-Time Example: API Call + DOM
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="loadData()">Load Users</button>
+
+<ul id="users"></ul>
+
+<script>
+function loadData() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response => response.json())
+    .then(data => {
+        let list = document.getElementById("users");
+
+        data.forEach(user => {
+            let li = document.createElement("li");
+            li.innerHTML = user.name;
+            list.appendChild(li);
+        });
+    });
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+Basic Methods
+Method	Description
+setItem(key, value)	Save data
+getItem(key)	Retrieve data
+removeItem(key)	Delete specific data
+clear()
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<input type="text" id="name" placeholder="Enter name">
+<button onclick="saveData()">Save</button>
+<button onclick="getData()">Get</button>
+
+<p id="output"></p>
+
+<script>
+function saveData() {
+    let name = document.getElementById("name").value;
+    localStorage.setItem("username", name);
+    alert("Data Saved");
+}
+
+function getData() {
+    let name = localStorage.getItem("username");
+    document.getElementById("output").innerText = name;
+}
+</script>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Login</h2>
+
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+<button onclick="logout()">Logout</button>
+
+<h3 id="message"></h3>
+
+<script>
+function login() {
+    let user = document.getElementById("username").value;
+
+    if(user) {
+        localStorage.setItem("loggedInUser", user);
+        document.getElementById("message").innerText = "Welcome " + user;
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedInUser");
+    document.getElementById("message").innerText = "Logged out";
+}
+
+// Auto load user
+window.onload = function() {
+    let user = localStorage.getItem("loggedInUser");
+    if(user) {
+        document.getElementById("message").innerText = "Welcome back " + user;
+    }
+}
+</script>
+
+</body>
+</html>
+
+
+<script>
+let user = {
+    name: "Babu",
+    role: "Admin"
+};
+
+// Save object
+localStorage.setItem("user", JSON.stringify(user));
+
+// Get object
+let storedUser = JSON.parse(localStorage.getItem("user"));
+
+console.log(storedUser.name);
+</script>
+
+
+Feature	localStorage	sessionStorage
+Expiry	Never	Until tab closed
+Storage	Persistent	Temporary
+Scope	Same origin	Same tab
+
+=============================
+
+
+<script>
+let fruits = ["Apple", "Banana", "Mango"];
+
+// Add
+fruits.push("Orange");
+
+// Remove last
+fruits.pop();
+
+// Access
+console.log(fruits[0]); // Apple
+
+// Loop
+fruits.forEach(f => console.log(f));
+</script>
+🔷 2. Real-Time Example: User List (CRUD)
+
+👉 Simulates adding/removing users (like admin panel)
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>User Management</h2>
+
+<input type="text" id="username" placeholder="Enter name">
+<button onclick="addUser()">Add</button>
+<button onclick="showUsers()">Show</button>
+
+<ul id="list"></ul>
+
+<script>
+let users = [];
+
+function addUser() {
+    let name = document.getElementById("username").value;
+    users.push(name);
+    alert("User Added");
+}
+
+function showUsers() {
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+
+    users.forEach((user, index) => {
+        let li = document.createElement("li");
+        li.innerText = user + " ";
+        
+        let btn = document.createElement("button");
+        btn.innerText = "Delete";
+        btn.onclick = () => deleteUser(index);
+
+        li.appendChild(btn);
+        list.appendChild(li);
+    });
+}
+
+function deleteUser(index) {
+    users.splice(index, 1);
+    showUsers();
+}
+</script>
+
+</body>
+</html>
+🔷 3. Real-Time Example: Filtering Data (Search)
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Search Products</h2>
+
+<input type="text" id="search" onkeyup="searchProduct()">
+
+<ul id="result"></ul>
+
+<script>
+let products = ["Laptop", "Mobile", "Tablet", "Camera"];
+
+function searchProduct() {
+    let value = document.getElementById("search").value.toLowerCase();
+
+    let filtered = products.filter(p => p.toLowerCase().includes(value));
+
+    let list = document.getElementById("result");
+    list.innerHTML = "";
+
+    filtered.forEach(p => {
+        let li = document.createElement("li");
+        li.innerText = p;
+        list.appendChild(li);
+    });
+}
+</script>
+
+</body>
+</html>
+🔷 4. Real-Time Example: API Data Handling
+<script>
+// Simulated API response
+let users = [
+    {id: 1, name: "Babu", role: "Admin"},
+    {id: 2, name: "Ravi", role: "User"}
+];
+
+// Get only admins
+let admins = users.filter(u => u.role === "Admin");
+
+// Get names
+let names = users.map(u => u.name);
+
+console.log(admins);
+console.log(names);
+</script>
+🔷 5. Real-Time Example: Shopping Cart
+<script>
+let cart = [];
+
+// Add item
+function addToCart(item) {
+    cart.push(item);
+}
+
+// Total price
+function getTotal() {
+    return cart.reduce((total, item) => total + item.price, 0);
+}
+
+// Usage
+addToCart({name: "Laptop", price: 50000});
+addToCart({name: "Mouse", price: 500});
+
+console.log("Total:", getTotal());
+</script>
+🔷 6. Important Array Methods (Used in Real Projects)
+Method	Use Case
+push()	Add item
+pop()	Remove last
+splice()	Delete/update
+map()	Transform data
+filter()	Search/filter
+reduce()	Aggregate values
+find()	Get single item
+🔷 7. Real-Time Example: Find User
+<script>
+let users = [
+    {id: 1, name: "Babu"},
+    {id: 2, name: "Ravi"}
+];
+
+let user = users.find(u => u.id === 2);
+
+console.log(user.name); // Ravi
+</script>
+
+
+
+
+2. How to Setup Web SQL (Step-by-Step)
+Step 1: Create HTML File
+
+Create a file:
+websql-setup.html
+
+Step 2: Add Web SQL Code
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Web SQL Setup Example</h2>
+
+<button onclick="initDB()">Init DB</button>
+<button onclick="insertData()">Insert</button>
+<button onclick="viewData()">View</button>
+
+<ul id="result"></ul>
+
+<script>
+let db;
+
+// Step 1: Open/Create Database
+function initDB() {
+    db = openDatabase('myDB', '1.0', 'Test Database', 2 * 1024 * 1024);
+
+    db.transaction(function(tx) {
+        tx.executeSql(
+            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name)'
+        );
+    });
+
+    alert("Database Initialized");
+}
+
+// Step 2: Insert Data
+function insertData() {
+    db.transaction(function(tx) {
+        tx.executeSql(
+            'INSERT INTO users (name) VALUES (?)',
+            ['Babu']
+        );
+    });
+
+    alert("Data Inserted");
+}
+
+// Step 3: Fetch Data
+function viewData() {
+    db.transaction(function(tx) {
+        tx.executeSql('SELECT * FROM users', [], function(tx, results) {
+
+            let output = document.getElementById("result");
+            output.innerHTML = "";
+
+            for (let i = 0; i < results.rows.length; i++) {
+                let row = results.rows.item(i);
+                let li = document.createElement("li");
+                li.innerText = row.id + " - " + row.name;
+                output.appendChild(li);
+            }
+        });
+    });
+}
+</script>
+
+</body>
+</html>
+🔷 3. How to Run
+Option 1 (Simple)
+Save file
+Double-click → opens in browser
+Option 2 (Recommended for Dev)
+
+Use local server:
+
+# Python
+python -m http.server 8000
+
+Open:
+
+http://localhost:8000/websql-setup.html
+🔷 4. Verify Database (Important)
+
+Open Developer Tools in Google Chrome:
+
+Press F12
+Go to Application Tab
+Look for:
+Storage → Web SQL
+Tables → users
+
+👉 You will see inserted data
+
+🔷 5. Common Errors & Fixes
+❌ openDatabase is not defined
+
+👉 Browser doesn’t support Web SQL
+✔️ Use Chrome or Safari
+
+❌ Data not saving
+
+👉 You didn’t initialize DB first
+✔️ Click "Init DB" before insert
+
+🔷 6. Important Notes (Interview Point)
+Web SQL uses SQLite internally
+Deprecated → Not future-proof
+Supported mainly in Chrome/Safari
+🔷 7. Modern Alternative (Recommended)
+
+👉 Use:
+
+IndexedDB (browser DB)
+Backend DB (Spring Boot + MySQL)
+🔷 8. Real-Time Usage Strategy
+Use Case	Storage
+Small data	localStorage
+Large offline data	IndexedDB
+Production apps	Backend DB
