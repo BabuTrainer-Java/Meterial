@@ -1,0 +1,448 @@
+==ExceptionHadnling ================
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+function withdraw(balance, amount) {
+
+    try {
+
+        if(amount > balance) {
+
+            throw "Insufficient Balance";
+
+        }
+
+        balance -= amount;
+
+        console.log(
+            "Remaining Balance:",
+            balance
+        );
+
+    }
+    catch(error) {
+
+        console.log(error);
+
+    }
+
+}
+
+withdraw(5000, 7000);
+
+</script>
+
+</body>
+</html>
+
+======================
+
+Rest op:
+============
+<!DOCTYPE html>
+<head>
+    <script>
+        function sum(a,b,...args){
+            console.log(a);
+            console.log(b);
+            console.log(args);
+        }
+        sum(1,2,3,4,5);
+    </script>
+</head>
+<body
+
+==================Employee Curd operation ==================================
+<html>
+<head>
+   <script>
+       let employees = [];
+       function addEmployee(){
+           let name = document.getElementById("name").value;
+            employees.push(name);
+            console.log(employees);
+          displayEmployees();
+       }
+       function displayEmployees(){
+           let employeeList = document.getElementById("employeeList");
+           employeeList.innerHTML = "";
+           for(let i=0; i<employees.length; i++){
+               let li = document.createElement("li");
+               li.textContent = employees[i];
+               employeeList.appendChild(li);
+           
+            }
+            
+       }
+
+       function removeEmployee(name){
+           let index = employees.indexOf(name);
+           if(index !== -1){
+               employees.splice(index, 1);
+               console.log(employees);
+               displayEmployees();
+           }
+       }
+
+
+    </script>   
+
+<body>
+<input type="text" name="name" id="name"/>
+<button onclick="addEmployee()">Add Employee</button>
+
+<ul id="employeeList"></ul>
+<label for="dname">Enter name to remove:</label>
+<input type="text" name="dname" id="dname"/>
+
+<button onclick="removeEmployee(document.getElementById('dname').value)">Remove Employee</button>
+
+</body>
+
+
+</html>
+
+==============================
+JSON in JavaScript
+
+JSON stands for:
+
+JavaScript Object Notation
+
+JSON is used to:
+
+Store data
+Transfer data
+Exchange data between frontend and backend
+Send API responses
+Configure applications
+
+
+Why JSON?
+
+JSON is:
+
+Lightweight
+Easy to read
+Easy to transfer
+Supported by almost all programming languages
+
+
+
+JSON Data Types
+Type	Example
+String	"Java"
+Number	100
+Boolean	true
+Array	[1,2,3]
+Object	{}
+Null
+
+
+==================== Convert Object to JSON=======================
+
+Use:
+
+JSON.stringify()
+
+
+  JSON.stringify  ===>   Object Convert  into  Json Type 
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+let employee = {
+
+    id:1,
+    name:"Babu",
+    salary:50000
+
+};
+
+let jsonData =
+    JSON.stringify(employee);
+
+console.log(jsonData);
+
+</script>
+
+</body>
+</html>
+
+=========================Convert JSON to Object ========================
+JSON.parse()
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+let jsonData =
+
+'{"id":1,"name":"Babu"}';
+
+let objectData =
+
+    JSON.parse(jsonData);
+
+console.log(objectData.name);
+
+</script>
+
+</body>
+</html>
+
+
+========================JSON Array Example====================
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+let employees = [
+
+    {
+        id:1,
+        name:"Ravi"
+    },
+
+    {
+        id:2,
+        name:"Babu"
+    }
+
+];
+
+let jsonData =
+    JSON.stringify(employees);
+
+console.log(jsonData);
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+=========JSON in localStorage====================
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+let employee = {
+
+    id:1,
+    name:"Babu"
+
+};
+
+localStorage.setItem(
+
+    "employee",
+
+    JSON.stringify(employee)
+
+);
+
+let data = JSON.parse(
+
+    localStorage.getItem(
+        "employee"
+    )
+
+);
+
+console.log(data);
+
+</script>
+
+</body>
+</html>
+
+======Employee Management Example====================
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+let employees = [
+
+    {
+        id:1,
+        name:"Ravi"
+    },
+
+    {
+        id:2,
+        name:"Babu"
+    }
+
+];
+
+employees.forEach(function(emp) {
+
+    console.log(emp.name);
+
+});
+
+</script>
+
+</body>
+</html>
+
+
+
+===========================Ecommerce Product JSON Example========================
+
+{
+    "products":[
+
+        {
+            "id":1,
+            "name":"Laptop",
+            "price":50000
+        },
+
+        {
+            "id":2,
+            "name":"Mouse",
+            "price":500
+        }
+
+    ]
+}
+
+
+Access Product Data
+console.log(products[0].name);
+
+
+
+=============================Banking Transaction Example=======================
+{
+    "account":"12345",
+    "balance":50000,
+    "transactions":[
+
+        {
+            "type":"credit",
+            "amount":1000
+        },
+
+        {
+            "type":"debit",
+            "amount":500
+        }
+
+    ]
+}
+=====================Student Management Example==========================================
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+
+let students = [
+
+    {
+        id:1,
+        name:"Anu",
+        marks:90
+    },
+
+    {
+        id:2,
+        name:"Ravi",
+        marks:85
+    }
+
+];
+
+let jsonData =
+    JSON.stringify(students);
+
+console.log(jsonData);
+
+</script>
+
+</body>
+</html>
+==========================Nested JSON Example=========================
+{
+    "employee":{
+
+        "id":1,
+        "name":"Babu",
+
+        "address":{
+
+            "city":"Chennai",
+            "state":"Tamil Nadu"
+
+        }
+
+    }
+}
+
+Access Nested JSON
+console.log(
+
+data.employee.address.city
+
+);
+============================= JSON Form Submission Example=========================
+<!DOCTYPE html>
+<html>
+<body>
+
+<input type="text"
+id="name"
+placeholder="Name">
+
+<button onclick="submitData()">
+    Submit
+</button>
+
+<script>
+
+function submitData() {
+
+    let name =
+        document.getElementById("name")
+                .value;
+
+    let user = {
+
+        username:name
+
+    };
+
+    let jsonData =
+        JSON.stringify(user);
+
+    console.log(jsonData);
+
+}
+
+</script>
+
+</body>
+</html>
