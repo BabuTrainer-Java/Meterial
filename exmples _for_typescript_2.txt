@@ -1,0 +1,146 @@
+let arr:number[] = [1, 2, 3, 4, 5];
+for(let i=0; i<arr.length; i++){
+    console.log(arr[i]);
+}
+for(let num of arr){
+    console.log(num);
+}   
+let sum = 0;
+for(let num of arr){
+    sum += num;
+}
+console.log("Sum: " + sum);
+for(let i=0; i<arr.length; i++){
+    if(arr[i] % 2 === 0){
+        console.log("Even number: " + arr[i]);
+    }
+}
+for(let num of arr){
+    if(num % 2 !== 0){
+        console.log("Odd number: " + num);
+    }
+}
+
+===============
+let arr1 = [1, 2, 3, 4, 5];
+console.log("Array: " + arr1.join(", "));
+let arr2 = ["Hello", "World", "TypeScript"];
+console.log("Array: " + arr2.join(", "));
+arr1.push(6);
+console.log("Updated Array: " + arr1.join(", "));
+arr2.pop();
+console.log("Updated Array: " + arr2.join(", "));
+for (let i = 0; i < arr1.length; i++) {
+    console.log("Element at index " + i + ": " + arr1[i]);
+}
+arr1.forEach((num, index) => {
+    console.log("Element at index " + index + ": " + num);
+});
+let mappedArr = arr1.map(num => num * 2);
+console.log("Mapped Array (doubled): " + mappedArr.join(", "));
+let filteredArr = arr1.filter(num => num % 2 === 0);
+console.log("Filtered Array (even numbers): " + filteredArr.join(", "));
+let reducedValue = arr1.reduce((acc, num) => acc + num, 0);
+console.log("Reduced Value (sum): " + reducedValue);
+
+====================================================
+interface hospital_login {
+    username: string;
+    password: string;
+}
+let patient_info = {
+    patient_name: "Jane Smith",
+    patient_email: "jane@  example.com",
+    patient_phone: "987-654-3210",
+    patient_address: "456 Elm St, Othertown, USA"
+};
+
+const hospitalLogin = (user: hospital_login): void => {
+    if (user.username === "admin" && user.password === "123") {
+        console.log("Login successful!");
+        console.log("Patient Information:");
+        console.log("Name: " + patient_info.patient_name);
+        console.log("Email: " + patient_info.patient_email);
+        console.log("Phone: " + patient_info.patient_phone);
+        console.log("Address: " + patient_info.patient_address);
+    } else {
+        console.log("Login failed. Invalid username or password.");
+        return;
+    }       
+}
+
+hospitalLogin({ username: "admin", password: "123" });
+//hospitalLogin({ username: "user", password: "wrong" });
+
+=============================
+interface User {
+
+    username: string;
+    password: string;
+}
+let cus_reg = {
+ customer_name: "John Doe",
+ customer_email:"john.doe@example.com",
+customer_phone: "123-456-7890",
+customer_address: "123 Main St, Anytown, USA"
+};  
+
+
+const login = (user: User): void => {
+
+if (user.username === "admin" && user.password === "123") {
+        console.log("Login successful!");
+        console.log("Customer Registration Details:");
+        console.log("Name: " + cus_reg.customer_name);
+        console.log("Email: " + cus_reg.customer_email);
+        console.log("Phone: " + cus_reg.customer_phone);
+        console.log("Address: " + cus_reg.customer_address);    
+
+    } else {
+        console.log("Login failed. Invalid username or password.");
+        return;
+    }   
+
+   
+}
+
+ login({ username: "admin", password: "123" });
+//login({ username: "user", password: "wrong" });
+
+=================================================
+let tuple1:[string, number] = ["Hello", 2024];
+console.log("Tuple: " + tuple1[0] + ", " + tuple1[1]);
+tuple1[0] = "Updated";
+tuple1[1] = 2025;
+console.log("Updated Tuple: " + tuple1[0] + ", " + tuple1[1]);
+let tuple2: [string, number, boolean] = ["TypeScript", 6, true];
+console.log("Tuple: " + tuple2[0] + ", " + tuple2[1] + ", " + tuple2[2]);
+tuple2[0] = "Updated";
+tuple2[1] = 7;
+tuple2[2] = false;
+console.log("Updated Tuple: " + tuple2[0] + ", " + tuple2[1] + ", " + tuple2[2]);   
+tuple1 = ["New Tuple", 2026];
+tuple1.pop();   
+console.log("Modified Tuple: " + tuple1[0] + ", " + tuple1[1]);
+tuple1.push(2027);   
+console.log("Modified Tuple: " + tuple1[0] + ", " + tuple1[1]); 
+
+
+======================================
+let emp = {
+    id: 101,
+    name: "Babu",
+    sal: 50000,
+    address: "123 Main St"
+};
+console.log(emp);
+let emp2 = {
+    id: 102,
+    name: "Babu",
+    sal: 60000,
+    address: "456 Oak Ave"
+};
+console.log(emp2);
+
+
+
