@@ -1,0 +1,1017 @@
+Oracle  History  
+=============
+  jun 1997  oracle 8
+feb   1999    oracle 8i--- 1
+nov  1999    oracle 8i--- 2
+aug   2000    oracle 8i--3
+
+jun 2001        oracle 9i-->1
+may 2002      oarcle 9i-->2
+jan  2004     oracle 10g  -->1
+ jul   2005     oracle  10g-->2
+       2007    oracle 11g  -->1
+
+       2014      oracle 12c -->1
+
+diff daatabases available   in   it  market
+====================================
+Company   database      language     language 
+oracle            oracle           sql              pl/sql
+microsoft       sqlServer     sql             T-SQL
+ibm                  db2              sql             sql/pl
+sun(oracle)    mysql           sql              pl/sql
+sybase(SAP)   sybase       sql              TSQL
+
+                         MongoDB   sql          
+                        ms-access
+                        FoxPro
+IBM                 mainFrame
+                        TeraData         sql
+                        BigData           sql
+                        NoSQL             sql
+                        informix            sql
+                        PostGRE          sql
+  IBM                dBase         
+
+
+Sql History:
+==============
+SQL Server                           Backend tool
+
+
+Rdbms                                        using
+
+m/s                                            Backend App
+
+1989
+
+
+platform
+
+os+processor
+
+platform                           platform
+independent                    dependent
+  
+anyos +anyprocessor      one os +anyprocesser
+
+oracle                                     SQL Server
+
+                           
+SQL Server
+ 
+GUI
+                        UI
+              CUI            GUI
+
+              Query          without Query
+
+                               ORACLE (RDBMS)
+
+SQL(StructQueryLanguage)                  pl/sql 
+                                                                Procedurelanguage/SQl
+
+Commands(dml,dcl,tcl,drl,ddl);               programing
+                                                                        
+Concepts (joins,subQuery )                                              concepts
+
+Clauses                                                  Objects
+
+operators
+
+Objects (Tables,views,index,Sequence,synonyms
+                 clauses)
+
+
+
+sql -basic
+a)introduction
+b)commands
+c)Data types
+d)clauses
+e)Constraints
+e)operators
+f)functions
+g)joins
+h)sub queries
+i)Other DB Objects
+pl/sql -basic
+sql -Advanced
+pl/sql advanced
+
+DBMS
+=========
+Data - The Fact 
+Collection  of  menaningful  data is  informatsical ions
+Database- Collection  of  inter-related Data
+physical Storage  Space
+DatabaseManagement--Communication  to
+and  from the  database 
+a)Manipulation of data
+b)Stroing,Retrieving,Deleting,Sorting  Data
+
+Read -select
+write - insert-new 
+delete -Exisiting
+modify 
+------
+update       --> exisiting (Manipulation)
+
+sorting
+join op
+SQL
+=========
+SQL - The Language ,which  is used to
+communicate  with the database
+SQL uses Statements  to  communicate with the
+Database
+SQL requires  an  environment(SQL *plus /iSQL *Plus)  
+to implement its features in the form of statementsu
+
+SQL --Structured QueryLanguage
+Pronounced  as  S.Q.L/Sequel
+SQL  is  a Non-Procedural  Language
+SQL  is  a Volatile language(Non Historic)
+SQL   is Case Insensitive language
+SQL  commands  insensitive language 
+SQl   commands  cannot be  abbreviated
+SQl   statements  can  spread  onto  multiple  Lines
+(Any number of Lines)
+SQL is ANSI (American  National Standards institute)
+ 
+>select  sal from  emp  where eno=101;
+sal
+===
+1000
+
+Table   does not  exist
+invalid identifier
+No Rows selected 
+
+
+Data Definiton  Language
+DDL  commands deal  with  the structure  of
+Objects 
+DDL  commands  interact with  the database 
+directly
+ddl  commands  enforce  an implicit   commit
+before  &  after the statement
+can not undo  (rollback)the changes
+DDL  commands are faster (performance)
+=================================
+create 
+Alter
+truncate
+rename
+drop
+FlashBack  ->to restore the objects in db 
+Purge         --> to remove object permently from recycle bin
+comment  --> we will give meaningful descrption to  table as well as  column'
+
+alter   command  
+              add
+              modify
+               drop
+               rename
+               set  unused   --> this is hiding a column
+               Enable
+               Disable
+alter table  <table_name> add col_name datatype(size);
+   alter table  <table_name> add(col1 datatype(size),col2 datatype(size));
+alter table <table_name> modify(
+  col1_Name Datatype(size));
+alter table <table_name> modify(col1 dtype(s),col2 dtype(s));
+alter table <table_name> drop column(col_name)
+alter table <table_name> drop(col1,col2,col3)
+alter table <table_name> set unused column(col_name);
+
+alter table  emp drop unused  columns;
+
+
+                                                      
+                                         
+
+Data Manipulation Language
+===========================
+DML    commands deal with the data only
+DML  Commands interact  with the Buffer first 
+and  then  database on commit 
+
+we can undo(rollback)the changes
+DML  commands  are  slower(Performance)
+Row-Level  locks  occur implicitly  on the 
+modified  rows 
+
+insert
+select
+update
+delete
+Merge   9i version
+
+
+SQL> insert All
+  2  into  emp2 values(102,'kk','sr')
+  3  into  emp2 values(102,'kk','sr')
+  4  select *  from dual;
+
+MERGE emp AS TARGET
+USING emp2 AS SOURCE 
+ON (TARGET.eid = SOURCE.eid)   
+THEN MATCHED AND TARGET.ename  SOURCE.ename 
+OR TARGET.eaddress SOURCE.ename THEN 
+UPDATE SET TARGET.ename = SOURCE.ename;
+TARGET.P_PRICE = SOURCE.P_PRICE         
+ WHEN NOT MATCHED BY TARGET THEN  
+INSERT (eid,ename,eaddress) into          
+VALUES (SOURCE.eid,SOURCE.ename,SOURCE.eaddress)
+
+WHEN NOT MATCHED BY SOURCE THEN         
+
+ //when no records are matched with source table 
+//the delete that record in target table
+DELETE;                              
+
+
+
+TCL:
+=====
+Transaction- starting from DML statement to
+Commit/Rollback(Implicit/Explicit)
+commit: to make the chnges  permanent
+rollback:to undo the previous  work done by 
+dml statements 
+savepoint-a temporary saving point with in
+the transaction
+
+>drop table emp;
+>select *  from recyclebin  (this is sql command)
+>show   RECYCLEBIN;   (this is  sqlplus command)
+
+>FLASHBACK  TABLE emp  TO BEFORE DROP;
+>FLASHBACK TABLE emp to BEFORE drop rename to emp1
+
+>PURGE TABLE  emp2;
+>sho RECYC;
+>drop table emp2 purge;
+>SELECT * FROM RECYCLEBIN;
+
+comment on table
+=================
+
+sql>comment  on table  emp  is 'Employee Details';
+sql>comment on table  emp is 'Employee Details with Salaries';
+
+comment on column 
+=================
+sql>Comment  on  column  emp.ename is 'Employee Names';
+
+viewing Comments from DATA DICTIONARY
+=====================================
+USER_TAB_COMMENTS -- Comments on Table(s)
+USER_COL_COMMENTS -- Comments on Column(s)
+
+SQL-SUBQUERY
+================
+Subquery is also called  as NestedQuery or inner Query
+A  Subquery  is  a query that is  used  in  a Clause of another
+Query
+
+Subquery  is used  to dynamically build a search 
+condition for  the main query
+A  single query may be  made up of  mutiple subqueries
+
+A  where  clause  of one query may contain another
+query  called   a  subquery
+
+subquery  can also  be used within the  having  clause
+
+Oracle  process subqueries  before  the main query
+
+A  subquery  may contains another subquery
+
+subquereis may  contain join queries  and search 
+conditions  of their own
+
+a subquery can  refer to  tables in main query
+
+a subquery  can return  single  or multiple values
+
+Subquery  that  returns a  single  value
+(1 row of 1 column only)
+
+we can use single row  Relational operators
+we  can  also  use multi-row  Relational operators
+
+subquery it should be return more  than one  table
+
+subquery to refers  multiple  tables
+
+SubQUERY-InlineView
+===================
+A  Query  used  in select clause or  from 
+clause or group by  clause  or order by clause  or any other
+clauses  of SQL except in WHERE clause  and having clause
+
+SubQuery-Correlated SubQuery
+==========================
+A  correlated subquery  is a subquery,which is  executed
+repeatedly  ,once  for  each  row of the main query
+
+A  correlated subquery is a  nested query 
+which is executed once for each  'candidate row'
+seleted by the main
+
+display all cmployees who earn  salaries greater
+than  the  average  salary with in  their own department
+
+Subquery-Precautions
+===================
+Subqueries are  include in where or  having clause of
+main query  only
+
+we should choose proper relational Operator based on
+ the output of subquery
+
+if a subquery produces no values the  main query will not
+produce  any  output
+use  DISTINCT  in some  cases to  force subquery to  
+generate a  single  value
+
+use  aggregate functions without  a group by clause to  
+generate a  single  value
+
+you can use subqueries  that  produce any  number of 
+rows  if you use multi-Row relational operators
+
+Subquery | Nested Query | Inner Query
+
+Query inside  another query
+
+Main Query(Sub query)
+
+Subqueries are placed  in where Clause or Having clause
+only
+
+subquery will  execute before the main query
+
+subquery will execute only once for the entire main query
+
+steps:
+        1.execution of subquery
+        2.subquery   gives a result
+        3.using  the  result of subquery by main query
+         4.execution of main query  using the result of  sub
+query
+5.producing  final output by main  query 
+Types:
+==========
+-->scalar subquery
+-->single row subquery : 
+-->single value subquery:a subquery  that  returns exactly one value
+of one column only
+
+-->multi-value   subquery:
+A subQuery  that  Returns more  than one value
+of output of one column
+
+
+
+--->multi-Row subquery:
+
+A subquery  that  returns more than one row of output
+
+from oracle 9i version onwords:
+
+ -->Multi-Column subQuery:
+A subquery  that  returns more than one column  value as
+output
+
+inline View:A query  used  in SELECT  clause or from Clause
+or GROUP BY clause or Order by clause
+
+Example:
+SCalar SubQuery|Single Row |Single Value subQuery
+========================================
+select  sal  from  emp  where ename='SCOTT';
+note:   A subquery  that returns Exactly one Row/one value
+one Column only
+
+select *  from emp 
+where  sal>1000;
+
+select *  from  emp where sal>(select sal from emp 
+where ename='SCOTT');
+ 
+
+
+
+
+  
+pl/sql  :
+===========
+intrduction
+PL/SQL Block-Structure
+PL/SQL Block-Types
+PL/SQL -DataTypes
+Control Statements
+procedure
+Functions
+Parameters
+Cursor
+Exception
+Packages
+Triggers
+Collections
+pl/sql  is a  procedure language
+pl/sql  is a  procedure language/SQL
+pl/sql  can be pronounced  as PL/SQL  or PLSEQUEL
+pl/sql  is  case Insenstive language
+PL/SQL supports  both procedural Code + SQL code
+pl/sql    supports  both procedure code + SQL Code
+pl/sql   is not ANSI  standard
+pl/sql  is  made up of  2 distinct language :SQL+PL/SQL
+a)procedural code  is  executed by pl/sql engine
+b)SQL code is sent to the SQL statement executor
+PL/SQL is platform independent
+pl/sql  supports all the features of SQL
+datatypes ,fuctions operators,Constraints,SQL Queryes
+
+pl/sql uses blocks
+
+Each pl/sql block makes a  single Request to Db Server
+
+pl/sql blocks will be stored in the db in compiled from
+
+Recompilation of pl/sql block is not required
+
+pl/sql blocks can be Reused
+features:
+=======
+BlockStrructure
+Capability
+better  perforamnce
+Error handling
+intermediate Clalculation
+portable application
+ 
+advantages:
+=========
+writing business logic as pl/sql  in the database 
+requires  as a single  database call pertransaction ,
+reducing the network  overhead singnificantly
+
+Placing business in the database makes changing 
+your client layer much simpler
+
+Tight intergration with SQL
+High performance 
+High  Productvity
+Portability
+scalability
+manageability
+support for object-oriented programing
+support for developing web applications
+support for developing Server pages
+
+Pl/SQL Blocks -Types
+==============
+Nameless  Blocks : block  without Name
+Anonymous block:  does not store in db
+Named Blocks        : store in DB Named blocks 
+============
+subprograms 
+procedure 
+function
+package
+trigger
+type
+
+8i allows only  dbms_output.put_line('app');
+
+9i  allows only  char  data type
+
+10g  its allows  (char,numaric,date,functions,expression)
+
+ dbms_output.put_line('app');-->char
+dbms_output.put_line(12345); -->numaric
+dbms_output.put_line(SYSDATE);-->fun
+dbms_output.put_line(SYSTIMESTAMP);
+dbms_output.put_line(1+2+3); --ex
+dbms_output.put_line(USER);-->fun
+========================
+ex:
+begin
+dbms_output.put('AAA');
+dbms_output.put('BBB');
+dbms_output.put('CCC');   
+End;                                    note: output store in buffer
+output:
+             no output
+
+ex:
+to display single line
+begin
+dbms_output.put('AAA');
+dbms_output.put('BBB');
+dbms_output.put('CCC');
+dbms_output.put_line('DDD');
+output:
+           BCCCDDDAAABBBCCCDDD
+
+
+ex:
+
+begin
+dbms_output.put('AAA');
+dbms_output.put('BBB');
+dbms_output.put('CCC');
+dbms_output.NEW_LINE();
+output:
+
+
+ex: 
+execute DBMS_output.DISABLE;
+
+ex: 
+execute DBMS_output.ENABLE;
+
+Anonymous block:
+==================
+Declare   <optional>
+-- varible
+--Constants
+--cursor
+--tigger
+-->PRAGMA
+-->TYPE -PL/SQL Type
+---subprograms
+SQl>set serveroutput on numwidth 5:
+ex---
+begin
+// to create our business code
+
+Exception
+// to handle  exception
+end;
+
+
+
+Declare 
+v1 number :=125;
+v2 number :=35;
+begin
+dbms_output.put_line(v1+v2);
+end;
+/
+ex:
+Declare 
+v1 number DEFAULT 125;
+v2 number  DEFAULT 35;
+begin
+dbms_output.put_line(v1+v2);
+end;
+/
+ex:
+Declare 
+c1 constant number:=25;
+c2 constant   number:=35;
+begin
+dbms_output.put_line(c1+c2);
+end;
+/
+
+ex:
+Declare 
+c1 constant number:=25;
+c2 constant   number:=35;
+begin
+c1:=125;-- value of constant  can not  be modified 
+dbms_output.put_line(c1+c2);
+end;
+/
+ex:
+Declare 
+c1 constant number default 25;
+c2 constant   number default 35;
+begin
+dbms_output.put_line(c1+c2);
+end;
+/
+
+ex:
+Declare 
+v1  number;
+begin
+v1 DEFAULT  25;
+dbms_output.put.line(v1*5);
+end;
+/
+output:
+we  get  exception   bcz  in begin part  default keyword not 
+allowed  it's excepted  v1:=25;
+default keyword allow only declaration part
+
+
+DECLARATION -Cursor,Exception,PRAGMA,Type,Local Subprograms
+
+cursor c1 is select *  from dept;  --cursor
+e1 ExCEPTION;                                  -- Exception(User-DefinedException)
+PRAGMA exception _init(e1,-20001); --PRAGMA
+TYPE t1 is Table of number;                --TYPE(Collection)
+PROCEDURE p1 IS                             --Local Subprogram
+begin
+dbms_output.put_line('p1');
+end;
+begin
+dbms_output.put_line('welcome');
+end;
+/
+Delare -local Subprograms,PRAGMA
+=============================
+ex:
+declare 
+--
+procedure p1 is
+begin
+dbms_output.put_line('p1');
+end;
+--
+PRAGMA AUTONOMOUS_TRANSACTION;
+--
+begin
+dbms_output.put_line('welcome');
+End;
+/
+
+Delare -local Subprograms,PRAGMA,Exception
+=============================
+ex:
+declare 
+--
+procedure p1 is
+begin
+dbms_output.put_line('p1');
+end;
+--
+PRAGMA AUTONOMOUS_TRANSACTION;
+--
+e1 EXCEPTION;
+--
+begin
+dbms_output.put_line('welcome');
+End;
+/
+
+
+--dbms_output
+--
+--put
+--put_line
+--new_line
+--enable
+--disable
+--GET_LINE
+--GET_LINES
+--PUTS
+--
+sql>select TEXT from DBA_SOURCE where TYPE='PACKAGE'
+AND NAME='DBMS_OUTPUT';
+ 
+ex:
+if you want display box type :
+begin
+dbms_output.put_line('------');
+dbms_output.put_line('|AAA|');
+dbms_output.put_line('------');
+dbms_output.put_line('|BBB|');
+dbms_output.put_line('|AAA|');
+dbms_output.put_line('------');
+dbms_output.put_line('|CCC|');
+dbms_output.put_line('------');
+dbms_output.put_line('|DDD|');
+end;
+
+sql>exec dbms_output.ENABLE;
+sql>exec dbms_output.put_line(SYSDATE);
+
+sql>exec dbms_output.DISABLE;
+sql>exec dbms_output.put_line(SYSDATE);
+sql>sho serveroutput
+sql>exec dbms_output.ENABLE;
+sql>exec dbms_output.put_line(SYSDATE);
+GET_LINE
+=========
+PROCEDURE get_line(line out varchar2,status out  integer);
+declare
+v_line varchar2(200); 
+v_status Integer;
+begin 
+dbms_output.get_line(v_line,v_status);
+end;
+/
+declare
+v_line varchar2(200); 
+v_status Integer;
+begin 
+dbms_output.get_line(v_line,v_status);
+dbms_output.put_line(v_line);
+dbms_output.put_line(v_status);
+end;
+/
+Declare 
+Declaration <optional>
+begin
+main body --mandatory
+exception
+Error Handling section-<optional>
+end;
+
+
+Declare 
+--varible
+--constant
+--cursor
+--exception
+--PRAGMA
+--TYPE
+--LOCAL subprogram --must be last one  in declaration part
+begin
+-- main body - mandatory
+--procedural -statements
+-- sql statements - dml + tcl  - drirect usage 
+                             -ddl + dcl - using Dynamic SQL only
+exception
+
+Error Handling section-<optional>
+--Exceptions - pre-Defined 
+                       - user-defined
+                      -  non-defined
+                     - default
+end;
+
+pl/sql  datatypes
+=================
+v1 number
+v2 char(5)
+v3 varchar(5)
+v4 varchar2(5)
+v5 nchar(5)
+v6 nvarchar(5)
+date
+timestamp
+timestamp with time zone;
+timestamp with local time zone;
+interval year to month
+interval day to second;
+rowid
+blob
+clob
+nclob
+bfile
+long
+long raw
+raw(20)
+urowid
+begin
+dbms_output.put_line('declaration');
+end; 
+/
+declare
+v01 number:=25;
+v02 varchar(5):='ABC';
+v03 DATE:=SYSDATE;
+v04 varchar(10):=user;
+begin
+dbms_output.put_line('declartions - varibles');
+end;
+/
+
+declare
+v01 number default 25;
+v02 varchar(5) default 'ABC';
+v03 DATE default SYSDATE;
+v04 varchar(10) default user;
+begin
+dbms_output.put_line('declartions - varibles');
+end;
+/
+ex:
+declare 
+v01  number:=25+25;
+begin
+dbms_output.put_line('declaration - varibles');
+end;
+/
+one varible to declare two times we get exception
+ex:
+declare 
+v1  number:=25;
+v1 DATE:=SYSDATE;
+begin
+dbms_output.put_line('declaration - varibles '||v1);
+end;
+
+ex:
+declare v1,v2,v3  number;  -- invalid
+begin
+dbms_output.put_line('declarations - varibles');
+end;
+
+ex:
+declare 
+c1 constant number:=25;
+begin 
+dbms_output.put_line(' declaration -constants ');
+end;
+
+ex: with out  any initial value
+declare 
+c1 constant number;
+begin 
+dbms_output.put_line(' declaration -constants ');
+end;
+ output:
+  exception
+
+ex: to dfine mulitiple Exception
+declare
+e1  Exception;
+e2   Exception;
+begin
+dbms_output.put_line('declaration - Exception');
+end;
+/
+
+ex: number of cursor define
+=====================
+declare 
+cursor  c1 is select *  from dept;
+cursor  c2 is select deptno,dname from dept where deptno=10;
+begin
+dbms_output.put_line('declaration - cursor');
+end;
+
+Declaration -Types
+===================
+Type t1 is  table  of  varchar2(100);
+Type t2 is  table  of  emp.ename%TYPE;
+Type t3 is  table  of  emp%ROWTYPE;
+Type t4 is  table  of  emp%ROWTYPE INDEX BY BINARY_INTEGER;
+Type t5 is  table  of  emp%ROWTYPE INDEX BY PLS_INTEGER;
+--
+TYPE t6  is RECORD(eno number,ename varchar(10),dno number,dname varchar(10));
+begin
+dbms_output.put_line(' declaration - Types');
+end;
+
+Declaration-- PRAGMAS
+===================
+PRAGMA AUTONOMOUS_TRANSACTION;
+--
+e1 Exception;
+PRAGMA Exception_INIT(e1,-20001);
+begin
+dbms_output.put_line('declration-Pragma');
+end;
+
+ex: Declaration Local Sub programs:
+=====================
+DECLARE
+v1 number;
+--
+function  f1 return number is 
+begin
+return 22;
+end;
+--
+procedure p1 is
+begin
+dbms_output.put_line('p1');
+end;
+begin
+dbms_output.put_line('declaration -Local SubPrograms');
+end;
+/
+ ex: after function,procedure we can't declara local vars expect PRAGAMA
+
+
+
+DECLARE
+v1 number;
+--
+function  f1 return number is 
+begin
+return 22;
+end;
+--
+procedure p1 is
+begin
+dbms_output.put_line('p1');
+end;
+--
+v2 DATE -- can not   be used  after local  subPrograms
+begin
+dbms_output.put_line('declaration -Local SubPrograms');
+end;
+/
+ex:
+var y number;
+begin
+:y:=45;
+end;
+/
+output:
+print y;
+
+note: we can print  two values  or n number values
+
+print x y
+x
+===
+5
+y
+===
+5
+
+ex:
+begin
+dbms_output.put+_line(' sum of  x and y :'||(:x+:y));
+end;
+/
+
+
+ex:
+declare
+v1 number:=25;
+begin
+dbms_output.put+_line(' sum of  v1 and y :'||(v1 + :y));
+end;
+/
+
+
+
+https://www.youtube.com/watch?v=AC7SL5tdS1M&list=PLd3UqWTnYXOnQ5a990TUv7FJVzB2M7h2O&index=133
+
+
+
+
+procedure language/sql
+
+
+technical  users:
+==============
+user
+DB
+
+ 
+stored procedures:
+==============
+programs or querys not saved in db
+
+A Named pl/sql Program is called procedure
+
+features:
+a)it's is  saved  in db  as precompiled object
+
+b)procedure execute explcitly
+
+c)procedures also  executed implicitly  using procedure calling statement
+
+d)procedure may or may not take  arguments
+
+e)by default procedure should not return any value
+
+types:
+======
+a)static :
+============not having arguments 
+
+b)Dynamic : procedure created with arguments 
+
+Sequence :
+=========
+a constant increment value  is  called Sequence
+Sequence is  use for  to generate  primekey values 
+irrespect of table to create  sequenece
+Sequence is an independent Object 
+
+create sequenece  svrao,
+create sequence studid
+start  with 1010
+increment By 10
+maxval  1999;
+
+
+pseudo columns :
+===========
+CURRVAL:it will access current value from sequence 
+NEXTVAL:it will access Next value
+
+select srno.NEXTVAL  from dual;
+select srno.CURRVAL from dual;
+
+
+https://www.youtube.com/watch?v=MVbNxAp6EBQ&list=PL6nhaOw5ARFMEzAMAwKSbdBTdwfKHg6q5&index=3
+
+
+
