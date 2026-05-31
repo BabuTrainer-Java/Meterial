@@ -1,0 +1,506 @@
+jdk 1.8 features:
+======================
+Lambda Expression
+Functional Interfaces
+Default methods  in interfaces
+static methods in interfaces
+predicate 
+function
+consumer
+methodReferenece &  constructor  refereneces
+by double colon(::) operator
+stream api    for collection
+date and time api
+(joda api)
+
+Functional Interface:(it  allows only one Abstract method)
+==============
+Runnable
+Callable
+Comparable
+Serializable
+RandomAccess
+Cloneable
+SingleThreadModel
+
+
+Lamda Expri
+=============
+public void  m1()
+{
+System.out.println("hello");
+}
+
+Convert into lambda
+() -> System.out.println("hello");
+ex2:
+public void add(int a,int b)
+{
+System.out.println(a+b);
+}
+(int a,int b) -> System.out.println(a+b);
+(a,b) -> System.out.println(a+b);
+
+ex:
+
+public int squre(int n)
+{
+return n*n;
+}
+(int n) ->{ return n*n;}
+(n) ->{ return n*n;};
+n ->{ return n*n;};
+n -> n*n;
+
+ex:
+public  void  m1(int a,int b)
+{
+ System.out.println(a+b);
+ System.out.println(a-b);
+ System.out.println(a*b);
+}
+(a,b)->{
+ System.out.println(a+b);
+ System.out.println(a-b);
+ System.out.println(a*b);
+}
+
+how  to invoke  /call  lamda expressions
+====================================
+functional interface:
+================
+Runnable ==>run();
+Callable ===>call();
+Comparable ===>compareTo();
+SAM ====>Single Abstract Method
+and  static methods default methods   and  Object class 
+
+
+prior jdk 1.8  only abstract methods
+java 1.8 version  onwards default  and static methods
+default  void m1()
+{
+}
+static void m1()
+{
+}
+----------------------
+@FunctionalInterface
+interface Interf
+{
+public abstract void m1();
+public abstract void m4();
+default void m2()
+{
+}
+static void m3()
+{
+}
+}
+
+================================
+interface  Interf
+{
+public void  m1();
+}
+class Test
+{
+public static void main(String args[])
+{
+Interf  i=()->System.out.println(" m1 lamada implementation");
+i.m1();
+i.m1();
+i.m1();
+i.m1();
+} 
+}
+====================
+interface  Interf
+{
+public int sqrt(int n);
+}
+class Test
+{
+public static void main(String args[])
+{
+Interf  i=n->{ return n*n;};
+s.o.p(" the squre of  40 is::"+i.sqrt(40));
+s.o.p(" the squre of  40 is::"+i.sqrt(50));
+} 
+}
+
+Interf i=n->n*n;  valid
+Interf i=(n)->n*n;  valid
+Interf i=n-> return n*n; // invalid b'z without  curly braces we can not take return 
+Interf i=n->{return n*n;};  //valid
+Interf i=n->{return n*n};  //invalid
+Interf i=n->{return n*n;}  //invalid
+Interf i=n->{n*n;}; //invalid b'z  within curly braces return 
+must be required
+
+
+MultiThreadding With Lamada:
+========================
+class MyRunnable implements Runnable
+{
+public void run()
+{
+for(int i=0;i<10;i++)
+{
+System.out.println(" child Thread :::"+i);
+}
+}
+}
+
+class ThreadDemo
+{
+public static void main(String args[])
+{
+MyRunnable r=new MyRunnable();
+Thread t=new Thread(r);
+t.start();
+for(int i=0;i<10;i++)
+{
+System.out.println("-mainThread:::---"+i);
+}
+}
+}
+class ThreadDemo
+{
+public static  void main(String args[])
+{
+Runnable r=()->{
+for(int i=0;i<10;i++)
+{
+System.out.println(" Child Thread With Lambdas"+i);
+}
+};
+Thread t=new Thread(r);
+t.start();
+for(int i=0;i<10;i++)
+{
+System.out.println("--Main Thread-"+i);
+}
+}
+}
+=============================
+methods streams and collections
+stream()
+filter()
+map()
+collect()
+count()
+sorted()
+sorted(Comparator)
+min(Comparator)
+max(Comparator)
+forEach()
+toArray()
+
+==============================
+to display even numbers
+List <Integer>l=new ArrayList();
+l.add(0);
+l.add(10);
+l.add(20);
+l.add(5);
+l.add(15);
+l.add(25);
+System.out.println("----"+l);
+List <integer>l1=l.stream().filiter(i->i*2).collect(Collectors.toList());
+S.o.p(l1);
+===================================
+to add 5 for each obj 
+List <Integer>l=new ArrayList();
+l.add(0);
+l.add(10);
+l.add(20);
+l.add(5);
+l.add(15);
+l.add(25);
+System.out.println("----"+l);
+List <integer>l1=l.stream().map(i->i+5).collect(Collectors.toList());
+S.o.p(l1);
+===================================================
+filter(predicate) 
+==============
+predicate should be return boolean
+it will chk diff condition
+filter based on the condition
+marks.stream().filter(m->m>=35)
+
+map(function)
+==========
+funtion it can perform some  business operations 
+
+suppose i have to give 5 grace marks   for  faield student
+
+failedstudents.stream().map(i->i+5)
+
+filter:
+=======
+input --->10 elements
+output--- >0 to 10 or <=10
+map:
+=======
+input:10 elements
+output:10
+
+
+how to count failed students in jdk 1.8
+======================================
+ArrayList<Integer> marks=new ArrayList<Integer>();
+marks.add(70);
+marks.add(45);
+marks.add(10);
+marks.add(65);
+marks.add(20);
+marks.add(25);
+S.o.p(marks);
+long noOfFailedStudents=marks.stream().filter(m->m<35).count();
+s.o.p(noOfFailedStudents);
+
+====================================
+======================================
+sort()
+--------
+ArrayList<Integer> marks=new ArrayList<Integer>();
+marks.add(70);
+marks.add(45);
+marks.add(10);
+marks.add(65);
+marks.add(20);
+marks.add(25);
+S.o.p(marks);
+List<Integer>sortedList=marks.stream().sorted().collect(Collectors.toList());
+s.o.p(sortedList);
+
+desc order:
+ArrayList<Integer> marks=new ArrayList<Integer>();
+marks.add(70);
+marks.add(45);
+marks.add(10);
+marks.add(65);
+marks.add(20);
+marks.add(25);
+S.o.p(marks);
+List<Integer>sortedList=marks.stream().sorted((i1,i2)->i2.compareTo(i2)).collect(Collectors.toList());
+s.o.p(sortedList);
+======================================================================
+ArrayList<String>l=new ArrayList<String>();
+l.add("A");
+l.add("AAAA");
+l.add("AA");
+l.add("AAAAA");
+l.add("xxx");
+l.add("AAA");
+S.o.p(l);
+Comparator<String>c=(s1,s2)->{
+int i1=s1.length();
+int i2=s2.length();
+if(l1<l2) return -1;
+else if(l1>l2) return +1;
+else return  s1.compareTo(s2);
+};
+List<String>sortedList=l.stream().sorted(c).collect(Collectors.toList());
+s.o.p(sortedList);
+====================================================
+min , max  
+
+ArrayList <Integer>l=new ArrayList<Integer>();
+l.add(10);
+l.add(0);
+l.add(15);
+l.add(5);
+l.add(20);
+System.out.println("----"+l);
+Integer min=l.stream().min((i1,i2)->-i1.compareTo(i2)).get();
+S.o.p(" min::::"+min);
+Integer max=l.stream().max((i1,i2)->-i1.compareTo(i2)).get();
+S.o.p(" max:::"+max);
+}
+}// 20,15,10,5,0
+===============================
+l====>10 elements
+for(Integer i1:l)
+{
+s.o.p(i1);
+}
+instead of using below code 
+l.stream().forEach(Function)
+l.stream().forEach(System.out::println)
+
+
+ArrayList <Integer>l=new ArrayList<Integer>();
+l.add(10);
+l.add(0);
+l.add(15);
+l.add(5);
+l.add(20);
+System.out.println("----"+l);
+l.stream().forEach(System.out::println);
+==============================================
+import java.util.stream.*;
+import java.util.function.*;
+ArrayList <Integer>l=new ArrayList<Integer>();
+l.add(10);
+l.add(0);
+l.add(15);
+l.add(5);
+l.add(20);
+System.out.println("----"+l);
+Consumer<Integer>c=i->{
+s.o.p(" the square of "+i+" is::"+(i*i));
+};
+l.stream().forEach(c);
+
+or
+
+ArrayList <Integer>l=new ArrayList<Integer>();
+l.add(10);
+l.add(0);
+l.add(15);
+l.add(5);
+l.add(20);
+System.out.println("----"+l);
+l.stream().forEach(i->{
+s.o.p(" the square of "+i+" is::"+(i*i));
+});
+}
+}
+===================================
+toArray()
+ArrayList <Integer>l=new ArrayList<Integer>();
+l.add(10);
+l.add(0);
+l.add(15);
+l.add(5);
+l.add(20);
+Integer []i=l.stream().toArray(Integer[]::new); 
+for(Integer i1:i)
+{
+s.o.p(i1);
+}
+}
+}
+--------------------------------------------------
+forEach method
+ArrayList <Integer>l=new ArrayList<Integer>();
+l.add(10);
+l.add(0);
+l.add(15);
+l.add(5);
+l.add(20);
+Integer []i=l.stream().toArray(Integer[]::new); 
+stream.of(i).forEach(System.out::println);
+=====================================
+Stream.of()
+
+p s v m(String args[])
+{
+Stream s=Stream.of(9,99,999,9999,99999);
+s.forEach(System.out::println);
+}
+
+p s v m(String args[])
+{
+Stream<Integer> s=Stream.of(9,99,999,9999,99999);
+s.forEach(System.out::println);
+}
+
+p s v m(String args[])
+{
+Stream<Integer> s=Stream.of(9,99,999,9999,99999);
+s.forEach(System.out::println);
+
+Integer []i={10,20,30,40,50};
+Stream.of(i).forEach(System.out::println);
+}
+=======================================
+AL <Integer> l=new AL<Integer>();
+l.add(0);l.add(10);l.add(20);
+l.add(5);l.add(15);l.add(25);
+s.o.p(0.10,20,5,15,25);
+with out streams(util jdk7)
+==========================
+List <Integer> l=new ArrayList<Integer>();
+for(Integer i1:l)
+{
+if(i1%2==0)
+{
+l.add(i1);
+}
+}
+s.o.p(l); // [0,10,20];
+with streams (from 1.8 onwords)
+===============================
+
+List<Integer>l1=l.stream().filter(i->i%2==0).collect(Collectors.toList());
+s.o.p(l1);[0,10,20]
+========================
+another example:
+List <integer>l1=new ArrayList<Integer>();
+for(Integer i1:l)
+{
+l1.add(i1*2);ig
+}
+s.o.p(l1);[0.20,40,10,30,50]
+with streams
+================
+List<Integer> l1=l.stream().map(i->i*2).collect(Collectors.toList());
+===================
+consumer<T>  : T  ment for input type parameter
+it won't return any type
+it can perform  some operations 
+to consume the items  
+it have a one method that is called
+void accept(T t);  
+
+
+import java.util.function.Consumer;
+
+p s v m(String args[])
+{
+Consumer<String> c=s->s.o.p(s);
+c.accept("hello");
+c.accept("Durgasoft");
+}
+
+supplier<R>:
+===========  R  ment  for  return type parameter
+to supply the value
+supplier <String>s=()->
+{
+String []s1={"sunny","bunny","chinny","pinny"};
+int x=(int)(Math.random()*3+1);
+return s1[x];
+};
+S.o.p(s.get());
+S.o.p(s.get());
+S.o.p(s.get());
+
+interface Predicate<T>
+{
+public boolean test(T t);
+}
+
+interface Function<T,R>
+{
+public R apply(T t);
+}
+interface  Consumer<T>
+{
+public void  accept(T t);
+}
+
+interface Supplier<T>
+{
+public T get();
+}
+
+
+
+
+
+
+
