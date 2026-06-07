@@ -1,0 +1,527 @@
+// ex  for  join 
+if  a  Thread wants  wait  until  completing 
+some other Thread  Then we should  go for
+join method
+t1 wants  wait  until  completing t2
+t1   as to  called
+t2.join()
+
+ex1:
+----------
+class MyThread extends Thread
+{
+public void  run()
+{
+for(int i=0;i<10;i++)
+{
+s.o.p("Child Thread");
+try{
+Thread.sleep(2000);
+}catch(InterruptedException e)
+{
+}
+}
+}
+}
+class ThreadJoinDemo
+{
+p s v m(String args[])throws InterruptedException
+{
+MyThread t=new MyThread();
+t.start();
+t.join();  //  t.join(10000);
+for(int i=0;i<10;i++)
+{
+s.o.p("main Thread");
+}
+}
+}
+
+note :  if  join(10000) main Thread  will give the 
+time   for Child  Thread  after  the time is  over
+Main Thread Can  containue
+
+
+
+
+class MyThread extends Thread
+{
+static Thread mt;
+public void  run()
+{
+try{
+mt.join();
+}catch(Exception e){}
+for(int i=0;i<10;i++)
+{
+s.o.p("Child Thread");
+}
+}
+}
+class ThreadJoinDemo
+{
+p s v m(String args[])throws  IntteruptedException
+{
+MyThread .mt=Thread.currentThread();
+MyThread t=new MyThread();
+t.start();
+// t.join();  //  here  both are waiting forever
+//  just like  one type  deadlock State
+for(int i=0;i<10;i++)
+{
+s.o.p("main Thread");
+Thread.sleep(2000);
+}
+}
+}
+
+--------------------------
+ex for stop()
+class MyThread extends Thread
+{
+public void  run()
+{
+for(int i=0;i<10;i++)
+{
+s.o.p("Child Thread");
+try{
+Thread.sleep(2000);
+}catch(InterruptedException e){}
+}
+}
+}
+class Test
+{
+p s v m(String args[])
+{
+MyThread t=new MyThread();
+t.start();
+s.o.p("End of  Main Thread");
+t.stop();
+}
+}
+note :  main Thread it will  killed Child Thread
+
+
+----------------------------
+// ex for  Interrupt()
+class MyThread extends Thread
+{
+static Thread mt;
+public void  run()
+{
+try{
+for(int i=0;i<10;i++)
+{
+s.o.p("Child Thread");
+Thread.sleep(2000);
+}
+}catch(Exception e)
+{
+System.out.println(" i got interrupted");
+}
+}
+}
+class ThreadInterrptedDemo
+{
+p s v  m(String args[])
+{
+MyThread t=new MyThread();
+t.start();
+// t.interrupt();  if we remove  the comment   child 
+//execute  onece immediately  got interrupted    
+s.o.p("End  of main");
+}
+}
+
+----------------------------------------------
+// ex for  synchronized
+
+class Display
+{
+public  void wish(String name) //  if take synchronized  it can access at one b one
+{
+for(int i=0;i<10;i++)
+{
+s.o.p("Good morning");
+try{
+Thread.sleep(2000);
+}catch(Exception e)
+{
+}
+S.o.p(name);
+}
+}
+class MyThread extends Thread
+{
+Display d;
+String name;
+MyThread(Display d,String name)
+{
+this.d=d;
+this.name=name;
+}
+public void run()
+{
+d.wish(name);
+}
+}
+class SynDemo
+{
+p s v m(String args[])
+{
+Display d=new Display();
+MyThread t1=new MyThread(d,"Dhoni");
+MyThread t2=new MyThread(d,"YuvRaj");
+t1.start();
+t2.start();
+}
+}
+note  :
+ in the span  of time  executed two Threads
+
+ex2:
+class Display
+{
+public void  displayn()
+{
+for(int i=0;i<10;i++)
+{
+s.o.p(i);
+try{
+Thread.sleep(2000);
+}catch(Exception e)
+{
+}
+}
+}
+public void  displayc()
+{
+for(int i=65;i<=75;i++)
+{
+s.o.p((char)i);
+try{
+Thread.sleep(2000);
+}catch(Exception e)
+{
+}
+}
+}
+}
+class MyThread1 extends Thread
+{
+Display d;
+MyThread1(Display d)
+{
+this.d=d;
+}
+public void  run()
+{
+d.displayn();
+}
+}
+class MyThread2 extends Thread
+{
+Display d;
+MyThread2(Display d)
+{
+this.d=d;
+}
+public void  run()
+{
+d.displayc();
+}
+}
+class Syn{
+p s v m(String args[])
+{
+Display d=new Display();
+MyThread1  t1=new MyThread1(d);
+MyThread2  t2=new MyThread2(d);
+t1.start();
+t2.start();
+}
+}
+note : if  i take syn chronized methods 
+it can access at one by one
+otherwies we will get non-Regular output
+----------------------------------------
+yeild()  Causes:
+=============
+to  pause current executing Thread
+to  give the chance for  waiting Threads of
+same prority if  there is no waiting Thread
+all  waiting  Thread have  low  prority  then same
+Thread can  continue it's  execution
+
+if  mutiple  Thrreads  are  waiting with same 
+prority  Then  Which  waiting Thread will get 
+the Chance we can exepect  it's  depneds 
+on ThreadShedular
+
+The  Thread  which is yeild  when it will get 
+chance once again it depends on ThreadShedular
+ and  we can't except exately
+
+
+class MyThread extends  Thread
+{
+public void  run()
+{
+for(int i=0;i<10;i++)
+{
+s.o.p("Child Thread");
+Thread.yield();
+}
+}
+}
+class ThreadYieldDemo
+{
+p s v m (String args[])
+{
+MyThread t=new MyThread();
+t.start();
+for(int i=0;i<10;i++)
+{
+s.o.p(" main Thread");
+}
+}
+}
+	
+note : here Child will  give  chance to  Main Thead
+which Thread required more executions 
+
+-------------------------------
+
+Inter Thread Comminucations:
+
+class ThreadA
+{
+p s v m()
+{
+ThreadB b=new ThreadB();
+b.start();
+synchronized(b)
+{
+s.o.p(" Main Thread is waiting ");
+b.wait();
+s.o.p(" Main Thread is waiting for notifiction");
+  s.o.p(b.total);
+}
+}
+}
+class ThreadB extends Thread
+{
+int total=0;
+public void  run()
+{
+synchronized(this)
+{
+s.o.p("Child Thread starts calculation");
+for(int i=1;i<100; i++)
+{
+total=total+i;
+}
+s.o.p("Child Thread Trying to give notification");
+this.notify();
+}
+}
+}
+============================
+class A{
+public synchronized  void  d1(B b)
+{
+s.o.p("Thread1 starts execution of d1 method");
+try{
+Thread.sleep(2000);
+}catch(InterruptedException e){}
+s.o.p("Thread1  trying to class B's last () method");
+b.last();
+}
+public synchronized void last()
+{
+s.o.p("inside A Last method");
+}
+}
+
+class B{
+public synchronized  void  d2(A a)
+{
+s.o.p("Thread2 starts execution of d2 method");
+try{
+Thread.sleep(2000);
+}catch(InterruptedException e){}
+s.o.p("Thread2  trying to class A's last () method");
+a.last();
+}
+public synchronized void last()
+{
+s.o.p("inside B Last method");
+}
+}
+
+class MyThread extends Thread
+{
+A a =new A();
+B b=new B();
+public void  m1()
+{
+this.start();       //  main Thread 
+a.d1(b);
+}
+public void  run()
+{
+b.d2(a);// Child Thread
+}
+p s v m(String  args[])
+{
+MyThread t=new MyThread();
+t.m1();
+}
+}
+
+MulTiThreading Enhancement :
+===================
+
+Thread pool FrameWork also know as executerFrameWork 
+import java.util.concurrent.*;
+ExecutorService service=Executors.newFixedThreadPool(3);
+service.submit(job);
+
+service.shutdown();
+
+import  java.util.*;
+class PrintJob implements Runnable
+{
+String name;
+PrintJob(String name)
+{
+this.name=name;
+}
+public void run()
+{
+s.o.p(name+"job started  by Threads::"+Thread.currentThread().getName());
+try{
+Thread.sleep(5000);
+}catch(InterruptedException e)
+{
+}
+s.o.p(name+"job Completed  by Threads::"+Thread.currentThread().getName());
+}
+
+class ExecutorDemo
+{
+p s v m(String args[])
+{
+PrintJob[] jobs={new PrintJob("rao"),
+                            new PrintJob("suma"),
+                            new PrintJob("kavitha"),
+new PrintJob("kamal"),
+new PrintJob("srinu"),
+new PrintJob("babu")};
+
+ExecutorService service=Executors.newFixedThreadPool(3);
+for(PrintJob job:jobs)
+{
+service.submit(job);
+}
+service.shutdown();
+}
+}
+
+
+
+in the case of runnable  job thread won't  return any thing after
+completeing the  job  if thread  is req  rerturn sum result 
+then  we should go for  Callable  
+Callable interface contains  only  one method 
+
+public  Object call() throws Exception 
+
+if you  submit call Object to executer then after  completeing the 
+job thread return an Object type  future   that is  
+Future Object can used  to retrive  the result  from  Callable job
+
+
+import  java.util.concurrent.*;
+class MyCallable implements Callable
+{
+int num;
+MyCallable(int num)
+{
+this.num=num;
+}
+public Object call()throw Exception
+{
+s.o.p(Thread.currentThread().getName()+"sum of numbers::"+num+"numbers::"+);
+int sum=0;
+for(int i=1;i<=num;i++)
+{
+sum=sum+i;
+}
+return  sum;
+}
+}
+	
+class CallableFuturDemo
+{
+p s v m (String[] args)throws Exception
+{
+MyCallable[] jobs={new MyCallable(10),
+new MyCallable(20),
+new MyCallable(30),
+new MyCallable(40),
+new MyCallable(50),
+new MyCallable(60)};
+ExecutorService service=Executors.newFixedThreadPool(3);
+for(MyCallable job:jobs)
+{
+Future f=service.submit(job);
+S.o.p(f.get());
+}
+service.shutdown();
+}
+}
+
+
+ThreadLoacl t1=new ThreadLocal();
+ThreadLocal:
+===========
+to carry the  data from  one  Thread to another Thread  we should  go
+ThreadLocal 
+https://www.youtube.com/watch?v=4ZLkbWWpkyk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
