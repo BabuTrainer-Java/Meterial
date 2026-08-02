@@ -1,0 +1,419 @@
+What is Flask?
+
+Flask is a micro web framework written in Python.
+
+Features:
+
+Lightweight
+Fast
+Easy to learn
+Jinja2 Template Engine
+Built-in Development Server
+URL Routing
+REST API Development
+Database Support
+Session Management
+File Upload
+Authentication
+
+
+python --version
+
+FlaskProject/
+
+Create Virtual Environment:
+
+python -m venv venv
+
+Activate Environment:
+
+venv\Scripts\activate
+
+
+pip install flask
+
+
+
+Project Structure
+FlaskProject/
+
+│
+├── app.py
+├── templates/
+│      home.html
+│      about.html
+│
+├── static/
+│      style.css
+│
+└── venv/
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Home Page"
+
+@app.route("/about")
+def about():
+    return "About Page"
+
+@app.route("/contact")
+def contact():
+    return "Contact Page"
+
+if __name__=="__main__":
+    app.run(debug=True)
+
+
+============================
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return """
+    <h1>Welcome</h1>
+    <h2>Python Flask</h2>
+    """
+
+app.run(debug=True)
+==========================
+from flask import Flask
+
+app=Flask(__name__)
+
+@app.route("/student/<name>")
+def student(name):
+    return "Student Name : "+name
+
+app.run(debug=True)
+
+http://127.0.0.1:5000/student/Babu
+=======================================
+
+from flask import Flask
+
+app=Flask(__name__)
+
+@app.route("/square/<int:number>")
+def square(number):
+    return str(number*number)
+
+app.run(debug=True)
+
+/square/10
+
+=======================
+from flask import Flask
+
+app=Flask(__name__)
+
+@app.route("/employee/<name>/<int:id>")
+def employee(name,id):
+    return f"Employee Name={name} Employee Id={id}"
+
+app.run(debug=True)
+
+Employee Name=Babu Employee Id=101
+====================================
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+
+<h1>Welcome to Flask</h1>
+
+</body>
+
+</html>
+
+from flask import Flask,render_template
+
+app=Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+app.run(debug=True)
+=======================================
+<!DOCTYPE html>
+
+<html>
+
+<body>
+
+<h1>{{name}}</h1>
+
+</body>
+
+</html>
+
+
+from flask import Flask,render_template
+
+app=Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("home.html",
+                           name="Babu")
+
+app.run(debug=True)
+
+
+
+======================
+static
+
+style.css
+
+body{
+
+background:lightblue;
+
+}
+
+h1{
+
+color:red;
+
+}
+
+home.html
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<link rel="stylesheet"
+href="{{url_for('static',
+filename='style.css')}}">
+
+</head>
+
+<body>
+
+<h1>Flask CSS Example</h1>
+
+</body>
+
+</html>
+
+================================
+home.html
+<form action="/login" method="POST">
+
+Name
+
+<input type="text" name="name">
+
+<input type="submit">
+
+</form>
+
+
+from flask import Flask,request
+
+app=Flask(__name__)
+
+@app.route("/")
+def home():
+    return '''
+    <form action="/login" method="POST">
+
+    Name
+
+    <input type="text" name="name">
+
+    <input type="submit">
+
+    </form>
+    '''
+
+@app.route("/login",methods=["POST"])
+def login():
+
+    name=request.form["name"]
+
+    return "Welcome "+name
+
+app.run(debug=True)
+==========================
+
+
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Welcome to Flask"
+@app.route("/about")
+def about():
+    return "about page"
+@app.route("/contact")
+def contact():
+    return "contact page"
+@app.route("/add/<int:x>/<int:y>")
+def add(x, y):
+    return x + y
+@app.route("/ascii/<int:code>")
+def asciichar(code):
+    return chr(code)
+@app.route("/reverse/<string:s>")
+def reverse_string(s):
+    return s[::-1]    
+@app.route("/print1_to_10")
+def print1_to_10():
+    result = ""
+    for i in range(1, 11):
+        result += str(i) + "\n"
+    return result
+@app.route("/print_even_numbers")   
+def print_even_numbers():
+    result = ""
+    for i in range(2, 21, 2):
+        result += str(i) + "\n"
+    return result
+@app.route("/print_odd_numbers")
+def print_odd_numbers():
+    result = ""
+    for i in range(1, 21, 2):
+        result += str(i) + "\n"
+    return result
+===========================
+from flask import Flask,render_template
+
+
+app = Flask(__name__)
+
+@app.route("/login")
+def Login():
+    return render_template("login.html",username="admin", password="admin123")
+@app.route("/sus_login/<string:username>/<string:password>")
+def sus_login(username, password):
+    if username == "admin" and password == "admin123":
+
+        return render_template("sus.html")
+    else:
+        return render_template("fail.html")
+
+
+@app.route("/list_display/list")
+def list_display():
+    l = [1, 2, 3, 4, 5]
+    result = ""
+    for item in l:
+        result += str(item) + "\n"
+    return result
+
+
+@app.route("/check_even_odd/<int:num>")
+def check_even_odd(num):
+    if num % 2 == 0:
+        return f"{num} is even"
+    else:
+        return f"{num} is odd"
+
+=============================
+Project Structure
+FlaskFormExample/
+
+│
+├── app.py
+└── templates/
+      index.html
+Step 1: Create HTML Form
+
+templates/index.html
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Form</title>
+</head>
+
+<body>
+
+<h2>Student Registration</h2>
+
+<form action="/save" method="POST">
+
+    Name :
+    <input type="text" name="name"><br><br>
+
+    Age :
+    <input type="number" name="age"><br><br>
+
+    Course :
+    <input type="text" name="course"><br><br>
+
+    <input type="submit" value="Submit">
+
+</form>
+
+</body>
+
+</html>
+Step 2: Flask Program
+
+app.py
+
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/save", methods=["POST"])
+def save():
+
+    # Fetch form data
+    name = request.form["name"]
+    age = request.form["age"]
+    course = request.form["course"]
+
+    # Print in terminal
+    print("Name :", name)
+    print("Age :", age)
+    print("Course :", course)
+
+    # Print in browser
+    return f"""
+    <h2>Student Details</h2>
+
+    Name : {name}<br>
+    Age : {age}<br>
+    Course : {course}
+    """
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+Run the Application
+python app.py
+
+Output:
+
+* Running on http://127.0.0.1:5000
+
+Open:
+
+http://127.0.0.1:5000

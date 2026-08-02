@@ -1,0 +1,341 @@
+pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>JerseyFormExample</artifactId>
+    <version>1.0</version>
+
+    <dependencies>
+
+        <!-- Jersey Server -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>2.39</version>
+        </dependency>
+
+        <!-- Servlet -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.39</version>
+        </dependency>
+
+        <!-- JSON -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.39</version>
+        </dependency>
+
+        <!-- Needed for @FormParam -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.39</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
+
+Step 2: Configure Jersey
+MyApplication.java
+package com.example;
+
+import org.glassfish.jersey.server.ResourceConfig;
+
+public class MyApplication extends ResourceConfig {
+
+    public MyApplication() {
+
+        packages("com.example");
+
+    }
+
+}
+Step 3: Resource Class
+package com.example;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+@Path("/product")
+public class ProductService {
+
+    @POST
+    @Path("/add")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response addProduct(
+
+            @FormParam("id") int id,
+            @FormParam("name") String name,
+            @FormParam("price") double price
+
+    ) {
+
+        String msg =
+                "Product Added Successfully\n\n" +
+                "Id : " + id +
+                "\nName : " + name +
+                "\nPrice : " + price;
+
+        return Response
+                .status(200)
+                .entity(msg)
+                .build();
+    }
+
+}
+How @FormParam Works
+
+Suppose client sends:
+
+id=101
+name=Laptop
+price=65000
+
+Jersey automatically maps:
+
+@FormParam("id") int id
+
+↓
+
+id = 101
+Postman Request
+URL
+POST
+
+http://localhost:8080/JerseyFormExample/webapi/product/add
+
+Headers
+
+Content-Type:
+application/x-www-form-urlencoded
+
+Body
+
+Select
+
+x-www-form-urlencoded
+
+Add
+
+KEY	VALUE
+id	101
+name	Laptop
+
+
+The best way to give different permissions to users such as Admin, Manager, Clerk, and Customer is by using Roles in Spring Security.
+
+A real-world example is an Employee Management System.
+
+                    Login
+                      |
+      --------------------------------
+      |              |              |
+    Admin         Manager         Clerk
+      |              |              |
+      |              |              |
+ Can do all     Manage employees   View employees
+Step 1: Project Structure
+SpringSecurityRoleDemo
+
+src/main/java
+    |
+    +-- controller
+    |      EmployeeController.java
+    |
+    +-- config
+    |      SecurityConfig.java
+    |
+    +-- SpringSecurityApplication.java
+Step 2: Maven Dependency
+<dependencies>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+</dependencies>
+Step 3: Create Controller
+package com.example.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class EmployeeController {
+
+    @GetMapping("/")
+    public String home() {
+        return "Welcome Everyone";
+    }
+
+    @GetMapping("/employees")
+    public String employees() {
+        return "Employee List";
+    }
+
+    @PostMapping("/employees")
+    public String addEmployee() {
+        return "Employee Added";
+    }
+
+    @PutMapping("/employees")
+    public String updateEmployee() {
+        return "Employee Updated";
+    }
+
+    @DeleteMapping("/employees")
+    public String deleteEmployee() {
+        return "Employee Deleted";
+    }
+
+    @GetMapping("/salary")
+    public String salary() {
+        return "Salary Details";
+    }
+
+}
+Step 4: Security Configuration
+package com.example.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    UserDetailsService users() {
+
+        UserDetails admin =
+                User.builder()
+                        .username("admin")
+                        .password(passwordEncoder().encode("admin123"))
+                        .roles("ADMIN")
+                        .build();
+
+        UserDetails manager =
+                User.builder()
+                        .username("manager")
+                        .password(passwordEncoder().encode("manager123"))
+                        .roles("MANAGER")
+                        .build();
+
+        UserDetails clerk =
+                User.builder()
+                        .username("clerk")
+                        .password(passwordEncoder().encode("clerk123"))
+                        .roles("CLERK")
+                        .build();
+
+        return new InMemoryUserDetailsManager(admin, manager, clerk);
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
+        http
+                .csrf(csrf -> csrf.disable())
+
+                .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers("/")
+                        .permitAll()
+
+                        // Everyone after login
+                        .requestMatchers(HttpMethod.GET, "/employees")
+                        .hasAnyRole("ADMIN", "MANAGER", "CLERK")
+
+                        // Manager and Admin
+                        .requestMatchers(HttpMethod.POST, "/employees")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        // Manager and Admin
+                        .requestMatchers(HttpMethod.PUT, "/employees")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        // Admin only
+                        .requestMatchers(HttpMethod.DELETE, "/employees")
+                        .hasRole("ADMIN")
+
+                        // Salary
+                        .requestMatchers("/salary")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        .anyRequest()
+                        .authenticated())
+
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
+    }
+
+}
+User Roles
+Username	Password	Role
+admin	admin123	ADMIN
+manager	manager123	MANAGER
+clerk	clerk123	CLERK
+Permission Matrix
+API	Admin	Manager	Clerk
+GET /employees	✅	✅	✅
+POST /employees	✅	✅	❌
+PUT /employees	✅	✅	❌
+DELETE /employees	✅	❌	❌
+GET /salary	✅	✅	❌
+Testing
+Login as Clerk
+Username : clerk
+
+Password : clerk123
+GET
+GET
+
+http://localhost:8080/employees
+
+Output
+
+Employee List
+POST
+POST
+
+http://localhost:8080/employees
+
+Output
+
+403 Forbidden
+Login as Manager
+Username
+
+manager
+
+Password
+
+manager123
