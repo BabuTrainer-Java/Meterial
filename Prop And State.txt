@@ -1,0 +1,366 @@
+import React from "react";
+function Employee(props) {
+    return (
+        <div>
+            <h1>Employee Details</h1>
+            <p>Name: {props.name}</p>
+            <p>Age: {props.age}</p>
+            <p>Department: {props.department}</p>
+        </div>
+    );
+
+}
+export default Employee;
+
+
+import logo from './logo.svg';
+import './App.css';
+import React from 'react';
+import Employee from './Employee';
+function App() {
+  return (
+    <div className="App">
+    <Employee name="John Doe" 
+    age="30" department="Engineering" />
+<hr></hr>
+    <Employee name="John Doe" 
+    age="29" department="Engineering" />
+
+
+
+    </div>
+  );
+}
+
+export default App;
+
+
+==========================
+
+import React from "react";
+function Employee( {name, age, department } ) {
+    return (
+        <div>
+            <p>Name: {name}</p>
+            <p>Age: {age}</p>
+            <p>Department: {department}</p>
+        </div>
+    );
+}   
+export default Employee;
+
+
+
+above  App.js
+
+
+=======================
+import React from "react";
+function Employee({employee}) {
+    return (
+        <div>
+            <p>Name: {employee.name}</p>
+            <p>Age: {employee.age}</p>
+            <p>Department: {employee.department}</p>
+        </div>
+    );
+}   
+export default Employee;
+
+
+
+
+function App() {
+
+const employee1 = {
+  name: "John Doe",
+  age: 30,
+  department: "Engineering"
+};
+const employee2 = {
+  name: "Jane Smith",
+  age: 29,
+  department: "Marketing"
+};
+  return (
+    <div className="App">
+     <Employee employee={employee1} />
+     <Employee employee={employee2} ></Employee>
+    </div>
+  );
+}
+
+export default App;
+=======================================
+
+State 
+
+Counter Application
+
+import { useState } from "react";
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    return (
+
+        <div>
+
+            <h1>Counter Application</h1>
+
+            <h2>{count}</h2>
+
+            <button
+                onClick={() => setCount(count + 1)}>
+                Increment
+            </button>
+
+            <button
+                onClick={() => setCount(count - 1)}>
+                Decrement
+            </button>
+
+            <button
+                onClick={() => setCount(0)}>
+                Reset
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Counter;
+
+
+App.js
+
+import Counter from "./Counter";
+
+function App() {
+
+    return <Counter />;
+
+}
+
+export default App;
+
+
+
+
+
+Student Result:
+
+
+import { useState } from "react";
+
+function Student() {
+
+    const [result, setResult] = useState("Fail");
+
+    return (
+
+        <div>
+
+            <h2>Student Result</h2>
+
+            <h3>{result}</h3>
+
+            <button
+                onClick={() => setResult("Pass")}>
+                Pass
+            </button>
+
+            <button
+                onClick={() => setResult("Fail")}>
+                Fail
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Student;
+
+
+
+
+ex:
+Employee Object State
+
+import { useState } from "react";
+
+function Employee() {
+
+    const [emp, setEmp] = useState({
+
+        id:101,
+        name:"Rahul",
+        salary:50000
+
+    });
+
+    function updateSalary() {
+
+        setEmp({
+
+            ...emp,
+
+            salary:70000
+
+        });
+
+    }
+
+    return (
+
+        <div>
+
+            <h2>Employee Details</h2>
+
+            <p>ID : {emp.id}</p>
+
+            <p>Name : {emp.name}</p>
+
+            <p>Salary : {emp.salary}</p>
+
+            <button
+
+                onClick={updateSalary}
+
+            >
+
+                Update Salary
+
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Employee;
+
+
+Ex:
+ArrayState
+
+import { useState } from "react";
+
+function Fruits() {
+
+    const [fruits, setFruits] = useState([
+
+        "Apple",
+        "Mango"
+
+    ]);
+
+    function addFruit() {
+
+        setFruits([
+
+            ...fruits,
+
+            "Orange"
+
+        ]);
+
+    }
+
+    return (
+
+        <div>
+
+            <h2>Fruit List</h2>
+
+            <ul>
+
+                {
+
+                    fruits.map((item,index)=>
+
+                        <li key={index}>
+
+                            {item}
+
+                        </li>
+
+                    )
+
+                }
+
+            </ul>
+
+            <button
+
+                onClick={addFruit}
+
+            >
+
+                Add Fruit
+
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Fruits;
+
+
+
+Multiple State Variables
+
+import { useState } from "react";
+
+function Student() {
+
+    const [name, setName] = useState("Rahul");
+
+    const [age, setAge] = useState(22);
+
+    const [city, setCity] = useState("Hyderabad");
+
+    return (
+
+        <div>
+
+            <h2>{name}</h2>
+
+            <h2>{age}</h2>
+
+            <h2>{city}</h2>
+
+            <button
+
+                onClick={() => {
+
+                    setName("Kiran");
+
+                    setAge(25);
+
+                    setCity("Chennai");
+
+                }}
+
+            >
+
+                Update
+
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Student;

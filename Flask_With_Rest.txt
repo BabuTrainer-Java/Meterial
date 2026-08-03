@@ -1,0 +1,94 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+employees = [
+    {
+        "id":101,
+        "name":"Scott",
+        "salary":50000
+    },
+    {
+        "id":102,
+        "name":"John",
+        "salary":60000
+    }
+]
+
+# Home
+@app.route("/")
+def home():
+    return "Flask REST API Example"
+
+# GET All Employees
+@app.route("/employees", methods=["GET"])
+def getEmployees():
+    return jsonify(employees)
+
+# GET Employee By Id
+@app.route("/employees/<int:id>", methods=["GET"])
+def getEmployee(id):
+
+    for emp in employees:
+        if emp["id"] == id:
+            return jsonify(emp)
+
+    return jsonify({"message":"Employee Not Found"}),404
+
+# POST Employee
+@app.route("/employees", methods=["POST"])
+def saveEmployee():
+
+    data = request.get_json()
+
+    employee = {
+        "id":data["id"],
+        "name":data["name"],
+        "salary":data["salary"]
+    }
+
+    employees.append(employee)
+
+    return jsonify({
+        "message":"Employee Added Successfully",
+        "employee":employee
+    }),201
+
+# UPDATE Employee
+@app.route("/employees/<int:id>", methods=["PUT"])
+def updateEmployee(id):
+
+    data = request.get_json()
+
+    for emp in employees:
+
+        if emp["id"] == id:
+
+            emp["name"]=data["name"]
+            emp["salary"]=data["salary"]
+
+            return jsonify({
+                "message":"Updated Successfully",
+                "employee":emp
+            })
+
+    return jsonify({"message":"Employee Not Found"}),404
+
+# DELETE Employee
+@app.route("/employees/<int:id>", methods=["DELETE"])
+def deleteEmployee(id):
+
+    for emp in employees:
+
+        if emp["id"]==id:
+
+            employees.remove(emp)
+
+            return jsonify({
+                "message":"Deleted Successfully"
+            })
+
+    return jsonify({"message":"Employee Not Found"}),404
+
+if __name__=="__main__":
+    app.run(debug=True)
