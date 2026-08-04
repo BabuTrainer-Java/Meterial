@@ -1,0 +1,540 @@
+Formik is a popular React library used to build, manage, and validate forms. It handles:
+
+Form state (values)
+Input changes
+Form submission
+Validation
+Error messages
+Touched fields
+Resetting forms
+
+Without Formik, you need to write a lot of code using useState. Formik reduces that code significantly.
+
+1. Why Formik?
+Without Formik
+const [name, setName] = useState("");
+const [email, setEmail] =useState("");
+
+<input
+   value={name}
+   onChange={(e)=>setName(e.target.value)}
+/>
+
+<input
+   value={email}
+   onChange={(e)=>setEmail(e.target.value)}
+/>
+
+For 20 fields, you'll need 20 state variables.
+
+With Formik
+const formik = useFormik({
+    initialValues:{
+        name:"",
+        email:""
+    }
+});
+
+Formik stores everything in one object.
+
+2. Project Structure
+formik-demo
+│
+├── src
+│     │
+│     ├── App.js
+│     ├── StudentForm.js
+│     ├── index.js
+│
+├── package.json
+3. Install
+npx create-react-app formik-demo
+
+cd formik-demo
+
+Install Formik
+
+npm install formik
+
+Install Yup (Validation)
+
+npm install yup
+4. Basic Flow
+User Types
+
+      ↓
+
+Formik Stores Data
+
+      ↓
+
+Validation
+
+      ↓
+
+Submit
+
+      ↓
+
+Server/API
+5. Simple Example
+StudentForm.js
+import React from "react";
+import { useFormik } from "formik";
+
+function StudentForm() {
+
+const formik = useFormik({
+
+initialValues:{
+    name:"",
+    email:""
+},
+
+onSubmit:(values)=>{
+    console.log(values);
+}
+
+});
+
+return(
+
+<div>
+
+<form onSubmit={formik.handleSubmit}>
+
+Name
+
+<input
+type="text"
+name="name"
+value={formik.values.name}
+onChange={formik.handleChange}
+/>
+
+<br/><br/>
+
+Email
+
+<input
+type="email"
+name="email"
+value={formik.values.email}
+onChange={formik.handleChange}
+/>
+
+<br/><br/>
+
+<button type="submit">
+Submit
+</button>
+
+</form>
+
+</div>
+
+);
+
+}
+
+export default StudentForm;
+App.js
+import StudentForm from "./StudentForm";
+
+function App(){
+
+return(
+
+<div>
+
+<h2>Formik Example</h2>
+
+<StudentForm/>
+
+</div>
+
+);
+
+}
+
+export default App;
+Output
+Name : John
+
+Email : john@gmail.com
+
+Submit
+
+Console
+
+{
+ name:"John",
+ email:"john@gmail.com"
+}
+6. Understanding useFormik()
+const formik = useFormik({
+
+initialValues:{
+name:"",
+email:""
+},
+
+onSubmit:(values)=>{
+
+console.log(values);
+
+}
+
+});
+Formik Object
+formik
+
+│
+
+├── values
+
+├── errors
+
+├── touched
+
+├── handleChange()
+
+├── handleBlur()
+
+├── handleSubmit()
+
+├── resetForm()
+
+├── setFieldValue()
+
+├── setErrors()
+7. Validation
+validate:(values)=>{
+
+const errors={};
+
+if(!values.name){
+
+errors.name="Required";
+
+}
+
+if(!values.email){
+
+errors.email="Required";
+
+}
+
+return errors;
+
+}
+
+Complete Example
+
+import React from "react";
+import { useFormik } from "formik";
+
+function StudentForm(){
+
+const formik=useFormik({
+
+initialValues:{
+name:"",
+email:""
+},
+
+validate:(values)=>{
+
+const errors={};
+
+if(values.name===""){
+
+errors.name="Enter Name";
+
+}
+
+if(values.email===""){
+
+errors.email="Enter Email";
+
+}
+
+return errors;
+
+},
+
+onSubmit:(values)=>{
+
+console.log(values);
+
+}
+
+});
+
+return(
+
+<form onSubmit={formik.handleSubmit}>
+
+<input
+name="name"
+value={formik.values.name}
+onChange={formik.handleChange}
+/>
+
+<p>{formik.errors.name}</p>
+
+<input
+name="email"
+value={formik.values.email}
+onChange={formik.handleChange}
+/>
+
+<p>{formik.errors.email}</p>
+
+<button type="submit">
+Submit
+</button>
+
+</form>
+
+);
+
+}
+
+export default StudentForm;
+8. handleBlur()
+<input
+
+name="name"
+
+onBlur={formik.handleBlur}
+
+onChange={formik.handleChange}
+
+/>
+
+Touched
+
+formik.touched.name
+
+Display error only after user leaves the field:
+
+{formik.touched.name && formik.errors.name &&
+<p>{formik.errors.name}</p>
+}
+9. Using Yup Validation
+import * as Yup from "yup";
+
+Schema
+
+const validationSchema=Yup.object({
+
+name:Yup.string()
+.required("Name Required"),
+
+email:Yup.string()
+.email("Invalid Email")
+.required("Email Required"),
+
+age:Yup.number()
+.required("Age Required")
+
+});
+
+Formik
+
+const formik=useFormik({
+
+initialValues:{
+
+name:"",
+email:"",
+age:""
+
+},
+
+validationSchema,
+
+onSubmit:(values)=>{
+
+console.log(values);
+
+}
+
+});
+10. Complete Registration Form Example
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+function Register(){
+
+const formik=useFormik({
+
+initialValues:{
+
+name:"",
+email:"",
+password:"",
+age:"",
+gender:""
+
+},
+
+validationSchema:Yup.object({
+
+name:Yup.string()
+.required("Name Required"),
+
+email:Yup.string()
+.email("Invalid Email")
+.required("Email Required"),
+
+password:Yup.string()
+.min(6)
+.required(),
+
+age:Yup.number()
+.required(),
+
+gender:Yup.string()
+.required()
+
+}),
+
+onSubmit:(values)=>{
+
+console.log(values);
+
+}
+
+});
+
+return(
+
+<form onSubmit={formik.handleSubmit}>
+
+<input
+name="name"
+placeholder="Name"
+value={formik.values.name}
+onChange={formik.handleChange}
+onBlur={formik.handleBlur}
+/>
+
+{formik.touched.name && formik.errors.name}
+
+<br/><br/>
+
+<input
+name="email"
+placeholder="Email"
+value={formik.values.email}
+onChange={formik.handleChange}
+onBlur={formik.handleBlur}
+/>
+
+{formik.touched.email && formik.errors.email}
+
+<br/><br/>
+
+<input
+type="password"
+name="password"
+placeholder="Password"
+value={formik.values.password}
+onChange={formik.handleChange}
+onBlur={formik.handleBlur}
+/>
+
+{formik.touched.password && formik.errors.password}
+
+<br/><br/>
+
+<input
+name="age"
+placeholder="Age"
+value={formik.values.age}
+onChange={formik.handleChange}
+/>
+
+<br/><br/>
+
+<select
+name="gender"
+value={formik.values.gender}
+onChange={formik.handleChange}
+>
+<option value="">Select</option>
+<option>Male</option>
+<option>Female</option>
+</select>
+
+<br/><br/>
+
+<button type="submit">
+
+Register
+
+</button>
+
+</form>
+
+);
+
+}
+
+export default Register;
+11. Formik with REST API (Axios)
+import axios from "axios";
+
+const formik = useFormik({
+  initialValues: {
+    name: "",
+    email: ""
+  },
+  onSubmit: async (values) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/students",
+        values
+      );
+
+      console.log(response.data);
+      alert("Student Saved Successfully");
+    } catch (error) {
+      console.error(error);
+      alert("Error saving student");
+    }
+  }
+});
+
+Example JSON sent to the server:
+
+{
+  "name": "John",
+  "email": "john@gmail.com"
+}
+12. Common Formik Methods
+Method	Purpose
+handleChange	Updates form values
+handleBlur	Marks field as touched
+handleSubmit	Handles form submission
+resetForm()	Clears the form
+setFieldValue(name, value)	Update one field programmatically
+setValues(values)	Replace all form values
+setErrors(errors)	Set validation errors
+validateForm()	Validate the entire form
+submitForm()	Trigger submission programmatically
+13. Formik Lifecycle
+Page Loads
+    │
+    ▼
+initialValues
+    │
+    ▼
+User Types
+    │
+    ▼
+handleChange()
+    │

@@ -1,0 +1,460 @@
+React Hooks are special functions introduced in React 16.8. They allow you to use state, lifecycle methods, context, and other React features inside functional components.
+
+Before Hooks, these features were available only in class components.
+
+Why Hooks?
+
+Without Hooks (Class Component)
+
+import React, { Component } from "react";
+
+class Counter extends Component {
+    constructor() {
+        super();
+        this.state = {
+            count: 0
+        };
+    }
+
+    increment = () => {
+        this.setState({
+            count: this.state.count + 1
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>{this.state.count}</h1>
+                <button onClick={this.increment}>Increment</button>
+            </div>
+        );
+    }
+}
+
+export default Counter;
+
+With Hooks (Functional Component)
+
+import React, { useState } from "react";
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <h1>{count}</h1>
+
+            <button onClick={() => setCount(count + 1)}>
+                Increment
+            </button>
+
+        </div>
+    );
+}
+
+export default Counter;
+React Hook Flow
+Component Loads
+        │
+        ▼
+Hooks are Executed
+        │
+        ▼
+State Created
+        │
+        ▼
+UI Rendered
+        │
+        ▼
+User Action
+        │
+        ▼
+State Changes
+        │
+        ▼
+Component Re-renders
+Most Important React Hooks
+Hook	Purpose
+useState	Store state
+useEffect	Side effects
+useContext	Global data
+useRef	DOM reference
+useMemo	Performance optimization
+useCallback	Memoize function
+useReducer	Complex state
+useLayoutEffect	Before browser paint
+useImperativeHandle	Custom ref methods
+useId	Unique IDs
+useTransition	Non-blocking updates
+useDeferredValue	Delay expensive rendering
+useSyncExternalStore	Subscribe to external store
+1. useState()
+
+Stores data inside component.
+
+Example:
+
+import React, { useState } from "react";
+
+function App() {
+
+    const [name, setName] = useState("John");
+
+    return (
+        <div>
+
+            <h2>{name}</h2>
+
+            <button onClick={() => setName("David")}>
+                Change
+            </button>
+
+        </div>
+    );
+
+}
+
+export default App;
+
+Output
+
+John
+
+Click Button
+
+David
+Example 2: Counter
+import React, { useState } from "react";
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    return (
+
+        <div>
+
+            <h1>{count}</h1>
+
+            <button onClick={() => setCount(count + 1)}>
+                +
+            </button>
+
+            <button onClick={() => setCount(count - 1)}>
+                -
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Counter;
+Example 3: Login Form
+import React, { useState } from "react";
+
+function Login() {
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    function submit() {
+
+        alert(username);
+
+    }
+
+    return (
+
+        <div>
+
+            <input
+                type="text"
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+            />
+
+            <br /><br />
+
+            <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <br /><br />
+
+            <button onClick={submit}>
+                Login
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Login;
+2. useEffect()
+
+Runs code after rendering. It is commonly used for:
+
+API calls
+Timers
+Event listeners
+DOM updates
+Example 1: Run once
+import React, { useEffect } from "react";
+
+function App() {
+
+    useEffect(() => {
+        console.log("Component Loaded");
+    }, []);
+
+    return <h1>Hello React</h1>;
+
+}
+
+export default App;
+
+Runs only once after the first render.
+
+Example 2: Run when state changes
+import React, { useState, useEffect } from "react";
+
+function Counter() {
+
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+
+        console.log("Count Changed:", count);
+
+    }, [count]);
+
+    return (
+
+        <div>
+
+            <h2>{count}</h2>
+
+            <button onClick={() => setCount(count + 1)}>
+                Increase
+            </button>
+
+        </div>
+
+    );
+
+}
+
+export default Counter;
+Example 3: Fetch API
+import React, { useEffect, useState } from "react";
+
+function Users() {
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(res => res.json())
+            .then(data => setUsers(data));
+
+    }, []);
+
+    return (
+
+        <div>
+
+            {
+                users.map(user => (
+                    <p key={user.id}>{user.name}</p>
+                ))
+            }
+
+        </div>
+
+    );
+
+}
+
+export default Users;
+3. useRef()
+
+Stores mutable values and accesses DOM elements without causing a re-render.
+
+Example: Focus an input
+import React, { useRef } from "react";
+
+function App() {
+
+    const inputRef = useRef();
+
+    function focusInput() {
+        inputRef.current.focus();
+    }
+
+    return (
+        <div>
+
+            <input ref={inputRef} type="text" />
+
+            <button onClick={focusInput}>
+                Focus
+            </button>
+
+        </div>
+    );
+
+}
+
+export default App;
+4. useContext()
+
+Avoids prop drilling by sharing data across components.
+
+import React, { createContext, useContext } from "react";
+
+const UserContext = createContext();
+
+function Child() {
+    const user = useContext(UserContext);
+    return <h2>Welcome {user}</h2>;
+}
+
+function App() {
+    return (
+        <UserContext.Provider value="Babu">
+            <Child />
+        </UserContext.Provider>
+    );
+}
+
+export default App;
+5. useMemo()
+
+Caches expensive calculations.
+
+import React, { useState, useMemo } from "react";
+
+function App() {
+    const [count, setCount] = useState(0);
+
+    const square = useMemo(() => {
+        console.log("Calculating...");
+        return count * count;
+    }, [count]);
+
+    return (
+        <div>
+            <h2>Square: {square}</h2>
+            <button onClick={() => setCount(count + 1)}>
+                Increment
+            </button>
+        </div>
+    );
+}
+
+export default App;
+6. useCallback()
+
+Prevents unnecessary recreation of functions.
+
+import React, { useState, useCallback } from "react";
+
+function App() {
+    const [count, setCount] = useState(0);
+
+    const increment = useCallback(() => {
+        setCount(c => c + 1);
+    }, []);
+
+    return (
+        <button onClick={increment}>
+            Count: {count}
+        </button>
+    );
+}
+
+export default App;
+7. useReducer()
+
+Useful for complex state management.
+
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+    switch (action.type) {
+        case "INC":
+            return { count: state.count + 1 };
+        case "DEC":
+            return { count: state.count - 1 };
+        default:
+            return state;
+    }
+}
+
+function App() {
+    const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+    return (
+        <div>
+            <h2>{state.count}</h2>
+            <button onClick={() => dispatch({ type: "INC" })}>+</button>
+            <button onClick={() => dispatch({ type: "DEC" })}>-</button>
+        </div>
+    );
+}
+
+export default App;
+8. Custom Hook
+
+A custom hook lets you reuse stateful logic.
+
+// useCounter.js
+import { useState } from "react";
+
+export default function useCounter(initialValue = 0) {
+    const [count, setCount] = useState(initialValue);
+
+    const increment = () => setCount(c => c + 1);
+    const decrement = () => setCount(c => c - 1);
+    const reset = () => setCount(initialValue);
+
+    return { count, increment, decrement, reset };
+}
+
+Use it:
+
+import useCounter from "./useCounter";
+
+function App() {
+    const { count, increment, decrement, reset } = useCounter(10);
+
+    return (
+        <div>
+            <h2>{count}</h2>
+            <button onClick={increment}>+</button>
+            <button onClick={decrement}>-</button>
+            <button onClick={reset}>Reset</button>
+        </div>
+    );
+}
+
+export default App;
+Real-Time Examples
+Hook	Real-world Use Case
+useState	Shopping cart quantity, login form, counters
+useEffect	Fetch users from REST API, start timers, subscribe to WebSocket
+useRef	Auto-focus search box, control video playback
+useContext	Logged-in user, theme (light/dark), language
+useMemo	Filter or sort large product lists efficiently
+useCallback	Optimize callbacks passed to child components
+useReducer	Multi-step forms, shopping cart, order management
+Custom Hook	Reuse API fetching, authentication, pagination, or form validation logic

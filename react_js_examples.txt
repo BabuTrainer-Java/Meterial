@@ -1,0 +1,2830 @@
+https://www.youtube.com/playlist?list=PLCo7JW1GwokKHYhXJ-JXODpCKFpAS7ghm
+
+
+setup  for  react js
+node js 
+visual Studion code editor
+create firstReact dir
+npm  install -g  create-react-app
+create-react-app  --version
+firstReact>create-react-app myapp
+firstReact>cd myapp
+myapp>npm start
+
+goto  visual studio code editior 
+
+src  floder
+app.js
+
+
+->What are components
+->Tpes of components
+->Nesting components
+->Higer order and Pure components
+->Component life cycle
+  
+
+                                Components
+
+                  Stateless Functional            StateFull class 
+                     components                       components
+ 
+                    They are javascript functions   Regular class extends components class
+                 they return Html                           They must be contain a render 
+                                                                         method that must return html
+           can be contained in a.js or .jsx           can be contained in a.js or .jsx
+           file                                                          file
+
+                     
+App.js
+
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+function App(){
+return ( <h1>Hello  Welcome to JJJ<h1>
+);
+}
+export  default  App;
+
+
+ex2:
+
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+</div>
+);
+}
+export  default  App;
+                   
+goto src> floder ---> to create -->Components  --->
+FunctionalComp.js
+ import  React from 'react'
+function  FunctionalComp(){
+return  <p>This is a functional Component</p>
+}
+export default FunctionalComp;
+
+ClassComp.js
+ import  React from 'react'
+class  ClassComp extends React.Component{
+render(){
+return <p>This is the class Component</p>
+}
+}
+export default ClassComp;
+
+goto App.js  to  add below  code
+
+import React from "react";
+import FunctionalComp from "./Components/FunctionalComp";
+import ClassComp from"./Components/ClassComp";
+
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+<FunctionalComp/>
+<ClassComp/>
+</div>
+);
+}
+export  default  App;
+-------- FuncationalComp  as rename  FC-----------------------------------------
+import React from "react";
+import FC from "./Components/FunctionalComp";
+import ClassComp from"./Components/ClassComp";
+
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+<FC/>
+<ClassComp/>
+</div>
+);
+}
+export  default  App;
+-----------------------------------------------------------
+many Class:
+-------------------
+ import  React from 'react'
+ export class  ClassComp extends React.Component{
+render(){
+return <p>This is the class Component</p>
+}
+}
+export class  ClassComp1 extends React.Component{
+render(){
+return <p>Hey !  I'm another class</p>
+}
+}
+
+
+App.js
+
+import React from "react";
+import FC from "./Components/FunctionalComp";
+import ClassComp from"./Components/ClassComp";
+import {ClassComp,ClassComp1 } from "./Components/ClassComp";
+ 
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+<FC/>
+<ClassComp/>
+<ClassComp1/>
+
+</div>
+);
+}
+export  default  App;
+------------------------------------------------------------
+Higher order and Pure Components
+ a  higher order component is a  function that takes a component
+and return s a new component 
+it facilitates reusing of component  logic
+const NewComponent =higherOrderComponent(originalComponent)
+
+Click.js
+--------------
+import React ,{ Component } from "react";
+export  class Click extends Component{
+constructor(props){
+super(props);
+this.state={
+count:0
+};
+}
+updateClick=()=>{
+this.setState({count:this.state.count+1});
+};
+render(){
+const{ count }=this.state;
+return (
+<div>
+<button  onclick={this.UpdateClick}>clicked {count}  times </button>
+</div>
+);
+}
+}
+export default Click;
+
+goto App.js 
+
+
+import React from "react";
+import FC from "./Components/FunctionalComp";
+import ClassComp from"./Components/ClassComp";
+import {ClassComp,ClassComp1 } from "./Components/ClassComp";
+import Click from "./Components/Click";
+ 
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+<FC/>
+<ClassComp/>
+<ClassComp1/>
+<Click/>
+</div>
+);
+}
+export  default  App;
+
+mouse moves on the button then it 
+will  increment
+------------------------------------------:
+Counter.js
+
+import React,{ Component }  from  "react"
+export class Counter extends Component
+{
+constructor(props){
+super(props);
+this.state={
+count:0
+};
+}
+IncrementCount =()=>{
+this.setState({count:this.state.count +1});
+};
+render(){
+const { count }=this.state;
+return (
+<div>
+<button onMouseEnter={this.IncrementCount}>
+incremented  to {count} 
+ </button>
+</div>
+);
+}
+}
+export default Counter;
+
+App.js
+
+import React from "react";
+import FC from "./Components/FunctionalComp";
+import ClassComp from"./Components/ClassComp";
+import {ClassComp,ClassComp1 } from "./Components/ClassComp";
+import Click from "./Components/Click";
+import Counter from "./Components/Counter" 
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+<FC/>
+<ClassComp/>
+<ClassComp1/>
+<Click/>
+<Counter/>
+</div>
+);
+}
+export  default  App;
+-------------------------------------------
+HigherOrder.js
+
+import  React from "react";
+const UpdatedComp=OriginalComp=>{
+class NewComp extends React.Component{
+render() {
+return <OriginalComp name=" The user"/>;
+}
+}
+return  NewComp;
+};
+export  default UpdatedComp;
+
+Counter.js
+
+import React,{ Component }  from  "react"
+import UpdatedComp from "./HigherOrder";
+export class Counter extends Component
+{
+constructor(props){
+super(props);
+this.state={
+count:0
+};
+}
+IncrementCount =()=>{
+this.setState({count:this.state.count +1});
+};
+render(){
+const { count }=this.state;
+return (
+<div>
+<button onMouseEnter={this.IncrementCount}>
+{this.props.name}
+incremented  to {count} 
+ </button>
+</div>
+);
+}
+}
+export default UpdatedComp(Counter);
+
+Click.js
+import React ,{ Component } from "react";
+import  UpdatedComp from "./HigherOrder";
+export  class Click extends Component{
+constructor(props){
+super(props);
+this.state={
+count:0
+};
+}
+updateClick=()=>{
+this.setState({count:this.state.count+1});
+};
+render(){
+const{ count }=this.state;
+return (
+<div>
+<button  onclick={this.UpdateClick}>
+{this.props.name}clicked {count}  times </button>
+</div>
+);
+}
+}
+export default UpdatedComp(Click);
+---------------------------------------------------
+import React ,{ PureComponent }  from "react";
+class PureComp extends PureComponent{
+render(){
+console.log("PureComp Component render");
+
+return 
+<div>
+I'm the pure Component</div>
+{this.props.name}
+}
+}
+export default PureComp;
+
+import React , { Component } from "react";
+class RegComp extends Component{
+render(){
+console.log("RegComp Component render");
+
+return
+ <div>
+I'm the regular component</div>
+{this.props.name}
+}
+}
+export default RegComp;
+
+import React , { Component } from "react";
+import PureComp from "./PureComp"
+import RegComp from "./RegComp"
+
+class ParentComp extends Component{
+
+constructor(props){
+super(props);
+this.state={
+ name:"simplilern"
+};
+}
+componentDidMount(){
+setInterval(() =>{
+this.setState({
+name:"Simplilern"
+});
+},3000);
+}
+
+render(){
+console.log("Parent Component render");
+return 
+<div>
+I'm the parent Component
+<RegComp name={this.state.name} />
+<PureComp name={this.state.name} />
+</div>
+}
+}
+export default ParentComp;
+
+App.js
+
+
+import React from "react";
+import FC from "./Components/FunctionalComp";
+import ClassComp from"./Components/ClassComp";
+import {ClassComp,ClassComp1 } from "./Components/ClassComp";
+import Click from "./Components/Click";
+import Counter from "./Components/Counter"
+import ParentComp from "./Components/ParentComp" 
+function App(){
+return ( 
+<div>
+<h1>Hello  Welcome to JJJ<h1>
+<h1>Hello  This is video  component<h1>
+<FC/>
+<ClassComp/>
+<ClassComp1/>
+<Click/>
+<Counter/>
+<ParentComp/>
+</div>
+);
+}
+export  default  App;
+
+-------------------------------------------------
+Component Life Cycle:
+Mounting
+
+componentWillMount()
+
+
+        render()
+
+componentDidMount()
+
+                          or
+                        Updation
+componentWillReciveProps                        setState()
+
+         shouldComponentUpdate()
+
+           componentWillUpdate()
+
+                      render()
+
+           componentDidUpdate()
+
+
+------------------------------
+ReactJS  Props
+
+import React , { Component } from 'react'
+class Classprops extends Component
+{
+render(){
+return(
+<div>
+<h1> Hello learners ! Welcome Simpli Learn"</h1>
+</div>
+);
+}
+}
+export default Classprops;
+ goto App.js
+
+import React from "react";
+import Classprops from "./Classprops";
+class App extends React.Component
+{
+render(){
+return  (
+<div>
+<Classprops/>
+</div>
+);
+}
+}
+export  default App;
+--------------------
+import React from "react";
+import Classprops from "./Classprops";
+class App extends React.Component
+{
+render(){
+return  (
+<div>
+<Classprops name="Learner 1" place="Placex"/>
+<Classprops name="Learner 2" place="PlaceY"/>
+<Classprops name="Learner 3" place="PlaceZ"/>
+
+</div>
+);
+}
+}
+export  default App;
+
+Classprops.js
+import React , { Component } from 'react'
+class Classprops extends Component
+{
+render(){
+return(
+<div>
+<h1> Hello {this.props.name} from {this.props.place} Welcome Simpli Learn"</h1>
+</div>
+);
+}
+}
+export default Classprops;
+
+note:
+if want add  child components and button 
+goto  App.js
+
+import React from "react";
+import Classprops from "./Classprops";
+class App extends React.Component
+{
+render(){
+return  (
+<div>
+<Classprops name="Learner 1" place="Placex"/>
+<p>Child Component</p>
+<Classprops name="Learner 2" place="PlaceY"/>
+<button> Click</button>
+<Classprops name="Learner 3" place="PlaceZ"/>
+
+</div>
+);
+}
+}
+export  default App;
+------------------------------------------------
+App.js
+
+import React from "react";
+import "./App.css";
+class App extends React.Component
+{
+render(){
+return  (
+<div className="App">
+<h1 style={this.styles}>Welcome</h1>
+</div>
+);
+}
+}
+export  default App;
+-----------------------------------
+ex:
+import React, { Component }  from "react";
+import bellA  from "./BellA.png";
+import bellB from "./BellB.png";
+class NewComp extends Component
+{
+constructor(props){
+super(props);
+this.state ={
+message:" Subscribe to  simplilearn ",
+sub:" Subscribe"
+imageURL:bellA
+};
+}
+styles= {
+fontStyle: "italic",
+color:"purple"
+};
+Buttonchange = () =>{
+this.setState({
+message:"Hit the bell icon  to never miss an update",
+sub:"Subscribe"
+});
+};
+imageChange=()=>{
+this.setState({
+messageURL:bellB,
+message:" Thank you ! Happy learning!"
+})
+}
+
+
+render() {
+return (
+<div className="App">
+<h3 style={this.styles}>{this.state.message}</h3>
+<button onClick={this.Buttonchange}>{this.state.sub}</button>
+<p/>
+<img style={{width:"30px",height:"30px"}} 
+src={this.state.imageURL} 
+onClick={this.imageChange}
+alt=""/>
+</div>
+);
+}
+}
+ export  default NewComp;
+
+note : to copy the .png files past in Componenets floder
+like BellA.png,BellB.png
+App.js
+
+import React from "react";
+import "./App.css";
+import NewComp from "./Components/NewComp";
+class App extends React.Component
+{
+styles={
+fontStyle:"bold",
+color:"teal"
+};
+render(){
+return  (
+<div className="App">
+<h1 style={this.styles}>Welcome</h1>
+<NewComp/>
+</div>
+);
+}
+}
+export  default NewComp;
+
+
+
+another ex:
+-------------------
+import React, { Component }  from "react";
+class NewComp extends Component
+{
+constructor(props){
+super(props);
+this.state ={
+message:" Subscribe to  simplilearn ",
+};
+}
+render(){
+return(
+<div className="App">
+<h3>{this.state.message}</h3>
+</div>
+);
+}
+}
+export default NewComp;
+
+
+App.js:
+
+above  code  same
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+link:https://www.youtube.com/watch?v=CI2kX2EFhWc		
+
+
+                  
+
+
+
+react js:
+jsx
+Rendering Lists
+Conditional Rendering
+Handling Events
+Updating the State
+
+
+Composing Components:
+-------------------------------------------------------------
+pass Data
+Raise and HandleEvents
+Multiple Components in Sync
+Functional Components 
+Life cycle Hooks
+ 	
+inedx.js
+<App/>
+
+App.js
+import React ,{Component} from 'react'
+
+class App  extends  Component
+{
+render(){
+return (
+<div className="App">
+<h1>Hello,React!</h1>
+</div>
+)
+}
+}
+=======================
+Make table  in React using  class And App
+table.js
+render(){
+return (
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>babu</td>
+<td>kamal</td>
+</tr>
+<tr>
+<td>babu</td>
+<td>kamal</td>
+</tr>
+</tbody>
+</table>
+
+
+	
+)
+}
+}
+export default  Table
+
+
+App.js
+import React ,{Component} from 'react'
+import Table from './Table'
+class App  extends  Component
+{
+render(){
+return (
+<div className="container">
+<Table/>
+</div>
+)
+}
+}
+npm start
+==================
+simple  Component or  Functional Component 
+Does  simple   Component  or Functional Component   not  require render
+import React ,{Component} from 'react'
+const TableHeader =()=>{
+return  (
+<thead>
+<tr>
+<th>Name</th>
+<th>job</th>
+</tr>
+</thead>
+
+)
+}
+
+const TableBody =()=>{
+return(
+<tbody>
+<tr>
+<td>ravi</td>
+<td>kamal</td>
+</tr>
+<tr>
+<td>ravi</td>
+<td>kamal</td>
+</tr>
+<tr>
+<td>ravi</td>
+<td>kamal</td>
+</tr>
+</tbody>
+)
+}
+class Table extends Component
+{
+render(){
+return(
+<table>
+<TableHeader/>
+<TableBody/>
+
+</table>
+)
+}
+}
+default  export  Tabel;
+App.js
+import React ,{Component} from 'react'
+import Table from './Table'
+class App  extends  Component
+{
+render(){
+return (
+<div className="container">
+<Table/>
+</div>
+)
+}
+}
+export default App
+================================
+React  must be  in scope  when using 
+JSX  react/react-in-jsx-scope  with 
+window.React=React on index.js
+goto App.js
+import React ,{Component} from 'react'
+================================
+How to Export  Multiple  function Module  and App in React
+import React ,{Component} from 'react'
+const TableHeader =()=>{
+return  (
+<thead>
+<tr>
+<th>Name</th>
+<th>job</th>
+</tr>
+</thead>
+
+)
+}
+
+const TableBody =()=>{
+return(
+<tbody>
+<tr>
+<td>ravi</td>
+<td>kamal</td>
+</tr>
+<tr>
+<td>ravi</td>
+<td>kamal</td>
+</tr>
+<tr>
+<td>ravi</td>
+<td>kamal</td>
+</tr>
+</tbody>
+)
+}
+export {
+TableHeader,
+TableBody,
+}
+
+App.js
+import React ,{Component} from 'react'
+import {TableHeader,TableBody}  from './Table'
+class App  extends  Component
+{
+render(){
+return (
+<div className="container">
+<TableHeader/>
+<TableBody/>
+</div>
+)
+}
+}
+export default App
+===================
+How props   are  access in class 
+without passing  as Argument
+Props in React ?
+
+Props -Properties in class,function
+or  in easy  language you  could  say
+we  pass prop just  similar  to attribute  of HTML tag
+
+
+class App  extends  Component
+{
+render(){
+const characters=[
+{
+name:"babu",
+job:"developer",
+},
+{
+name:"babu",
+job:"trainer",
+},
+]
+return(
+<div className="container">
+<Table characterData={characters}/>
+</div>
+)
+}
+}
+export default App
+
+Table.js
+const TableBody=(props)=>{
+const rows=props.characterData.map((row,index)=>{
+return(
+<tr key={index}>
+<td>{row.name}</td>
+<td>{row.job}</td>
+</tr>
+)
+})
+return <tbody>{rows}</tbody>
+}
+class Table extends  Component
+{
+render(){
+const{ characterData }=this.props
+return (
+<table>
+<TableHeader/>
+<TableBody characterData={characterData}/>
+</table>
+)
+}
+}
+===============================
+Parsing Error:UnExpected token ,expected  Error solved in React
+
+class Table extends  Component
+{
+render(){
+const{ characterData }=this.props
+return (
+<div>
+<table>
+<TableHeader/>
+<TableBody characterData={characterData}/>
+</table>
+{this.props.children}
+</div>
+
+)
+}
+}
+
+
+=========================
+props.children in React
+Passing Children Element  Directly  in React
+import  React from  'react'
+App.js
+import  React  from 'react'
+function BookComponent(props){
+return <div>
+<h1>Hello {props.name}</h1>
+{props.children}
+</div>
+}
+function App()
+{
+return(
+<BookComponent name="ravi" children="abc">
+)
+}
+
+React Notes:
+========================Map===========
+1)create   the State
+2)Store  some values
+3)Iterate that value through map
+App.js
+import  React ,{useState}from 'react';
+import './App.css';
+function App()
+{
+const [posts]=useState(
+[
+{
+name:"ravi";
+class:"nuresery";
+},
+{
+name:"kamal";
+class:"nuresery";
+}
+]
+);
+return (
+<div className="App">
+<h1>Welcome!</h1>
+{
+posts.map(
+(vari)=>(
+<h4>{vari.name}</h4>
+)
+)
+}
+</div>
+);
+
+Methods to call  in React ,when Component  is created  or inserted  into  Dom
+1)Constructor
+2)static  getDrivedStateFromProps
+(props,state)
+3)Render
+4)ComponentDidMount()
+
+
+Constructor  is  automatically
+Called  whenever new  component  is   created 
+InitializeStateBinding
+ dont forget  to include super()  because  constructor  to be  called  from  sub class
+Constructor 
+ getDerivedStateFromProps enables a  component  to update it s internal state
+  as  the   result    of  changes  in  props
+Test.js
+import   React,{Component }  from  'react'
+import Test1 from  './Test1'
+class Test  extends Component
+{
+constructor(props){
+super(props)
+this.state={
+book:'the fault in our  star'
+}
+console log("This  is constructor")
+}
+static getDerivedStateFromProps(props,state)
+{
+console.log("This is  getDerivedState method");
+return null
+}
+componentDidMount(){
+console.log("this  is  componentDidMount")
+}
+render(){
+return(
+<div>
+
+</div>
+)
+}
+}
+export default  Test;
+
+
+Test1.js
+import   React,{Component }  from  'react'
+class Test1  extends Component
+{
+constructor(props){
+super(props)
+this.state={
+book:'the fault in our  star'
+}
+console log("This  is constructor")
+}
+static getDerivedStateFromProps(props,state)
+{
+console.log("This is  getDerivedState method");
+}
+componentDidMount(){
+console.log("this  is  componentDidMount")
+}
+render(){
+return(
+<div>
+<Test/>
+</div>
+)
+}
+}
+export default  Test1;
+
+
+
+
+
+
+
+App.js
+import  React ,{Component} from  'react'
+import   Book from  './Book'
+import   Test from  './Test'
+class App extends Component
+{
+render(){
+return(
+<div  className="conatiner">
+<Test/>
+</div>
+)
+
+}
+}
+export  default App
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+note:componentDidMount execute only  once  after  render
+
+ex :How  to   render only updated value & not re-render same value  in React 
+because  re-rendering could slow down the  speed 
+================================
+
+Concept of  pure Component 
+This  Pure  Component  re-render once only updated  value
+1)we  will  make a pure Component
+2)we  will  make a  Regular Compoment
+3)we will pass changing  value to both  and  we  will give  instruction to 
+re-render  after some  time 
+4)then  now  see  who  is  rendering  only  updated  values ,not everytime re-render for  same 
+value
+ 
+
+import React ,{ PureComponent } from 'react'
+class  PureComp extends PureComponent
+{
+render(){
+console.log("pureComponent")
+return(
+<div>
+Pure Component { this.props.value}
+</div>
+)
+}
+}
+export  default  PureComp
+
+
+
+import React ,{ Component  } from 'react'
+class  RegularComponent extends Component
+{
+render(){
+console.log("RegularComponent")
+return(
+<div>
+Regular Component { this.props.value}
+</div>
+)
+}
+}
+export  default RegularComponent
+
+import React ,{ Component } from  'react'
+import RegularComponent from './RegularComponent'
+import PureComponent from './PureComponent'
+class ParentComponent extends Component
+{
+constructor(props)
+{
+super(props)
+this.state={
+value:'25'
+}
+}
+componentDidMount(){
+setInterval(()=>{
+this.setState({
+value:'100'
+})
+
+},5000)
+}
+render(){
+console.log("Parent Compoment")
+return (
+<div>
+<RegularComponent  value={this.state.value}/>
+<PureComp  value={this.state.value}/>
+</div>
+)
+}
+}
+App.js
+import React ,{Component}  from 'react'
+import  ParentComponent from './ParentCompoment'
+class App extends Component {
+render(){
+return(
+<div className="container">
+<ParentComponent/>
+</div>
+)
+}
+}
+export default App
+=================================
+ex:How to focus  on the input Field ,when 
+the page  re-loads in React 
+
+1-Create a Reference 
+2-Create aInput field and  focus  on  that 
+import React,{ Component }  from 'react'
+class RefR extends Component
+{
+constructor(props){
+super(props)
+this.inputRef=React.createRef()
+}
+componentDidMount(){
+this.inputRef.current.focus()
+}
+render(){
+return(
+<div>
+<input type="text"  ref={this.inputRef}/>
+</div>
+)
+}
+} 
+
+App.js
+import React ,{Component}  from 'react'
+import RefR from './RefR'
+class App extends Component {
+render(){
+return(
+<div className="container">
+<RefR/>
+</div>
+)
+}
+}
+export default App
+
+===========================
+ex:How  to  display a  fall  back  ui  instead  of  the 
+error which react  pushes  on screen
+using -getDerivedStateFromError()
+
+import  React from 'react'
+function  Fruit({fruit}){
+if(fruit==='apple'){
+throw  new Error("apple is not available")
+}
+return (
+<div>
+{fruit}
+</div>
+)
+}
+export default Fruit
+
+
+App.js
+import React ,{Component}  from 'react'
+import Fruit from './Fruit'
+class App extends Component {
+render(){
+return(
+<div className="container">
+<Fruit fruit="Mango"/>
+<Fruit fruit="apple"/>
+<Fruit fruit="banana"/>
+
+</div>
+)
+}
+}
+export default App
+
+note:
+if  i remove <Fruit fruit="apple"/> we  will  get  output
+
+if  want  change  Error Ui
+import  React,{ Component } from  'react'
+class ErrorUi extends Component
+{
+constructor(props){
+super(props)
+this.state={
+hasError:false
+}
+}
+static getDerivedStateFromError(error)
+{
+return{
+hasError:true 
+}
+}
+render(){
+if(this.state.hasError)
+{
+return <h1>Something  went Wrong</h1>
+}
+return  this.props.children
+}
+}
+export default ErrorUi
+
+
+
+App.js
+import React ,{Component}  from 'react'
+import Fruit from './Fruit'
+import ErrorUi from './ErrorUi'
+class App extends Component {
+render(){
+return(
+<div className="container">
+<Fruit fruit="Mango"/>
+<ErrorUi><Fruit fruit="apple"/></ErrorUi>
+<Fruit fruit="banana"/>
+
+</div>
+)
+}
+}
+export default App
+================================
+Ex:How to Re-Use the Code instead  of  duplicating in React
+Using Concept  of Higher Component  in  React 
+
+1-PrentPi.js
+2-Child1.js
+3-child2.js
+
+import  React ,{ Component } from  'react'
+const Parentpi=WrappedComponent =>{
+class Parentpi extends Component
+{
+constructor(props)
+{
+super(props)
+this.state={
+count:0
+}
+}
+incrementCount =()=>{
+this.setState(
+prevState=>{
+return {
+count:prevState.count +1
+}
+}
+)
+}
+render(){
+return(
+<div>
+<WrappedComponent
+count={this.state.count}
+incrementCount={this.incrementCount}
+/>
+</div>
+)
+}
+}
+return Parentpi
+}
+export  default Parentpi
+
+import React ,{Component } from 'react'
+import ParentPi from  './ParentPi'
+class Child1 extends Component
+{
+render(){
+const { count,incrementCount}=this.props
+return(
+<button onClick={incrementCount}>
+Clicked {count}  times
+</button>
+)
+}
+}
+export  default  ParentPi(Child1)
+
+
+import React ,{Component } from 'react'
+import ParentPi from  './ParentPi'
+class Child2 extends Component
+{
+render(){
+const { count,incrementCount}=this.props
+return(
+<button onMouseOver={incrementCount}>
+Over {count}  times
+</button>
+)
+}
+}
+export  default  ParentPi(Child2)
+
+App.js
+import  React ,{ Component} from 'react'
+import  Child1 from './Child1';
+import  Child2 from './Child2';
+class App  extends Component
+{
+render(){
+return(
+<div className="container">
+<Child1/>
+<Child2/>
+</div>
+)
+}
+}
+export default App
+===========================
+ex:How to  directly send Data to
+any nested Component  without passing it
+through  multiple level of  Intermediate  Component?(28)
+
+App.js
+import React  ,{Component} from  'react'
+import Component1  from './Component1'
+class App  extends Component
+{
+render(){
+return(
+<div className="container1">
+<Component1  value="Ujjwal"/>
+</div>
+)
+}
+}
+export  default  App
+import React  ,{Component} from  'react'
+import Component2  from './Component2'
+class Component1  extends Component
+{
+render(){
+return(
+<div className="container1">
+<Component2  value={this.props.value}/>
+</div>
+)
+}
+}
+export  default  Component1;
+
+import React  ,{Component} from  'react'
+import Component3  from './Component3'
+class Component2  extends Component
+{
+render(){
+return(
+<div className="container1">
+<Component3  value={this.props.value}/>
+</div>
+)
+}
+}
+export  default  Component2;
+
+
+import React  ,{Component} from  'react'
+
+class Component3  extends Component
+{
+render(){
+return(
+<div className="container1">
+<h1>{this.props.value}</h1>
+</div>
+)
+}
+}
+export  default  Component3;
+
+
+instead of  3   above Components  we   have to  use  Context concept
+===================================================
+src/context.js
+import  React from 'react'
+const UserContext=React.createContext()
+const UserProvider=UserContext.Provider
+const UserConsumer=UserContext.Consumer
+export {UserConsumer,UserProvider}
+
+
+App.js
+import React  ,{Component} from  'react'
+import Component1  from './Component1'
+import {UserProvider}from './Context'
+class App  extends Component
+{
+render(){
+return(
+<div className="container1">
+<UserProvider value="Ujjwal">
+<Component1/>
+</UserProvider>
+</div>
+)
+}
+}
+export  default  App
+
+import React  ,{Component} from  'react'
+import Component2  from './Component2'
+class Component1  extends Component
+{
+render(){
+return(
+<div className="container1">
+<Component2/>
+</div>
+)
+}
+}
+export  default  Component1;
+
+
+import React  ,{Component} from  'react'
+import Component3  from './Component3'
+class Component2  extends Component
+{
+render(){
+return(
+<div className="container1">
+<Component3/>
+</div>
+)
+}
+}
+export  default  Component2;
+
+
+import React  ,{Component} from  'react'
+import {UserConsumer} from './Context'
+class Component3  extends Component
+{
+render(){
+return(
+<UserConsumer>
+{
+Ju=>{
+return <div>
+<h1>{Ju}</h1>
+</div>
+}
+}
+</UserConsumer>
+
+)
+}
+}
+export  default  Component3;
+===================================
+ex:How  to  add default   value  to context  in React
+
+src/context.js
+import  React from 'react'
+const UserContext=React.createContext("java")
+const UserProvider=UserContext.Provider
+const UserConsumer=UserContext.Consumer
+export {UserConsumer,UserProvider}
+
+App.js
+import React  ,{Component} from  'react'
+import Component1  from './Component1'
+import {UserProvider}from './Context'
+class App  extends Component
+{
+render(){
+return(
+<div className="container1">
+<Component1/>
+</div>
+)
+}
+}
+export  default  App
+
+===================================
+ex:How to make a  GET  Request using axios and render the
+fetched  data in React Component
+npm install   axios
+src/Post.js
+import React,{Component} from 'react'
+import axios from 'axios'
+class Post extends Component
+{
+constructor(props){
+super(props)
+this.state={
+posts:[]
+}
+}
+componentDidMount(){
+axios.get("https://jsonplaceholder.typicode.com/posts")
+.then(response=>{
+console.log(response)
+this.setState({posts:response.data})
+})
+.catch(error=>{
+console.log(error)
+})
+}
+render(){
+const { posts}=this.state
+return(
+<div>
+{
+posts.length ?
+posts.map(post =><div key={post.id}>{post.title}</div>):
+null
+}
+</div>
+
+)
+
+}
+
+}
+
+App.js
+import React ,{Component}  from  'react'
+import Post from './Post'
+class App extends Component
+{
+render(){
+return(
+<div Post(props:any):Post
+<Post/>
+</div>
+
+)
+}
+}
+export  default App
+======================================
+How  to Make  a  copy of  Array using Spread Operator 
+in React   useState
+src/copy.js
+import  React ,{useState} from  'react'
+function  copy()
+{
+const[item,setItem]=useState([])
+const addItem=()=>{
+setItem(
+[
+...item,{
+id:item.length,
+value:Math.floor(Math.random()*10)+1
+}
+]
+)
+}
+return(
+<div>
+<button onClick={addItem} add a number</button>
+<ul>
+{
+item.map(item =>(
+<li key={item.id}>{item.value}</li>
+))
+}
+</ul>
+</div>
+)
+}
+
+App.js
+import React ,{Component}from 'react'
+import Copy  from './Copy'
+class App  extends Component
+{
+render(){
+return (
+<div>
+<Copy/>
+</div>
+)
+}
+}
+export default App
+===============================
+How to  run a  function automatically at every render in\
+Functional  Component  in React
+
+src/copy.js
+import  React ,{useState,useEffect} from  'react'
+function  copy()
+{
+const[item,setItem]=useState(0)
+useEffect(()=>{
+document.title='You clicked ${item}  time'
+})
+return(
+<div>
+<button onClick={()=> setItem(item+1)}>click {item} times</button>
+</div>
+)
+}
+export  default Copy
+App.js
+import React ,{Component}from 'react'
+import Copy  from './Copy'
+class App  extends Component
+{
+render(){
+return (
+<div>
+<Copy/>
+</div>
+)
+}
+}
+export default App
+====================================
+Formik  is the small library that helps you deal with forms
+in React
+Formik takes Care of  repetitive  and  annoying Stuff
+
+it's  Very verbose  and  rigid in making form in React 
+handle Change  used  to update   the State  linked  to  Fields
+
+->you need to keep track  of  so Many State values
+->handleValidation for whenever user value changes
+->handleSubmit to  check  form  validity 
+->Managing Form Data form validation
+Handling Form  Submission
+>npm install   formik
+===========================
+How to  give initial  values  to Form Fields  in React using 
+React Formik
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues:{
+name:'ravi',
+email:'r33@gmail.com',
+pet:'Dog'
+}
+}
+)
+
+return(
+<div>
+<form>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}/>
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}/>
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}/>
+<button>Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+==================================
+See  the Reflection of the State of Form field  in React ,on using Formik
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues:{
+name:'ravi',
+email:'r33@gmail.com',
+pet:'Dog'
+}
+}
+)
+console.log('form values',formik.values)
+return(
+<div>
+<form>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}/>
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}/>
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}/>
+<button>Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+==============================
+how  to   receive form  field  value in state  after  form submission using formik in React
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues:{
+name:'ravi',
+email:'r33@gmail.com',
+pet:'Dog'
+},
+onSubmit:values =>{
+console.log("form Data",values)
+}
+}
+)
+
+return(
+<div>
+<form onSubmit={formik.handleSubmit}>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}/>
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}/>
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}/>
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+=============================
+How  to  validate  the Form field  & Display  Error message  using Formik in React
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+
+const initialvalues={
+ename:'laptop',
+email:'r@gmail.com',
+pet:'dog'
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const  validate =  values =>{
+let errors={}
+if(!values.ename){
+errors.name='Required'
+}
+if(!values.email){
+errors.email='Required'
+}
+else if(!/^[a-ZA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(values.email)){
+errors.email='Invalid Email Formate' 
+}
+if(!values.pet){
+errors.pet='Required'
+}
+return  errors;
+}
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues,
+onSubmit,
+validate,
+}
+)
+console.log("Form errors ",formik.errors)
+return(
+<div>
+<form onSubmit={formik.handleSubmit}>
+<label htmlFor="ename">Name</label>
+<input type="text" id="ename" name="ename" onChange={formik.handleChange} value={formik.values.ename}/>
+{formik.errors.ename? <div>{formik.errors.ename}</div>:null}
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}/>
+{formik.errors.email? <div>{formik.errors.email}</div>:null}
+
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}/>
+{formik.errors.pet? <div>{formik.errors.pet}</div>:null}
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+===============================
+How  to track the  visited field  of Form using Formik in React
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+
+const initialvalues={
+name:'laptop',
+email:'r@gmail.com',
+pet:'dog'
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const  validate =  values =>{
+let errors={}
+if(!values.name){
+errors.name='Required'
+}
+if(!values.email){
+errors.email='Required'
+}
+else if(!/^[a-ZA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(values.email)){
+errors.email='Invalid Email Formate' 
+}
+if(!values.pet){
+errors.pet='Required'
+}
+return errors;
+}
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues,
+onSubmit,
+validate,
+}
+)
+console.log("Visited Field ",formik.touched)
+return(
+<div>
+<form onSubmit={formik.handleSubmit}>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}
+onBlur={formik.handleBlur}/>
+{formik.errors.name? <div>{formik.errors.name}</div>:null}
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}
+onBlur={formik.handleBlur}/>
+{formik.errors.email? <div>{formik.errors.email}</div>:null}
+
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}
+onBlur={formik.handleBlur}/>
+{formik.errors.pet? <div>{formik.errors.pet}</div>:null}
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+====================================
+Display the validate error message only when user has visited  the form  field ,which haven't valid data | formik in React
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const  validate =  values =>{
+let errors={}
+if(!values.name){
+errors.name='Required'
+}
+if(!values.email){
+errors.email='Required'
+}
+else if(!/^[a-ZA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(values.email)){
+errors.email='Invalid Email Formate' 
+}
+if(!values.pet){
+errors.pet='Required'
+}
+return errors;
+}
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues,
+onSubmit,
+validate,
+}
+)
+console.log("Visited Field ",formik.touched)
+return(
+<div>
+<form onSubmit={formik.handleSubmit}>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}
+onBlur={formik.handleBlur}/>
+{formik.touched.name && formik.errors.name? <div>{formik.errors.name}</div>:null}
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}
+onBlur={formik.handleBlur}/>
+{formik.touched.email && formik.errors.email? <div>{formik.errors.email}</div>:null}
+
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}
+onBlur={formik.handleBlur}/>
+{formik.touched.pet && formik.errors.pet? <div>{formik.errors.pet}</div>:null}
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+======================================
+Predefined validations function for  form-field using  Yup Schema in React 
+>npm i yup 
+src/FillingForm.js
+import React from  'react'
+import { useFormik,yuptoFormErrors}  from 'formik'
+import  * as  Yup from 'formik'	
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const  validate =  values =>{
+let errors={}
+if(!values.name){
+errors.name='Required'
+}
+if(!values.email){
+errors.email='Required'
+}
+else if(!/^[a-ZA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(values.email)){
+errors.email='Invalid Email Formate' 
+}
+if(!values.pet){
+errors.pet='Required'
+}
+return errors;
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues,
+onSubmit,
+validationSchema,
+// validate,
+}
+)
+console.log("Visited Field ",formik.touched)
+return(
+<div>
+<form onSubmit={formik.handleSubmit}>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name" onChange={formik.handleChange} value={formik.values.name}
+onBlur={formik.handleBlur}/>
+{formik.touched.name && formik.errors.name? <div>{formik.errors.name}</div>:null}
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" onChange={formik.handleChange} value={formik.values.email}
+onBlur={formik.handleBlur}/>
+{formik.touched.email && formik.errors.email? <div>{formik.errors.email}</div>:null}
+
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" onChange={formik.handleChange} value={formik.values.pet}
+onBlur={formik.handleBlur}/>
+{formik.touched.pet && formik.errors.pet? <div>{formik.errors.pet}</div>:null}
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+=============================
+formik.getFieldProps() in React 
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik }  from 'formik'
+import  * as  Yup from 'formik'	
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+const formik=useFormik(
+{
+initialValues,
+onSubmit,
+validationSchema,
+// validate,
+}
+)
+console.log("Visited Field ",formik.touched)
+return(
+<div>
+<form onSubmit={formik.handleSubmit}>
+<label htmlFor="name">Name</label>
+<input type="text" id="name" name="name"
+{...formik.getFieldProps('name')}/>
+{formik.touched.name && formik.errors.name? <div>{formik.errors.name}</div>:null}
+<label htmlFor="email">E-mail</label>
+<input type="email" id="email" name="email" {...formik.getFieldProps('email')} />
+{formik.touched.email && formik.errors.email? <div>{formik.errors.email}</div>:null}
+
+<label htmlFor="pet">Pet</label>
+<input type="text" id="pet" name="pet" {...formik.getFieldProps('pet')} />
+{formik.touched.pet && formik.errors.pet? <div>{formik.errors.pet}</div>:null}
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+============================
+Replace useFormik,onSubmit  and getFieldPropswith the Formik,Form and Field Component  in React(42)
+
+how  to  use ErrorMessage Component to get rid of writing
+formik errors[Modification]
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik,Form,Field,ErrorMessage}  from 'formik'
+import  * as  Yup from 'formik'	
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+return(
+<Formik
+initialValues={initialValues}
+validationSchema={validationSchema}
+onSubmit={onSubmit}
+>
+<Form>
+<label htmlFor="name">Name</label>
+<Field type="text" id="name" name="name"/>
+<ErrorMessage name="name"/>
+
+<label htmlFor="email">E-mail</label>
+<Field type="email" id="email" name="email" />
+<ErrorMessage name="email"/>
+<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet"/>
+<button type="submit">Submit</button>
+</Form>
+
+</Formik>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+========================================
+Various Props and  Properties  that   Field  Component Carry  in React 
+src/FillingForm.js
+import React from  'react'
+import { useFormik,Form,Field,ErrorMessage}  from 'formik'
+import  * as  Yup from 'formik'	
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+return(
+<Formik
+initialValues={initialValues}
+validationSchema={validationSchema}
+onSubmit={onSubmit}
+>
+<Form>
+<label htmlFor="name">Name</label>
+<Field type="text" id="name" name="name"/>
+<ErrorMessage name="name"/>
+
+<label htmlFor="email">E-mail</label>
+<Field type="email" id="email" name="email" />
+<ErrorMessage name="email"/>
+<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet"/>
+<Field>
+{
+(props)=>{
+console.log("The properties  of  Field are ",props);
+return  <input/>
+}
+}
+<button type="submit">Submit</button>
+</Form>
+
+</Formik>
+)
+}
+
+export  default  FillingForm
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+=================================
+How  to  change  the color of Error  in ErrorMessage 
+Component of React
+import React from 'react'
+function Change(props)
+{
+return(
+<div className=''>
+{props.children}
+</div>
+)
+}
+export default  Change
+
+App.css
+.error{
+color:red;
+}
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik,Form,Field,ErrorMessage}  from 'formik'
+import  * as  Yup from 'formik'	
+import Change  from  './Change'
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+return(
+<Formik
+initialValues={initialValues}
+validationSchema={validationSchema}
+onSubmit={onSubmit}
+>
+<Form>
+<label htmlFor="name">Name</label>
+<Field type="text" id="name" name="name"/>
+<ErrorMessage name="name"  component={Change}/>
+
+<label htmlFor="email">E-mail</label>
+<Field type="email" id="email" name="email" />
+<ErrorMessage name="email" component={Change}/>
+<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet" component={Change}/>
+<button type="submit">Submit</button>
+</Form>
+
+</Formik>
+)
+}
+export  default  FillingForm
+
+
+note:<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet"/>
+{errorMsg=><div className="error">{errorMsg}</div>}
+</ErrorMessage>
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+
+========================
+How to  store  field  data of  Form in nested object or  index 
+with  value  at  dictionary  in React
+
+
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik,Form,Field,ErrorMessage}  from 'formik'
+import  * as  Yup from 'formik'	
+import Change  from  './Change'
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+class:{
+subject:'',
+teacher:''
+}
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+return(
+<Formik
+initialValues={initialValues}
+validationSchema={validationSchema}
+onSubmit={onSubmit}
+>
+<Form>
+<label htmlFor="name">Name</label>
+<Field type="text" id="name" name="name"/>
+<ErrorMessage name="name"  component={Change}/>
+
+<label htmlFor="email">E-mail</label>
+<Field type="email" id="email" name="email" />
+<ErrorMessage name="email" component={Change}/>
+<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet" component={Change}/>
+
+<label htmlFor="subject">Subject</label>
+<Field type="text" id='subject' name='class.subject' />
+
+<label htmlFor="teacher">Teacher</label>
+<Field type="text" id='teacher' name='class.teacher' />
+
+<button type="submit">Submit</button>
+</Form>
+
+</Formik>
+)
+}
+export  default  FillingForm
+
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+export default App;
+===================================
+How  to  store  Field Data  of Form  in Array in  React(47)
+
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik,Form,Field,ErrorMessage}  from 'formik'
+import  * as  Yup from 'formik'	
+import Change  from  './Change'
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+class:{
+subject:'',
+teacher:''
+},
+book:['',''],
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+return(
+<Formik
+initialValues={initialValues}
+validationSchema={validationSchema}
+onSubmit={onSubmit}
+validationOnBlur={false}
+>
+<Form>
+<label htmlFor="name">Name</label>
+<Field type="text" id="name" name="name"/>
+<ErrorMessage name="name"  component={Change}/>
+
+<label htmlFor="email">E-mail</label>
+<Field type="email" id="email" name="email" />
+<ErrorMessage name="email" component={Change}/>
+<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet" component={Change}/>
+/*
+<label htmlFor="subject">Subject</label>
+<Field type="text" id='subject' name='class.subject' />
+
+<label htmlFor="teacher">Teacher</label>
+<Field type="text" id='teacher' name='class.teacher' />
+
+
+<label htmlFor="book1">Book1</label>
+<Field type="text" id='book1' name='book[0]' />
+<label htmlFor="book2">Book2</label>
+<Field type="text" id='book2' name='book[1]' />
+*/
+<button type="submit">Submit</button>
+</Form>
+
+</Formik>
+)
+}
+export  default  FillingForm
+
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+========================
+How  to  not    run a  validation on Form  field  when someone
+touch the  Field  and  leave   in React
+
+
+src/FillingForm.js
+import React from  'react'
+import { useFormik,Form,Field,ErrorMessage}  from 'formik'
+import  * as  Yup from 'formik'	
+import Change  from  './Change'
+
+const initialvalues={
+name:'',
+email:'',
+pet:''
+class:{
+subject:'',
+teacher:''
+},
+book:['',''],
+}
+const onSubmit=values =>{
+console.log("form Data",values)
+}
+const validationSchema =Yup.object({
+name:Yup.string().required("This  Name  Field  is required"),
+pet:Yup.string().required("This  Pet  Field  is required"),
+email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+
+})
+function FillingForm(){
+return(
+<Formik
+initialValues={initialValues}
+validationSchema={validationSchema}
+onSubmit={onSubmit}
+>
+<Form>
+<label htmlFor="name">Name</label>
+<Field type="text" id="name" name="name"/>
+<ErrorMessage name="name"  component={Change}/>
+
+<label htmlFor="email">E-mail</label>
+<Field type="email" id="email" name="email" />
+<ErrorMessage name="email" component={Change}/>
+<label htmlFor="pet">Pet</label>
+<Field type="text" id="pet" name="pet" />
+<ErrorMessage name="pet" component={Change}/>
+
+<label htmlFor="subject">Subject</label>
+<Field type="text" id='subject' name='class.subject' />
+
+<label htmlFor="teacher">Teacher</label>
+<Field type="text" id='teacher' name='class.teacher' />
+
+
+<label htmlFor="book1">Book1</label>
+<Field type="text" id='book1' name='book[0]' />
+<label htmlFor="book2">Book2</label>
+<Field type="text" id='book2' name='book[1]' />
+
+<button type="submit">Submit</button>
+</Form>
+
+</Formik>
+)
+}
+export  default  FillingForm
+
+
+App.js
+import React from 'react';
+import './App.css';
+import FillingForm from  './FillingForm'
+function App(){
+return (
+<div className="App">
+<FillingForm/>
+</div>
+);
+}
+
+
+ReactForm
+=================
+
+import { useState } from "react";
+import ReactDOM from "react-dom/client";
+
+function MyForm() {
+  const [inputs, setInputs] = useState({});
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs(values => ({...values, [name]: value}))
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(inputs);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Enter your name:
+      <input 
+        type="text" 
+        name="username" 
+        value={inputs.username || ""} 
+        onChange={handleChange}
+      />
+      </label>
+      <label>Enter your age:
+        <input 
+          type="number" 
+          name="age" 
+          value={inputs.age || ""} 
+          onChange={handleChange}
+        />
+        </label>
+        <input type="submit" />
+    </form>
+  )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<MyForm />);
+
+/*
+Click F12 and navigate to the "Console view"
+to see the result when you submit the form.
+*/
+
+
+
+ex2:
+import { useState } from "react";
+import ReactDOM from 'react-dom/client';
+
+function MyForm() {
+  const [name, setName] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(`The name you entered was: ${name}`);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Enter your name:
+        <input 
+          type="text" 
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </label>
+      <input type="submit" />
+    </form>
+  )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<MyForm />);
+========================================Client Side validations=============
+import React from  'react'
+import { useFormik,yuptoFormErrors}  from 'formik'
+import  * as  Yup from 'yup'
+const initialValues={
+    ename:'',
+    email:'',
+    pet:''
+    }
+    const onSubmit=values =>{
+        console.log("form Data",values)
+        }
+        const  validate =  values =>{
+            let errors={}
+            if(!values.ename){
+            errors.name='Required'
+            }
+            if(!values.email){
+            errors.email='Required'
+            }
+            if(!values.pet){
+                errors.pet='Required'
+                }
+                return  errors;
+                }
+
+                const validationSchema =Yup.object({
+                    ename:Yup.string().required("This  Name  Field  is required"),
+                    pet:Yup.string().required("This  Pet  Field  is required"),
+                    email:Yup.string().email("invalid Email Formate").required("Email  is required"),
+                    
+                    })
+function FillingForm(){
+    const formik=useFormik(
+    {
+        initialValues,
+onSubmit,
+validationSchema
+    
+    })
+    console.log("Form errors ",formik.errors)
+return(
+<div>
+<form>
+<label htmlFor="ename">eName</label>
+<input type="text" id="ename" name="ename" onChange={formik.handleChange} value={formik.values.ename}
+onBlur={formik.handleBlur}/>
+{formik.touched.ename && formik.errors.ename? <div>{formik.errors.ename}</div>:null}
+<button type="submit">Submit</button>
+</form>
+
+</div>
+)
+}
+    
+
+export  default  FillingForm
