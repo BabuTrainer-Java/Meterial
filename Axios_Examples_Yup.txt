@@ -1,0 +1,952 @@
+Axios is a popular JavaScript library used to send HTTP requests from the browser or Node.js. In React, Axios is commonly used to communicate with REST APIs.
+
+What is Axios?
+
+Axios allows you to:
+
+Send GET requests
+Send POST requests
+Send PUT requests
+Send DELETE requests
+Send PATCH requests
+Automatically convert JSON data
+Handle request/response errors
+Set headers (Authorization, Content-Type, etc.)
+Configure interceptors
+Set request timeout
+Cancel requests
+How Axios Works
+React Component
+      |
+      |
+      v
+Axios Request
+      |
+      |
+HTTP Request
+      |
+      |
+REST API Server
+      |
+      |
+JSON Response
+      |
+      |
+Axios
+      |
+      |
+React State
+      |
+      |
+UI Updated
+Step 1: Install Axios
+npm install axios
+
+Check installation
+
+npm list axios
+Project Structure
+my-app
+│
+├── src
+│     │
+│     ├── App.js
+│     ├── UserList.js
+│     ├── AddUser.js
+│     ├── UpdateUser.js
+│     ├── DeleteUser.js
+│     ├── SearchUser.js
+│     └── api.js
+│
+├── package.json
+Sample REST API
+
+We'll use
+
+https://jsonplaceholder.typicode.com/users
+Example 1 : GET Request
+UserList.js
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+function UserList() {
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+
+        axios.get("https://jsonplaceholder.typicode.com/users")
+
+            .then((response) => {
+
+                console.log(response.data);
+
+                setUsers(response.data);
+
+            })
+
+            .catch((error) => {
+
+                console.log(error);
+
+            });
+
+    }, []);
+
+    return (
+
+        <div>
+
+            <h2>User List</h2>
+
+            <table border="1">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Name</th>
+
+                        <th>Email</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {
+                        users.map((user) => (
+
+                            <tr key={user.id}>
+
+                                <td>{user.id}</td>
+
+                                <td>{user.name}</td>
+
+                                <td>{user.email}</td>
+
+                            </tr>
+
+                        ))
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    );
+
+}
+
+export default UserList;
+Example 2 : POST Request
+AddUser.js
+import axios from "axios";
+
+function AddUser() {
+
+    const saveUser = () => {
+
+        const user = {
+
+            name: "John",
+
+            email: "john@gmail.com"
+
+        };
+
+        axios.post(
+            "https://jsonplaceholder.typicode.com/users",
+            user
+        )
+
+        .then((response)=>{
+
+            console.log(response.data);
+
+            alert("Saved Successfully");
+
+        })
+
+        .catch((error)=>{
+
+            console.log(error);
+
+        });
+
+    };
+
+    return (
+
+        <button onClick={saveUser}>
+
+            Save User
+
+        </button>
+
+    );
+
+}
+
+export default AddUser;
+Example 3 : PUT Request
+import axios from "axios";
+
+function UpdateUser() {
+
+    const update = () => {
+
+        const user = {
+
+            name: "David",
+
+            email: "david@gmail.com"
+
+        };
+
+        axios.put(
+
+            "https://jsonplaceholder.typicode.com/users/1",
+
+            user
+
+        )
+
+        .then((response)=>{
+
+            console.log(response.data);
+
+            alert("Updated");
+
+        });
+
+    };
+
+    return (
+
+        <button onClick={update}>
+
+            Update
+
+        </button>
+
+    );
+
+}
+
+export default UpdateUser;
+Example 4 : DELETE Request
+import axios from "axios";
+
+function DeleteUser(){
+
+    const remove=()=>{
+
+        axios.delete(
+            "https://jsonplaceholder.typicode.com/users/1"
+        )
+
+        .then((response)=>{
+
+            console.log(response.data);
+
+            alert("Deleted");
+
+        });
+
+    };
+
+    return(
+
+        <button onClick={remove}>
+
+            Delete User
+
+        </button>
+
+    );
+
+}
+
+export default DeleteUser;
+Example 5 : Search User
+import React,{useState} from "react";
+import axios from "axios";
+
+function SearchUser(){
+
+    const[id,setId]=useState("");
+
+    const[user,setUser]=useState({});
+
+    const search=()=>{
+
+        axios.get(
+        `https://jsonplaceholder.typicode.com/users/${id}`
+        )
+
+        .then((response)=>{
+
+            setUser(response.data);
+
+        });
+
+    };
+
+    return(
+
+        <div>
+
+            <input
+
+                type="text"
+
+                value={id}
+
+                onChange={(e)=>setId(e.target.value)}
+
+            />
+
+            <button onClick={search}>
+
+                Search
+
+            </button>
+
+            <h3>{user.name}</h3>
+
+            <h3>{user.email}</h3>
+
+        </div>
+
+    );
+
+}
+
+export default SearchUser;
+Example 6 : Axios with async/await
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+function App() {
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+
+        loadUsers();
+
+    }, []);
+
+    async function loadUsers() {
+
+        try {
+
+            const response = await axios.get(
+                "https://jsonplaceholder.typicode.com/users"
+            );
+
+            setUsers(response.data);
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+    return (
+
+        <div>
+
+            {
+                users.map(user =>
+
+                    <p key={user.id}>{user.name}</p>
+
+                )
+            }
+
+        </div>
+
+    );
+
+}
+
+export default App;
+Example 7 : Axios Instance
+api.js
+import axios from "axios";
+
+const api = axios.create({
+
+    baseURL: "https://jsonplaceholder.typicode.com",
+
+    timeout: 5000,
+
+    headers: {
+
+        "Content-Type": "application/json"
+
+    }
+
+});
+
+export default api;
+
+Usage
+
+import api from "./api";
+
+api.get("/users")
+.then(res => console.log(res.data));
+Example 8 : Request Headers
+axios.get(
+    "https://jsonplaceholder.typicode.com/users",
+    {
+        headers: {
+
+            Authorization: "Bearer abc123",
+
+            "Content-Type": "application/json"
+
+        }
+    }
+);
+Example 9 : Sending Query Parameters
+
+Instead of:
+
+/users?id=5
+
+Write
+
+axios.get(
+
+"/users",
+
+{
+
+params:{
+
+id:5
+
+}
+
+}
+
+);
+
+Axios generates:
+
+/users?id=5
+Example 10 : Error Handling
+axios.get("/users")
+
+.then((response)=>{
+
+console.log(response.data);
+
+})
+
+.catch((error)=>{
+
+if(error.response){
+
+console.log("Status:",error.response.status);
+
+console.log(error.response.data);
+
+}
+
+else if(error.request){
+
+console.log("No Response");
+
+}
+
+else{
+
+console.log(error.message);
+
+}
+
+});
+Example 11 : Axios Interceptors
+import axios from "axios";
+
+axios.interceptors.request.use(
+
+(config)=>{
+
+console.log("Request Started");
+
+return config;
+
+}
+
+);
+
+axios.interceptors.response.use(
+
+(response)=>{
+
+console.log("Response Received");
+
+return response;
+
+}
+
+);
+Example 12 : React Form + Axios
+import React, { useState } from "react";
+import axios from "axios";
+
+function EmployeeForm() {
+
+    const [employee, setEmployee] = useState({
+        name: "",
+        salary: ""
+    });
+
+    const handleChange = (e) => {
+        setEmployee({
+            ...employee,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const saveEmployee = async () => {
+        try {
+            const response = await axios.post(
+                "https://jsonplaceholder.typicode.com/users",
+                employee
+            );
+
+            console.log(response.data);
+            alert("Employee Saved");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    return (
+        <div>
+            <h2>Employee Form</h2>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter Name"
+                value={employee.name}
+                onChange={handleChange}
+            />
+
+            <br /><br />
+
+            <input
+                type="number"
+                name="salary"
+                placeholder="Enter Salary"
+                value={employee.salary}
+                onChange={handleChange}
+            />
+
+            <br /><br />
+
+            <button onClick={saveEmployee}>
+                Save Employee
+            </button>
+        </div>
+    );
+}
+
+export default EmployeeForm;
+Axios HTTP Methods Summary
+Method	Purpose	Example
+axios.get(url)	Retrieve data	Get all users
+axios.post(url, data)	Create a new resource	Add a user
+axios.put(url, data)	Replace an existing resource	Update a user
+axios.patch(url, data)	Partially update a resource	Update only the email
+axios.delete(url)	Delete a resource	Remove a user
+Common Axios Response Object
+axios.get("/users")
+.then(response => {
+    console.log(response.data);      // Response body
+    console.log(response.status);    // HTTP status code
+    console.log(response.statusText);// Status text
+    console.log(response.headers);   // Response headers
+    console.log(response.config);    // Request configuration
+});
+==================================
+Common Yup Validation Methods
+Method	Example	Purpose
+required()	Yup.string().required()	Field cannot be empty
+email()	Yup.string().email()	Validate email
+min()	Yup.string().min(8)	Minimum length/value
+max()	Yup.number().max(60)	Maximum value
+matches()	Yup.string().matches(regex)	Regular expression validation
+oneOf()	Yup.string().oneOf([Yup.ref("password")])	Match another field
+positive()	Yup.number().positive()	Positive number
+integer()	Yup.number().integer()	Integer only
+boolean()	Yup.boolean().oneOf([true])	Checkbox validation
+date()	Yup.date()	Date validation
+test()	Yup.string().test(...)	Custom validation
+
+EmployeeForm.js
+====================
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+
+  empId: Yup.number()
+    .required("Employee ID is required")
+    .positive("Employee ID must be positive"),
+
+  empName: Yup.string()
+    .required("Employee Name is required")
+    .min(3, "Minimum 3 characters"),
+
+  email: Yup.string()
+    .email("Invalid Email")
+    .required("Email is required"),
+
+  phone: Yup.string()
+    .matches(/^[6-9]\d{9}$/, "Enter Valid Mobile Number")
+    .required("Phone Number is required"),
+
+  password: Yup.string()
+    .min(8, "Minimum 8 Characters")
+    .required("Password Required"),
+
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Password Mismatch")
+    .required("Confirm Password Required"),
+
+  age: Yup.number()
+    .min(18, "Minimum Age 18")
+    .max(60, "Maximum Age 60")
+    .required("Age Required"),
+
+  department: Yup.string()
+    .required("Select Department"),
+
+  gender: Yup.string()
+    .required("Select Gender"),
+
+  address: Yup.string()
+    .min(10, "Minimum 10 Characters")
+    .required("Address Required"),
+
+  terms: Yup.boolean()
+    .oneOf([true], "Accept Terms")
+});
+
+function EmployeeForm() {
+
+  return (
+
+    <Formik
+
+      initialValues={{
+
+        empId: "",
+        empName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+        age: "",
+        department: "",
+        gender: "",
+        address: "",
+        terms: false
+
+      }}
+
+      validationSchema={validationSchema}
+
+      onSubmit={(values) => {
+
+        alert(JSON.stringify(values, null, 4));
+
+      }}
+
+    >
+
+      <Form style={{width:"400px",margin:"20px auto"}}>
+
+        <h2>Employee Registration</h2>
+
+        <label>Employee ID</label>
+
+        <Field name="empId" className="form-control"/>
+
+        <ErrorMessage name="empId" component="div" style={{color:"red"}}/>
+
+        <br/>
+
+        <label>Employee Name</label>
+
+        <Field name="empName"/>
+
+        <ErrorMessage name="empName" component="div" style={{color:"red"}}/>
+
+        <br/>
+
+        <label>Email</label>
+
+        <Field type="email" name="email"/>
+
+        <ErrorMessage name="email" component="div" style={{color:"red"}}/>
+
+        <br/>
+
+        <label>Phone</label>
+
+        <Field name="phone"/>
+
+        <ErrorMessage name="phone" component="div" style={{color:"red"}}/>
+
+        <br/>
+
+        <label>Password</label>
+
+        <Field
+        type="password"
+        name="password"/>
+
+        <ErrorMessage
+        name="password"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/>
+
+        <label>Confirm Password</label>
+
+        <Field
+        type="password"
+        name="confirmPassword"/>
+
+        <ErrorMessage
+        name="confirmPassword"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/>
+
+        <label>Age</label>
+
+        <Field
+        name="age"/>
+
+        <ErrorMessage
+        name="age"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/>
+
+        <label>Department</label>
+
+        <Field
+        as="select"
+        name="department">
+
+          <option value="">Select</option>
+          <option>Java</option>
+          <option>Python</option>
+          <option>React</option>
+          <option>DevOps</option>
+
+        </Field>
+
+        <ErrorMessage
+        name="department"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/>
+
+        <label>Gender</label>
+
+        <br/>
+
+        <label>
+
+        <Field
+        type="radio"
+        name="gender"
+        value="Male"/>
+
+        Male
+
+        </label>
+
+        &nbsp;&nbsp;
+
+        <label>
+
+        <Field
+        type="radio"
+        name="gender"
+        value="Female"/>
+
+        Female
+
+        </label>
+
+        <ErrorMessage
+        name="gender"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/><br/>
+
+        <label>Address</label>
+
+        <Field
+        as="textarea"
+        rows="4"
+        cols="35"
+        name="address"/>
+
+        <ErrorMessage
+        name="address"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/>
+
+        <label>
+
+        <Field
+        type="checkbox"
+        name="terms"/>
+
+        I Accept Terms & Conditions
+
+        </label>
+
+        <ErrorMessage
+        name="terms"
+        component="div"
+        style={{color:"red"}}
+        />
+
+        <br/><br/>
+
+        <button type="submit">
+
+            Register
+
+        </button>
+
+        &nbsp;&nbsp;
+
+        <button type="reset">
+
+            Reset
+
+        </button>
+
+      </Form>
+
+    </Formik>
+
+  );
+
+}
+
+export default EmployeeForm;
+
+================================
+
+
+
+
+Regstration_Form:
+
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+
+    name: Yup.string()
+             .required("Enter Name"),
+
+    email: Yup.string()
+              .email("Invalid Email")
+              .required(),
+
+    password: Yup.string()
+                 .min(8)
+                 .required(),
+
+    confirmPassword: Yup.string()
+        .oneOf(
+          [Yup.ref("password"), null],
+          "Password mismatch"
+        )
+        .required(),
+
+    age: Yup.number()
+            .min(18)
+            .required(),
+
+    phone: Yup.string()
+              .matches(/^[0-9]{10}$/),
+
+    terms:Yup.boolean()
+             .oneOf([true],"Accept Terms")
+
+});
+
+
+
+case Study:
+Validation examples
+
+If the user enters:
+
+Employee ID : (empty)
+Name        : Jo
+Email       : abc
+Phone       : 12345
+Password    : 123
+Confirm     : 1234
+Age         : 15
+Department  : (not selected)
+Gender      : (not selected)
+Address     : Home
+Terms        : unchecked
+
+Yup will display:
+
+Employee ID is required
+Minimum 3 characters
+Invalid Email
+Enter Valid Mobile Number
+Minimum 8 Characters
+Password Mismatch
+Minimum Age 18
+Select Department
+Select Gender
+Minimum 10 Characters
+Accept Terms
