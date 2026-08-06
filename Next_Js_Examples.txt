@@ -1,0 +1,993 @@
+What is Next.js?
+
+Next.js is a React framework that provides:
+
+Server Side Rendering (SSR)
+Static Site Generation (SSG)
+Client Side Rendering (CSR)
+File-based Routing
+API Routes
+Image Optimization
+SEO
+Authentication Support
+Fast Performance
+React
+   |
+   |----> Next.js
+              |
+              |---- Routing
+              |---- SSR
+              |---- SSG
+              |---- API
+              |---- SEO
+              |---- Middleware
+Prerequisites
+
+Install:
+
+Node.js (18+)
+VS Code
+
+Check version
+
+node -v
+npm -v
+Create Next.js Project
+
+Using npm
+
+npx create-next-app@latest my-next-app
+
+or
+
+npm create next-app@latest my-next-app
+
+Move into project
+
+cd my-next-app
+
+Run
+
+npm run dev
+
+Open
+
+http://localhost:3000
+Project Structure (App Router)
+my-next-app
+│
+├── app
+│     ├── layout.js
+│     ├── page.js
+│     ├── about
+│     │      └── page.js
+│     └── contact
+│            └── page.js
+│
+├── public
+│     └── images
+│
+├── components
+│     └── Header.js
+│
+├── package.json
+├── next.config.js
+└── node_modules
+First Page
+
+app/page.js
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Welcome to Next.js</h1>
+    </div>
+  );
+}
+
+Output
+
+Welcome to Next.js
+Create Component
+
+components/Header.js
+
+export default function Header() {
+    return (
+        <h2>Header Component</h2>
+    );
+}
+
+Use component
+
+import Header from "../components/Header";
+
+export default function Home() {
+    return (
+        <div>
+            <Header />
+            <h1>Home Page</h1>
+        </div>
+    );
+}
+
+Output
+
+Header Component
+
+Home Page
+Routing
+
+Create
+
+app/about/page.js
+export default function About() {
+    return (
+        <h1>About Page</h1>
+    );
+}
+
+Visit
+
+http://localhost:3000/about
+Contact Page
+app/contact/page.js
+export default function Contact() {
+    return (
+        <h1>Contact Page</h1>
+    );
+}
+Navigation
+import Link from "next/link";
+
+export default function Home() {
+
+    return (
+
+        <div>
+
+            <Link href="/">Home</Link>
+
+            <br />
+
+            <Link href="/about">About</Link>
+
+            <br />
+
+            <Link href="/contact">Contact</Link>
+
+        </div>
+
+    );
+}
+Layout
+
+app/layout.js
+
+export const metadata = {
+  title: "My Website",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <h2>Company Header</h2>
+
+        {children}
+
+        <hr />
+
+        Copyright 2026
+      </body>
+    </html>
+  );
+}
+
+Every page shares this layout.
+
+CSS Example
+
+app/page.js
+
+import "./globals.css";
+
+export default function Home() {
+  return (
+    <h1 className="title">
+      Welcome
+    </h1>
+  );
+}
+
+globals.css
+
+.title{
+
+color:red;
+
+font-size:40px;
+
+}
+Image Example
+
+Put image inside
+
+public/images/car.jpg
+import Image from "next/image";
+
+export default function Home() {
+  return (
+    <Image
+      src="/images/car.jpg"
+      width={300}
+      height={200}
+      alt="Car"
+    />
+  );
+}
+Button Click Example
+"use client";
+
+export default function Home(){
+
+function hello(){
+
+alert("Hello");
+
+}
+
+return(
+
+<button onClick={hello}>
+Click Me
+</button>
+
+);
+
+}
+useState Example
+"use client";
+
+import {useState} from "react";
+
+export default function Home(){
+
+const[count,setCount]=useState(0);
+
+return(
+
+<div>
+
+<h2>{count}</h2>
+
+<button
+onClick={()=>setCount(count+1)}
+>
+
+Increment
+
+</button>
+
+</div>
+
+);
+
+}
+Form Example
+"use client";
+
+import {useState} from "react";
+
+export default function Home(){
+
+const[name,setName]=useState("");
+
+return(
+
+<div>
+
+<input
+
+type="text"
+
+value={name}
+
+onChange={(e)=>setName(e.target.value)}
+
+/>
+
+<h2>{name}</h2>
+
+</div>
+
+);
+
+}
+Fetch API Example
+"use client";
+
+import {useEffect,useState} from "react";
+
+export default function Home(){
+
+const[users,setUsers]=useState([]);
+
+useEffect(()=>{
+
+fetch("https://jsonplaceholder.typicode.com/users")
+.then(res=>res.json())
+.then(data=>setUsers(data));
+
+},[]);
+
+return(
+
+<div>
+
+{
+
+users.map(user=>
+
+<p key={user.id}>
+{user.name}
+</p>
+
+)
+
+}
+
+</div>
+
+);
+
+}
+API Route Example
+
+Create
+
+app/api/users/route.js
+export async function GET() {
+
+    return Response.json([
+        {
+            id:1,
+            name:"John"
+        },
+        {
+            id:2,
+            name:"David"
+        }
+    ]);
+
+}
+
+Open
+
+http://localhost:3000/api/users
+
+Output
+
+[
+   {
+      "id":1,
+      "name":"John"
+   },
+   {
+      "id":2,
+      "name":"David"
+   }
+]
+Fetch Local API
+"use client";
+
+import {useEffect,useState} from "react";
+
+export default function Home(){
+
+const[data,setData]=useState([]);
+
+useEffect(()=>{
+
+fetch("/api/users")
+.then(res=>res.json())
+.then(result=>setData(result));
+
+},[]);
+
+return(
+
+<div>
+
+{
+
+data.map(user=>
+
+<h3 key={user.id}>
+{user.name}
+</h3>
+
+)
+
+}
+
+</div>
+
+);
+
+}
+Dynamic Route
+
+Folder
+
+app/product/[id]/page.js
+export default async function Product({ params }) {
+  return (
+    <h1>Product ID: {params.id}</h1>
+  );
+}
+
+Visit
+
+http://localhost:3000/product/101
+
+Output
+
+Product ID: 101
+Folder Structure for a Small Project
+my-next-app
+
+app
+│
+├── page.js
+├── about
+│      page.js
+├── contact
+│      page.js
+├── products
+│      page.js
+├── product
+│      └── [id]
+│              page.js
+├── api
+│      └── users
+│              route.js
+│
+components
+│      Header.js
+│      Footer.js
+│      Navbar.js
+│
+public
+│      images
+│
+styles
+│      globals.css
+│
+package.json
+Common npm Commands
+# Create project
+npx create-next-app@latest my-next-app
+
+# Go to project
+cd my-next-app
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run linter
+npm run lint
+Topics to Learn Next
+Next.js App Router
+Pages and Layouts
+Client vs Server Components
+Routing and Nested Routes
+Dynamic Routes
+Route Handlers (API Routes)
+Data Fetching (fetch, Server Components)
+React Hooks in Next.js
+Forms and Validation
+Authentication (NextAuth/Auth.js)
+Database Integration (MySQL, PostgreSQL, MongoDB)
+Prisma ORM
+Middleware
+Static Site Generation (SSG)
+Server-Side Rendering (SSR)
+Incremental Static Regeneration (ISR)
+File Uploads
+Environment Variables
+Deployment to Vercel
+Building a complete CRUD application with Next.js, Spring Boot, and MySQL.
+
+Since you've been learning React, Formik, Yup, Axios, and Spring Boot, a good next step is to build a complete full-stack CRUD application using Next.js + Spring Boot REST API + MySQL + Axios, covering project setup, folder structure, CRUD operations, form validation, routing, and deployment end to end.
+
+Today 9:28 PM
+suppose  i have  welcome.js  how to call  in  next js
+
+In Next.js, how you use Welcome.js depends on whether it is a component or a page.
+
+Case 1: Welcome.js is a Component (Most Common)
+Project Structure
+my-next-app
+│
+├── app
+│     └── page.js
+│
+├── components
+│     └── Welcome.js
+components/Welcome.js
+export default function Welcome() {
+    return (
+        <h2>Welcome Component</h2>
+    );
+}
+app/page.js
+import Welcome from "../components/Welcome";
+
+export default function Home() {
+    return (
+        <div>
+            <h1>Home Page</h1>
+
+            <Welcome />
+        </div>
+    );
+}
+Output
+Home Page
+
+Welcome Component
+Case 2: Welcome.js is Inside the app Folder (App Router)
+
+In the App Router, the file must be named page.js to become a route.
+
+Folder Structure
+app
+│
+├── page.js
+│
+└── welcome
+      └── page.js
+app/welcome/page.js
+export default function Welcome() {
+    return (
+        <h1>Welcome Page</h1>
+    );
+}
+
+Visit:
+
+http://localhost:3000/welcome
+
+No import is needed because Next.js creates the route automatically.
+
+Case 3: You Have Welcome.js in the app Folder
+
+Suppose you have:
+
+app
+│
+├── page.js
+└── Welcome.js
+
+This will not become a route automatically.
+
+You can import it like a normal React component.
+
+app/Welcome.js
+export default function Welcome() {
+    return (
+        <h2>Welcome Component</h2>
+    );
+}
+app/page.js
+import Welcome from "./Welcome";
+
+export default function Home() {
+    return (
+        <div>
+            <Welcome />
+        </div>
+    );
+}
+Case 4: Navigate to the Welcome Page
+
+If app/welcome/page.js exists:
+
+import Link from "next/link";
+
+export default function Home() {
+    return (
+        <div>
+            <Link href="/welcome">
+                Go to Welcome Page
+            </Link>
+        </div>
+    );
+}
+Case 5: Using a Button to Navigate
+"use client";
+
+import { useRouter } from "next/navigation";
+
+export default function Home() {
+    const router = useRouter();
+
+    return (
+        <button onClick={() => router.push("/welcome")}>
+            Go to Welcome
+        </button>
+    );
+}
+Summary
+If Welcome.js is...	How to use it
+components/Welcome.js	import Welcome from "../components/Welcome"; then <Welcome />
+app/Welcome.js	import Welcome from "./Welcome"; then <Welcome />
+app/welcome/page.js	Visit /welcome or use <Link href="/welcome">
+pages/welcome.js (Pages Router)	Visit /welcome automatically
+Which Next.js router are you using?
+App Router (app/ folder, Next.js 13+)
+Pages Router (pages/ folder, older style)
+
+The import and routing approach is slightly different depending on which one you're using.
+
+basic  examples 
+
+Here are some basic Next.js examples using the App Router (app folder).
+
+Example 1: Hello World
+Project Structure
+app
+│
+└── page.js
+app/page.js
+export default function Home() {
+  return (
+    <h1>Hello Next.js</h1>
+  );
+}
+
+Output
+
+Hello Next.js
+Example 2: Calling Another Component
+Project Structure
+app
+│
+├── page.js
+│
+components
+│
+└── Welcome.js
+components/Welcome.js
+export default function Welcome() {
+    return (
+        <h2>Welcome to Next.js</h2>
+    );
+}
+app/page.js
+import Welcome from "../components/Welcome";
+
+export default function Home() {
+
+    return (
+
+        <div>
+
+            <h1>Home Page</h1>
+
+            <Welcome />
+
+        </div>
+
+    );
+
+}
+
+Output
+
+Home Page
+
+Welcome to Next.js
+Example 3: Passing Props
+Welcome.js
+export default function Welcome(props) {
+
+    return (
+        <h2>Welcome {props.name}</h2>
+    );
+
+}
+page.js
+import Welcome from "../components/Welcome";
+
+export default function Home() {
+
+    return (
+
+        <div>
+
+            <Welcome name="Babu"/>
+
+            <Welcome name="John"/>
+
+            <Welcome name="David"/>
+
+        </div>
+
+    );
+
+}
+
+Output
+
+Welcome Babu
+
+Welcome John
+
+Welcome David
+Example 4: Button Click
+"use client";
+
+export default function Home() {
+
+    function hello() {
+        alert("Welcome");
+    }
+
+    return (
+        <button onClick={hello}>
+            Click Here
+        </button>
+    );
+
+}
+Example 5: useState
+"use client";
+
+import { useState } from "react";
+
+export default function Home() {
+
+    const [count, setCount] = useState(0);
+
+    return (
+
+        <div>
+
+            <h2>{count}</h2>
+
+            <button onClick={() => setCount(count + 1)}>
+                Increment
+            </button>
+
+        </div>
+
+    );
+
+}
+Example 6: Textbox
+"use client";
+
+import { useState } from "react";
+
+export default function Home() {
+
+    const [name, setName] = useState("");
+
+    return (
+
+        <div>
+
+            <input
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+            />
+
+            <h2>{name}</h2>
+
+        </div>
+
+    );
+
+}
+Example 7: Multiple Components
+Header.js
+export default function Header() {
+
+    return (
+        <h1>Header</h1>
+    );
+
+}
+Footer.js
+export default function Footer() {
+
+    return (
+        <h3>Footer</h3>
+    );
+
+}
+page.js
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+export default function Home() {
+
+    return (
+
+        <div>
+
+            <Header />
+
+            <h2>Home Page</h2>
+
+            <Footer />
+
+        </div>
+
+    );
+
+}
+
+Output
+
+Header
+
+Home Page
+
+Footer
+Example 8: About Page
+Project Structure
+app
+│
+├── page.js
+│
+└── about
+    │
+    └── page.js
+app/about/page.js
+export default function About() {
+
+    return (
+        <h1>About Page</h1>
+    );
+
+}
+
+Open:
+
+http://localhost:3000/about
+Example 9: Navigation
+app/page.js
+import Link from "next/link";
+
+export default function Home() {
+
+    return (
+
+        <div>
+
+            <Link href="/">Home</Link>
+
+            <br />
+
+            <Link href="/about">About</Link>
+
+        </div>
+
+    );
+
+}
+Example 10: Dynamic Route
+Folder Structure
+app
+│
+└── product
+    │
+    └── [id]
+        │
+        └── page.js
+app/product/[id]/page.js
+export default async function Product({ params }) {
+
+    return (
+        <h1>Product ID : {params.id}</h1>
+    );
+
+}
+
+Open:
+
+http://localhost:3000/product/101
+
+Output
+
+Product ID : 101
+Example 11: Fetch Data from API
+"use client";
+
+import { useState, useEffect } from "react";
+
+export default function Home() {
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+
+        fetch("https://jsonplaceholder.typicode.com/users")
+            .then(res => res.json())
+            .then(data => setUsers(data));
+
+    }, []);
+
+    return (
+
+        <div>
+
+            {
+                users.map(user => (
+                    <p key={user.id}>
+                        {user.name}
+                    </p>
+                ))
+            }
+
+        </div>
+
+    );
+
+}
+Example 12: Calling Your Own API
+app/api/user/route.js
+export async function GET() {
+
+    return Response.json({
+
+        id: 101,
+        name: "Babu"
+
+    });
+
+}
+app/page.js
+"use client";
+
+import { useEffect, useState } from "react";
+
+export default function Home() {
+
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+
+        fetch("/api/user")
+            .then(res => res.json())
+            .then(data => setUser(data));
+
+    }, []);
+
+    return (
+
+        <div>
+
+            <h2>{user.id}</h2>
+
+            <h2>{user.name}</h2>
+
+        </div>
+
+    );
+
+}
+
+Output
+
+101
+
