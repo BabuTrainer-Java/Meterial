@@ -1,0 +1,117 @@
+| Requirement        | Command                          |
+| ------------------ | -------------------------------- |
+| Docker version     | `docker --version`               |
+| Docker information | `docker info`                    |
+| Download image     | `docker pull nginx`              |
+| List images        | `docker images`                  |
+| Build image        | `docker build -t app .`          |
+| Run container      | `docker run app`                 |
+| Run background     | `docker run -d app`              |
+| Name container     | `docker run --name myapp app`    |
+| Port mapping       | `docker run -p 8080:80 nginx`    |
+| Running containers | `docker ps`                      |
+| All containers     | `docker ps -a`                   |
+| Stop               | `docker stop myapp`              |
+| Start              | `docker start myapp`             |
+| Restart            | `docker restart myapp`           |
+| Remove container   | `docker rm myapp`                |
+| Remove image       | `docker rmi app`                 |
+| Logs               | `docker logs myapp`              |
+| Follow logs        | `docker logs -f myapp`           |
+| Enter container    | `docker exec -it myapp bash`     |
+| Inspect            | `docker inspect myapp`           |
+| Copy file          | `docker cp file.txt myapp:/tmp/` |
+| Create volume      | `docker volume create data`      |
+| List volumes       | `docker volume ls`               |
+| List networks      | `docker network ls`              |
+| Create network     | `docker network create mynet`    |
+| Compose start      | `docker compose up -d`           |
+| Compose stop       | `docker compose down`            |
+| Compose logs       | `docker compose logs -f`         |
+| Resource usage     | `docker stats`                   |
+| Login              | `docker login`                   |
+| Push image         | `docker push user/app:1.0`       |
+| Pull image         | `docker pull user/app:1.0`       |
+| Cleanup            | `docker system prune`            |
+
+
+
+
+package com.example;
+
+public class HelloDocker {
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello from Docker!");
+    }
+}
+
+
+
+
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+COPY . .
+
+RUN javac -d . src/com/example/HelloDocker.java
+
+CMD ["java", "com.example.HelloDocker"]
+
+
+docker build -t java-package-demo .
+
+
+docker run java-package-demo
+
+
+
+
+
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/")
+    public String home() {
+
+        return "Hello from Spring Boot Docker!";
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+
+        return "Spring Boot application is running inside Docker!";
+    }
+}
+
+
+
+mvn clean package
+
+target/
+└── spring-docker-demo-1.0.0.jar
+
+
+
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+COPY target/spring-docker-demo-1.0.0.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+docker build -t spring-docker-demo .
+
+docker run -d --name spring-container -p 8080:8080 spring-docker-demo
